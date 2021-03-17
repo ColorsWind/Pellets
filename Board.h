@@ -15,9 +15,10 @@ private:
     const int m;
     const int n;
     Grid*** const grids;
-    std::vector<Pellet*> pellets;
+    std::vector<Pellet*> existPellets;
     friend class GameBoxWidget;
     int round = 0;
+    int numPellets = 3;
 public:
     Board(int m, int n);
     Grid* at(int x, int y) const;

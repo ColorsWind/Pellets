@@ -7,12 +7,13 @@
 
 
 #include "FixedGrid.h"
+#include <QGraphicsScene>
 
 class HPGrid : public FixedGrid {
 protected:
     int health;
 public:
-    void draw(QPainter* painter) override;
+    void draw(QGraphicsScene *scene) override;
 
     HPGrid(const Location &point, int health);
 

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QTimer>
+#include <QGraphicsScene>
 #include "Board.h"
 
 const static int FPS = 30;
@@ -19,16 +20,18 @@ public:
     ~GameBoxWidget();
     void paintEvent(QPaintEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
-    void drawGridlines(QPainter* painter);
-    void drawPellets(QPainter *painter);
-    void drawGrids(QPainter *painter);
+    void drawGridlines(QGraphicsScene *scene);
+    void drawPellets(QGraphicsScene *scene);
+    void drawGrids(QGraphicsScene *scene);
     Location getLaunchLocation();
 private:
     Ui::GameBoxWidget *ui;
     QTimer *timer;
     Board gameboard;
+    QGraphicsScene scene;
 public slots:
     void doTick();
+
 
 
 };

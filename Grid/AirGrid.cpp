@@ -6,7 +6,7 @@
 
 AirGrid::AirGrid(const Location &point) : FixedGrid(point) {}
 
-void AirGrid::draw(QPainter *painter) {}
+void AirGrid::draw(QGraphicsScene( *scene)) {}
 
 Grid *AirGrid::move(Location point) {
     return new AirGrid(point);

@@ -13,7 +13,7 @@ set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
 add_executable(${PROJECT_NAME} main.cpp Location.h Location.cpp Vector.h Vector.cpp Pellet/Pellet.h Board.cpp Board.h Grid/Grid.h
         GameBoxWidget.ui GameBoxWidget.h GameBoxWidget.cpp
         Grid/FixedGrid.cpp Grid/FixedGrid.h Grid/HPGrid.cpp Grid/HPGrid.h
-        Pellet/SolidPellet.cpp Pellet/SolidPellet.h Grid/AirGrid.cpp Grid/AirGrid.h)
+        Pellet/SolidPellet.cpp Pellet/SolidPellet.h Grid/AirGrid.cpp Grid/AirGrid.h Grid/GridItem.cpp Grid/GridItem.h Pellet/PelletItem.cpp Pellet/PelletItem.h)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "

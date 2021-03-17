@@ -5,12 +5,6 @@
 #include "SolidPellet.h"
 
 
-void SolidPellet::draw(QPainter *painter) {
-    QRectF rect(location.pointX, location.pointY, 50, 50);
-    painter->setBrush(QBrush(QColor(250,210,20, 250), Qt::BrushStyle::SolidPattern));
-    painter->drawEllipse(rect);
-}
-
 Vector SolidPellet::getVelocity() const {
     return velocity;
 }
@@ -24,4 +18,10 @@ Location SolidPellet::getLocation() const {
 
 void SolidPellet::move(double interval) {
     location = location.add(velocity * interval);
+}
+
+void SolidPellet::draw(QGraphicsScene *scene) {
+    QRectF rect(location.pointX, location.pointY, 30, 30);
+    //scene->addBrush(QBrush(QColor(250, 210, 20, 250), Qt::BrushStyle::SolidPattern));
+    scene->addEllipse(rect);
 }

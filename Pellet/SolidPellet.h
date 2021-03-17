@@ -7,6 +7,7 @@
 
 
 #include <QPainter>
+#include <QGraphicsScene>
 #include "Pellet.h"
 #include "../Location.h"
 
@@ -19,7 +20,7 @@ public:
 
     Location getLocation() const override;
 
-    void draw(QPainter *painter) override;
+    void draw(QGraphicsScene *scene) override;
 
     Vector getVelocity() const override;
 

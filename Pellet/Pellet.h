@@ -11,7 +11,7 @@
 class Pellet {
 
 public:
-    virtual void draw(QPainter* painter) = 0;
+    virtual void draw(QGraphicsScene *scene) = 0;
 
     virtual Location getLocation() const = 0;
 

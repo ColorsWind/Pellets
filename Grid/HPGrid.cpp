@@ -3,18 +3,19 @@
 //
 
 #include "HPGrid.h"
-void HPGrid::draw(QPainter* painter) {
-    QRect rect(point.getGridX(), point.getGridY(), 50, 50);
-    if (health > 20) {
-        painter->setBrush(QBrush(QColor(255,128,128, 196), Qt::BrushStyle::SolidPattern));
-    } else if (health > 10) {
-        painter->setBrush(QBrush(QColor(255,255,0, 196), Qt::BrushStyle::SolidPattern));
-    } else {
-        painter->setBrush(QBrush(QColor(120,145,200, 196), Qt::BrushStyle::SolidPattern));
-    }
+#include "GridItem.h"
 
-    painter->drawRect(rect);
-    painter->drawText(rect, Qt::AlignCenter, QString::number(health));
+void HPGrid::draw(QGraphicsScene *scene) {
+    QRect rect(point.getGridX(), point.getGridY(), 50, 50);
+    QColor color;
+    if (health > 20) {
+        color = QColor(255, 128, 128, 196);
+    } else if (health > 10) {
+        color = QColor(255, 255, 0, 196);
+    } else {
+        color = QColor(120, 145, 200, 196);
+    }
+    scene->addItem(new GridItem(point.getGridX(), point.getGridY(), 50, 50, color, QString::number(health)));
 }
 
 HPGrid::HPGrid(const Location &point, int health) : FixedGrid(point), health(health) {}

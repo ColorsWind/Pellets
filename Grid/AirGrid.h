@@ -12,7 +12,7 @@ class AirGrid : public FixedGrid {
 public:
     AirGrid(const Location &point);
 
-    void draw(QPainter *painter) override;
+    void draw(QGraphicsScene *scene) override;
 
     Grid *move(Location point) override;
 };
