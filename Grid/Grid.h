@@ -6,12 +6,13 @@
 #define PELLETS_GRID_H
 
 
-#include "Point.h"
+#include <QPainter>
+#include "../Point.h"
 
 class Grid {
-
-    Point location() const;
-    void draw() const;
+public:
+    virtual Point location() const = 0;
+    virtual void draw(QPainter* painter) = 0;
 
 
 };
