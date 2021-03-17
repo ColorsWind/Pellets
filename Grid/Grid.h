@@ -7,13 +7,13 @@
 
 
 #include <QPainter>
-#include "../Point.h"
+#include "../Location.h"
 
 class Grid {
 public:
-    virtual Point location() const = 0;
+    virtual Location location() const = 0;
     virtual void draw(QPainter* painter) = 0;
-
+    virtual Grid* move(Location point) = 0;
 
 };
 

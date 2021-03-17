@@ -14,7 +14,9 @@ protected:
 public:
     void draw(QPainter* painter) override;
 
-    HPGrid(const Point &point, int health);
+    HPGrid(const Location &point, int health);
+
+    Grid *move(Location point) override;
 };
 
 

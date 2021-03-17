@@ -17,9 +17,11 @@ private:
     Grid*** const grids;
     std::vector<Pellet*> pellets;
     friend class GameBoxWidget;
+    int round = 0;
 public:
     Board(int m, int n);
     Grid* at(int x, int y) const;
+    void nextRound();
 };
 
 

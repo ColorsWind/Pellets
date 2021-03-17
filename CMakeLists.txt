@@ -10,7 +10,7 @@ set(CMAKE_AUTOUIC ON)
 set(QT_VERSION 5)
 set(REQUIRED_LIBS Core Gui Widgets)
 set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
-add_executable(${PROJECT_NAME} main.cpp Point.h Point.cpp Vector.h Vector.cpp Pellet/Pellet.h Board.cpp Board.h Grid/Grid.h
+add_executable(${PROJECT_NAME} main.cpp Location.h Location.cpp Vector.h Vector.cpp Pellet/Pellet.h Board.cpp Board.h Grid/Grid.h
         GameBoxWidget.ui GameBoxWidget.h GameBoxWidget.cpp
         Grid/FixedGrid.cpp Grid/FixedGrid.h Grid/HPGrid.cpp Grid/HPGrid.h
         Pellet/SolidPellet.cpp Pellet/SolidPellet.h Grid/AirGrid.cpp Grid/AirGrid.h)

@@ -6,14 +6,12 @@
 #define PELLETS_VECTOR_H
 
 
-#include "Point.h"
-
+class Location;
 class Vector {
 public:
-    const int vectorX, vectorY;
+    const double vectorX, vectorY;
 
-    Vector(const int velocityX, const int velocityY);
-    Point add(Point point, double t);
+    Vector(const double velocityX, const double velocityY);
 };
 
 

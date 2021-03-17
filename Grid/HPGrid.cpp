@@ -12,8 +12,13 @@ void HPGrid::draw(QPainter* painter) {
     } else {
         painter->setBrush(QBrush(QColor(120,145,200, 196), Qt::BrushStyle::SolidPattern));
     }
+
     painter->drawRect(rect);
     painter->drawText(rect, Qt::AlignCenter, QString::number(health));
 }
 
-HPGrid::HPGrid(const Point &point, int health) : FixedGrid(point), health(health) {}
+HPGrid::HPGrid(const Location &point, int health) : FixedGrid(point), health(health) {}
+
+Grid *HPGrid::move(Location point) {
+    return new HPGrid(point, health);
+}

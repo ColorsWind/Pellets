@@ -10,13 +10,13 @@
 
 class FixedGrid : public Grid {
 protected:
-    const Point point;
+    const Location point;
 
 
 public:
-    Point location() const override;
+    Location location() const override;
 
-    FixedGrid(const Point &point);
+    FixedGrid(const Location &point);
 };
 
 #endif //PELLETS_FIXEDGRID_H

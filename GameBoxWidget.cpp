@@ -1,10 +1,8 @@
 #include "GameBoxWidget.h"
 #include "ui_GameBoxWidget.h"
-#include "Point.h"
-#include "Grid/HPGrid.h"
 #include <QPainter>
-
-GameBoxWidget::GameBoxWidget(Board board, QWidget *parent) :
+#include <QMouseEvent>
+GameBoxWidget::GameBoxWidget(Board board, QWidget *parent):
         QWidget(parent),
         gameboard(board), ui(new Ui::GameBoxWidget) {
     ui->setupUi(this);
@@ -32,11 +30,16 @@ void GameBoxWidget::drawPellets(QPainter *painter) {
         (*iter)->draw(painter);
 }
 
-
+static int a = 0;
 void GameBoxWidget::paintEvent(QPaintEvent *event) {
     Q_UNUSED(event);
     QPainter painter(this);
     drawGridlines(&painter);
     drawGrids(&painter);
     drawPellets(&painter);
+}
+
+void GameBoxWidget::mousePressEvent(QMouseEvent *event) {
+    gameboard.nextRound();
+    update();
 }

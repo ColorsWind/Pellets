@@ -4,8 +4,5 @@
 
 #include "Vector.h"
 
-Vector::Vector(const int velocityX, const int velocityY) : vectorX(velocityX), vectorY(velocityY) {}
+Vector::Vector(const double velocityX, const double velocityY) : vectorX(velocityX), vectorY(velocityY) {}
 
-Point Vector::add(Point point, double t) {
-    return Point(point.pointX + vectorX * t, point.pointY + vectorY * t);
-}

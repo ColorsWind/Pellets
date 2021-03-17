@@ -4,9 +4,6 @@
 
 #include "SolidPellet.h"
 
-Point SolidPellet::getLocation() const {
-    return location;
-}
 
 void SolidPellet::draw(QPainter *painter) {
     QRectF rect(location.pointX, location.pointY, 50, 50);
@@ -18,4 +15,9 @@ Vector SolidPellet::getVelocity() const {
     return velocity;
 }
 
-SolidPellet::SolidPellet(const Point &initial, const Vector &velocity) : location(initial), velocity(velocity) {}
+SolidPellet::SolidPellet(const Location &initial, const Vector &velocity) : location(initial), velocity(velocity) {}
+
+
+Location SolidPellet::getLocation() const {
+    return location;
+}

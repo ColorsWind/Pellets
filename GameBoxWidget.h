@@ -16,16 +16,18 @@ public:
     GameBoxWidget(Board gameboard, QWidget *parent = nullptr);
     ~GameBoxWidget();
     void paintEvent(QPaintEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void drawGridlines(QPainter* painter);
+
+    void drawPellets(QPainter *painter);
+
+    void drawGrids(QPainter *painter);
 private:
     Ui::GameBoxWidget *ui;
     Board gameboard;
 
-    void drawGridlines(QPainter* painter);
 
 
-    void drawGrids(QPainter *painter);
-
-    void drawPellets(QPainter *painter);
 };
 
 #endif // GAMEBOXWIDGET_H

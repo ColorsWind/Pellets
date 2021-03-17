@@ -4,6 +4,10 @@
 
 #include "AirGrid.h"
 
-AirGrid::AirGrid(const Point &point) : FixedGrid(point) {}
+AirGrid::AirGrid(const Location &point) : FixedGrid(point) {}
 
 void AirGrid::draw(QPainter *painter) {}
+
+Grid *AirGrid::move(Location point) {
+    return new AirGrid(point);
+}

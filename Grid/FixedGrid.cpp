@@ -4,9 +4,9 @@
 
 #include "FixedGrid.h"
 
-Point FixedGrid::location() const {
+Location FixedGrid::location() const {
     return point;
 }
 
-FixedGrid::FixedGrid(const Point &point) : point(point) {}
+FixedGrid::FixedGrid(const Location &point) : point(point) {}
 

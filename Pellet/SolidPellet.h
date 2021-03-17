@@ -8,15 +8,16 @@
 
 #include <QPainter>
 #include "Pellet.h"
+#include "../Location.h"
 
 class SolidPellet : public Pellet {
 private:
-    Point location;
+    Location location;
     Vector velocity;
 public:
-    SolidPellet(const Point &initial, const Vector &velocity);
+    SolidPellet(const Location &initial, const Vector &velocity);
 
-    Point getLocation() const override;
+    Location getLocation() const override;
 
     void draw(QPainter *painter) override;
 

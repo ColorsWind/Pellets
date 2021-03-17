@@ -13,7 +13,7 @@ class Pellet {
 public:
     virtual void draw(QPainter* painter) = 0;
 
-    virtual Point getLocation() const = 0;
+    virtual Location getLocation() const = 0;
 
     virtual Vector getVelocity() const = 0;
 };
