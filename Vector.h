@@ -12,6 +12,10 @@ public:
     const double vectorX, vectorY;
 
     Vector(const double velocityX, const double velocityY);
+
+    Vector operator*(const double k) const;
+
+    Vector normalize(double length) const;
 };
 
 

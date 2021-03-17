@@ -22,6 +22,9 @@ public:
     void draw(QPainter *painter) override;
 
     Vector getVelocity() const override;
+
+    void move(double interval) override;
+
 };
 
 

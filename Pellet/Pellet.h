@@ -16,6 +16,8 @@ public:
     virtual Location getLocation() const = 0;
 
     virtual Vector getVelocity() const = 0;
+
+    virtual void move(double interval) = 0;
 };
 
 

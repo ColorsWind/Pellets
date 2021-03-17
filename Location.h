@@ -11,7 +11,7 @@ const double EPS = 1E-3;
 class Vector;
 class Location {
 public:
-    const double pointX, pointY;
+    double pointX, pointY;
 
     Location(const double pointX, const double pointY);
 
@@ -19,6 +19,9 @@ public:
     int getGridY() const;
 
     Location add(Vector vector) const;
+
+    Location& operator=(const Location &location) = default;
+
 };
 
 

@@ -21,3 +21,7 @@ SolidPellet::SolidPellet(const Location &initial, const Vector &velocity) : loca
 Location SolidPellet::getLocation() const {
     return location;
 }
+
+void SolidPellet::move(double interval) {
+    location = location.add(velocity * interval);
+}
