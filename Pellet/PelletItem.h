@@ -10,21 +10,27 @@
 #include <QPainterPath>
 #include <QRectF>
 #include <QPainter>
+
 class PelletItem : public QGraphicsItem {
+
 private:
-    double left;
-    double top;
-    double width;
-    double height;
     QRectF rect;
 public:
-    PelletItem(int left, int top, int width, int height, QGraphicsItem *parent = nullptr);
+    double width, height, left, top;
+
+    PelletItem(double left, double top, double width, double height, QGraphicsItem *parent= nullptr);
+
+    void updateItem(double left, double top, double width, double height);
 
     QRectF boundingRect() const override;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
     QPainterPath shape() const override;
+
+
+
+
 };
 
 

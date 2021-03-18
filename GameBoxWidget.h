@@ -31,9 +31,6 @@ private:
     QGraphicsScene scene;
 public slots:
     void doTick();
-
-
-
 };
 
 #endif // GAMEBOXWIDGET_H

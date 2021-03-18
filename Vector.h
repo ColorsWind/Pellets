@@ -9,13 +9,15 @@
 class Location;
 class Vector {
 public:
-    const double vectorX, vectorY;
+    double vectorX, vectorY;
 
     Vector(const double velocityX, const double velocityY);
 
     Vector operator*(const double k) const;
 
     Vector normalize(double length) const;
+
+    Vector operator-() const;
 };
 
 

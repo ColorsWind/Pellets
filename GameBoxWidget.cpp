@@ -15,8 +15,10 @@ GameBoxWidget::GameBoxWidget(Board board, QWidget *parent) :
 
     auto grid = new HPGrid(Location{0,0}, 5);
     grid->draw(&scene);
+    //scene.setSceneRect(0,0,600,800);
     auto graphicsView = new QGraphicsView(this);
     graphicsView->setScene(&scene);
+
     graphicsView->setFixedSize(610,815);
     graphicsView->show();
 
@@ -41,7 +43,7 @@ void GameBoxWidget::drawGrids(QGraphicsScene *scene) {
 }
 
 void GameBoxWidget::drawPellets(QGraphicsScene *scene) {
-    for (auto pellet : gameboard.existPellets)
+    for (auto pellet : gameboard.existsPellets)
         pellet->draw(scene);
 
 }
@@ -56,18 +58,18 @@ void GameBoxWidget::paintEvent(QPaintEvent *event) {
 
 void GameBoxWidget::mousePressEvent(QMouseEvent *event) {
     //gameboard.nextRound();
-    if (gameboard.numPellets > 0) {
+    if (gameboard.launchPellets > 0) {
         auto launch = getLaunchLocation();
-        gameboard.existPellets.push_back(
+        gameboard.existsPellets.push_back(
                 new SolidPellet(launch,
                                 Vector(
                                         event->x() - launch.pointX,
                                         event->y() - launch.pointY
                                 ).normalize(600.0)));
-        gameboard.numPellets--;
+        gameboard.launchPellets--;
 
-    } else if (gameboard.existPellets.empty()) {
-        gameboard.numPellets = 3;
+    } else if (gameboard.existsPellets.empty()) {
+        gameboard.launchPellets = 3;
         gameboard.nextRound();
     }
     update();
@@ -78,9 +80,9 @@ Location GameBoxWidget::getLaunchLocation() {
 }
 
 void GameBoxWidget::doTick() {
-    for (auto pellet : gameboard.existPellets) {
+    for (auto pellet : gameboard.existsPellets) {
         pellet->move(1 / 30.0);
+        pellet->update(&scene);
 
     }
-    update();
 }

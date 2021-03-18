@@ -16,3 +16,7 @@ Vector Vector::normalize(double length) const {
     return *this * k;
 }
 
+Vector Vector::operator-() const {
+    return Vector(-vectorX, -vectorY);
+}
+

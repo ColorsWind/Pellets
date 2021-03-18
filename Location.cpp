@@ -18,3 +18,7 @@ Location Location::add(Vector vector) const {
     return Location(pointX + vector.vectorX, pointY + vector.vectorY);
 }
 
+Vector Location::toVector() const {
+    return Vector(pointX, pointY);
+}
+

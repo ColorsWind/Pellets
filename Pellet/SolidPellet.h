@@ -10,11 +10,13 @@
 #include <QGraphicsScene>
 #include "Pellet.h"
 #include "../Location.h"
+#include "PelletItem.h"
 
 class SolidPellet : public Pellet {
 private:
     Location location;
     Vector velocity;
+    PelletItem *pelletItem;
 public:
     SolidPellet(const Location &initial, const Vector &velocity);
 
@@ -22,9 +24,20 @@ public:
 
     void draw(QGraphicsScene *scene) override;
 
+    void remove(QGraphicsScene *scene) override;
+
+    void update(QGraphicsScene *scene) override;
+
     Vector getVelocity() const override;
 
     void move(double interval) override;
+
+    void reflectY() override;
+
+    void reflectX() override;
+
+    const PelletItem *getItem() const override;
+
 
 };
 

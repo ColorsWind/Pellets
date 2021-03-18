@@ -9,19 +9,27 @@
 
 #include "Grid/Grid.h"
 #include "Pellet/Pellet.h"
+#include "Pellet/SolidPellet.h"
 
 class Board {
-private:
+protected:
     const int m;
     const int n;
     Grid*** const grids;
-    std::vector<Pellet*> existPellets;
+    std::vector<Pellet*> existsPellets;
+    Location target{0.0,0.0};
     friend class GameBoxWidget;
     int round = 0;
-    int numPellets = 3;
+    int launchPellets = 0;
+    int maxPellets = 3;
+    unsigned int tick = 0;
 public:
     Board(int m, int n);
     Grid* at(int x, int y) const;
+    Pellet* shoot();
+
+    Location getLaunchLocation() const;
+
     void nextRound();
 };
 

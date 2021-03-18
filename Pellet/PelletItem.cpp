@@ -4,7 +4,10 @@
 
 #include "PelletItem.h"
 
-PelletItem::PelletItem(int left, int top, int width, int height, QGraphicsItem *parent) : left(left), top(top), width(width), height(height), QGraphicsItem(parent), rect(left, top, width, height) {}
+PelletItem::PelletItem(double left, double top, double width, double height, QGraphicsItem *parent)
+        : left(left), top(top), width(width), height(height), QGraphicsItem(parent), rect(left, top, width, height) {
+}
+
 
 QRectF PelletItem::boundingRect() const {
     return rect;
@@ -19,6 +22,11 @@ QPainterPath PelletItem::shape() const {
     QPainterPath path;
     path.addEllipse(QRect(top, left, width, height));
     return path;
+}
+
+
+void PelletItem::updateItem(double left, double top, double width, double height) {
+    rect = {left, top, width, height};
 }
 
 

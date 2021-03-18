@@ -44,3 +44,15 @@ void Board::nextRound() {
         }
     }
 }
+
+Location Board::getLaunchLocation() const {
+    return Location((m - 1) * 50 / 2, (n - 1) * 50);
+}
+
+Pellet *Board::shoot() {
+    auto launch = getLaunchLocation();
+    auto pellet = new SolidPellet(launch, target.add(-launch.toVector()).toVector().normalize(600.0));
+    existsPellets.push_back(
+            pellet);
+    return pellet;
+}

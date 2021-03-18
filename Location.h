@@ -19,7 +19,7 @@ public:
     int getGridY() const;
 
     Location add(Vector vector) const;
-
+    Vector toVector() const;
     Location& operator=(const Location &location) = default;
 
 };
