@@ -6,15 +6,23 @@
 #define PELLETS_AIRGRID_H
 
 
-#include "FixedGrid.h"
+#include "AbstractGrid.h"
 
-class AirGrid : public FixedGrid {
+class AirGrid : public AbstractGrid {
 public:
     AirGrid(const Location &point);
 
     void draw(QGraphicsScene *scene) override;
 
-    Grid *move(Location point) override;
+    void remove(QGraphicsScene *scene) override;
+
+    void update(QGraphicsScene *scene) override;
+
+    bool colliding(Pellet* pellet) override;
+
+    bool isAlive() override;
+
+
 };
 
 

@@ -20,7 +20,7 @@ private:
     QGraphicsScene *scene;
     bool shootMode = false;
 public:
-    GameBoard(int m, int n);
+    GameBoard(int row, int col);
 
 
     Location getLaunchLocation();
@@ -32,6 +32,11 @@ public:
     void doTick();
 
     void mouseEvent(int x, int y);
+
+    void nextRound() override;
+
+
+    bool collidingPellet(Pellet *pellet);
 };
 
 

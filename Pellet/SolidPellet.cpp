@@ -20,8 +20,6 @@ Location SolidPellet::getLocation() const {
 
 void SolidPellet::move(double interval) {
     location = location.add(velocity * interval);
-    pelletItem->left = location.pointX;
-    pelletItem->top = location.pointY;
 }
 
 void SolidPellet::draw(QGraphicsScene *scene) {
@@ -33,9 +31,9 @@ void SolidPellet::remove(QGraphicsScene *scene) {
 }
 
 void SolidPellet::update(QGraphicsScene *scene) {
-    remove(scene);
+    //remove(scene);
     pelletItem->updateItem(location.pointX, location.pointY, 30.0, 30.0);
-    draw(scene);
+    pelletItem->update();
 }
 
 void SolidPellet::reflectY() {
@@ -50,3 +48,17 @@ void SolidPellet::reflectX() {
 const PelletItem *SolidPellet::getItem() const {
     return pelletItem;
 }
+
+void SolidPellet::hitTo(Grid *grid) {
+    auto girdLoc = grid->getLocation();
+    double deltaX = abs(location.pointX - girdLoc.pointX);
+    double deltaY =  abs(location.pointY - girdLoc.pointY);
+    if (deltaX < deltaY) reflectX();
+    else reflectY();
+}
+
+
+Location SolidPellet::getCentre() const {
+    return location.add({15,15});
+}
+

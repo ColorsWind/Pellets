@@ -6,18 +6,30 @@
 #define PELLETS_HPGRID_H
 
 
-#include "FixedGrid.h"
+#include "AbstractGrid.h"
+#include "GridItem.h"
+#include "../Pellet/Pellet.h"
 #include <QGraphicsScene>
 
-class HPGrid : public FixedGrid {
+class HPGrid : public AbstractGrid {
 protected:
     int health;
+    GridItem* gridItem;
+    int mod = 0;
 public:
     void draw(QGraphicsScene *scene) override;
 
-    HPGrid(const Location &point, int health);
+    void remove(QGraphicsScene *scene) override;
 
-    Grid *move(Location point) override;
+    void update(QGraphicsScene *scene) override;
+
+    HPGrid(const Location &point, int health);
+    QColor getColor() const;
+
+    bool colliding(Pellet *pellet) override;
+
+    bool isAlive() override;
+
 };
 
 

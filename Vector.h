@@ -12,12 +12,15 @@ public:
     double vectorX, vectorY;
 
     Vector(const double velocityX, const double velocityY);
+    Vector(const Location& to, const Location& from);
 
     Vector operator*(const double k) const;
 
     Vector normalize(double length) const;
 
     Vector operator-() const;
+
+    double norm() const;
 };
 
 

@@ -8,7 +8,9 @@
 
 #include "../Vector.h"
 #include "PelletItem.h"
+#include "../Grid/Grid.h"
 
+class Grid;
 class Pellet {
 
 public:
@@ -20,6 +22,8 @@ public:
 
     virtual Location getLocation() const = 0;
 
+    virtual Location getCentre() const = 0;
+
     virtual Vector getVelocity() const = 0;
 
     virtual void reflectY() = 0;
@@ -29,6 +33,8 @@ public:
     virtual void move(double interval) = 0;
 
     virtual const PelletItem* getItem() const = 0;
+
+    virtual void hitTo(Grid *grid) = 0;
 };
 
 

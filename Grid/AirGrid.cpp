@@ -4,10 +4,21 @@
 
 #include "AirGrid.h"
 
-AirGrid::AirGrid(const Location &point) : FixedGrid(point) {}
+AirGrid::AirGrid(const Location &point) : AbstractGrid(point) {}
 
-void AirGrid::draw(QGraphicsScene( *scene)) {}
+void AirGrid::draw(QGraphicsScene *scene) {}
 
-Grid *AirGrid::move(Location point) {
-    return new AirGrid(point);
+void AirGrid::remove(QGraphicsScene *scene) {}
+
+void AirGrid::update(QGraphicsScene *scene) {}
+
+bool AirGrid::colliding(Pellet *pellet) {
+    return false;
 }
+
+bool AirGrid::isAlive() {
+    return false;
+}
+
+
+

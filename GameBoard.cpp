@@ -4,40 +4,116 @@
 
 #include "GameBoard.h"
 #include <QGraphicsView>
-#include "Pellet/SolidPellet.h"
-
-
+#include "Grid/Grid.h"
+#include "Grid/AirGrid.h"
+#include "Grid/HPGrid.h"
+#include "Constants.h"
 
 void GameBoard::doTick() {
-
+    for (auto pellet : existsPellets)
+        collidingPellet(pellet);
     for (auto iter = existsPellets.begin(); iter != existsPellets.cend();) {
         auto pellet = *iter;
-        pellet->move(1 / 30.0);
-        pellet->update(scene);
-        auto location = pellet->getLocation();
-        if (location.pointY < 0) {
-            pellet->reflectX();
+        if (collidingPellet(pellet)) {
             iter++;
-        } else if (location.pointX < 0 || location.pointX > 600) {
-            pellet->reflectY();
-            iter++;
-        } else if (location.pointY > 800) {
+            pellet->move(1.0);
+            pellet->update(scene);
+        } else {
             iter = existsPellets.erase(iter);
-        } else iter++;
+            pellet->remove(scene);
+            delete pellet;
+        }
     }
-    if (shootMode && launchPellets < maxPellets && tick % 5 == 0) {
+    if (shootMode && launchPellets < maxPellets && tick % 10 == 0) {
         auto pellet = shoot();
         pellet->draw(scene);
         launchPellets++;
     }
+
     if (existsPellets.empty() && launchPellets == maxPellets) {
         nextRound();
         launchPellets = 0;
         shootMode = false;
     }
+    scene->update();
     tick++;
 }
 
+#include <iostream>
+
+bool GameBoard::collidingPellet(Pellet *pellet) {
+    Vector velocity = pellet->getVelocity();
+    Location pelletCentre = pellet->getCentre();
+    // boundary check
+    if (velocity.vectorY < 0 && pelletCentre.pointY - Config::pellet_size / 2 < 0) {
+        pellet->reflectX();
+        return true;
+    } else if ((velocity.vectorX < 0 && pelletCentre.pointX - Config::pellet_size / 2 < 0)
+               || (velocity.vectorX > 0
+                   && pelletCentre.pointX + Config::pellet_size / 2 > Config::board_col * Config::grid_size)) {
+        pellet->reflectY();
+        return true;
+    } else if (velocity.vectorY > 0 && pelletCentre.pointY - Config::pellet_size / 2 > Config::board_row * Config::grid_size) {
+        return false;
+    }
+    // grids check
+    int pelletX = int(pelletCentre.pointX / 50);
+    int pelletY = int(pelletCentre.pointY / 50);
+    int offsetX = velocity.vectorX > 0 ? 1 : -1;
+    int offsetY = velocity.vectorY > 0 ? 1 : -1;
+    //std::cout << pelletX << "\t" << pelletY << std::endl;
+    Grid *checkGrids[4] = {
+            atOrNull(pelletX, pelletY),
+            atOrNull(pelletX + offsetX, pelletY),
+            atOrNull(pelletX, pelletY + offsetY),
+            atOrNull(pelletX + offsetX, pelletY + pelletY)
+    };
+    double collidingRadius[4];
+    for (int i = 0; i < 4; i++) {
+        if (checkGrids[i] && checkGrids[i]->isAlive())
+            collidingRadius[i] = Vector{checkGrids[i]->getCentre(), pelletCentre}.norm();
+        else
+            collidingRadius[i] = 2021;
+    }
+    int collidingIndex = 0;
+    for (int i = 1 ; i < 4; i++) if (collidingRadius[i] < collidingRadius[collidingIndex]) collidingIndex = i;
+
+    if (collidingRadius[collidingIndex] < (Config::pellet_size + Config::grid_size) / 2) {
+        Grid* collidingGrid = checkGrids[collidingIndex];
+        std::cout << checkGrids[collidingIndex]->colliding(pellet) << std::endl;
+        collidingGrid->update(scene);
+    }
+    return true;
+}
+
+
+void GameBoard::nextRound() {
+    for (int x = 0; x < col; x++) {
+        grids[row - 1][x]->remove(scene);
+        delete grids[row - 1][x];
+    }
+    for (int y = row - 1; y > 0; y--) {
+        Grid **from = grids[y - 1];
+        Grid **to = grids[y];
+        for (int x = 0; x < col; x++) {
+            to[x] = from[x];
+            to[x]->move(Vector{0, 50});
+            to[x]->update(scene);
+        }
+    }
+    for (int x = 0; x < col; x++) {
+        int random = rand() % 50;
+        if (random == 0 || random > 30) {
+            grids[0][x] = new AirGrid(Location{double(x * 50), 0.0});
+        } else {
+            grids[0][x] = new HPGrid(Location{double(x * 50), 0.0}, random);
+            grids[0][x]->draw(scene);
+        }
+
+
+    }
+    round++;
+}
 
 
 void GameBoard::setup(QWidget *widget) {
@@ -47,15 +123,20 @@ void GameBoard::setup(QWidget *widget) {
     graphicsView->setSceneRect(region);
     //graphicsView->setFixedSize(600, 800);
     graphicsView->show();
+    for (int y = 0; y < row; y++)
+        for (int x = 0; x < col; x++)
+            grids[y][x]->draw(scene);
 
 }
 
-GameBoard::GameBoard(int m, int n) : Board(m, n),
-                                     region(0, 0, m * 50, n * 50) {}
+GameBoard::GameBoard(int row, int col) : Board(row, col),
+                                         region(0, 0, col * 50, row * 50) {
+
+}
 
 void GameBoard::mouseEvent(int x, int y) {
     if (!shootMode) {
-        target = {(double)x, (double)y};
+        target = {(double) x, (double) y};
         shootMode = true;
     }
 }

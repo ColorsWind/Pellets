@@ -11,6 +11,7 @@ PelletItem::PelletItem(double left, double top, double width, double height, QGr
 
 QRectF PelletItem::boundingRect() const {
     return rect;
+    //return QRectF{rect.left() - 10, rect.top() -10, rect.width() + 20, rect.height() + 20};
 }
 
 void PelletItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
@@ -20,13 +21,14 @@ void PelletItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 
 QPainterPath PelletItem::shape() const {
     QPainterPath path;
-    path.addEllipse(QRect(top, left, width, height));
+    path.addEllipse(rect);
     return path;
 }
 
 
 void PelletItem::updateItem(double left, double top, double width, double height) {
     rect = {left, top, width, height};
+    prepareGeometryChange();
 }
 
 

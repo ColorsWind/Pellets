@@ -7,6 +7,8 @@
 
 #include <QGraphicsItem>
 #include <QPainter>
+#include "Grid.h"
+
 class GridItem : public QGraphicsItem {
 private:
     int left;
@@ -16,8 +18,9 @@ private:
     QColor color;
     QString label;
     QRect rect;
+    Grid* grid;
 public:
-    GridItem(int left, int top, int width, int height, const QColor &color,
+    GridItem(Grid* grid, int left, int top, int width, int height, const QColor &color,
              const QString &label, QGraphicsItem *parent = nullptr);
 
     QRectF boundingRect() const override;
@@ -25,6 +28,9 @@ public:
     QPainterPath shape() const override;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+    void updateItem(int left, int top, int width, int height, QColor color, QString label);
+
 };
 
 

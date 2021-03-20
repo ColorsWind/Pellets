@@ -15,8 +15,9 @@ class PelletItem : public QGraphicsItem {
 
 private:
     QRectF rect;
-public:
     double width, height, left, top;
+public:
+
 
     PelletItem(double left, double top, double width, double height, QGraphicsItem *parent= nullptr);
 

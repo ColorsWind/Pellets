@@ -6,7 +6,6 @@
 #define PELLETS_LOCATION_H
 
 #include "Vector.h"
-
 const double EPS = 1E-3;
 class Vector;
 class Location {

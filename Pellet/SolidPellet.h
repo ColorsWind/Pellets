@@ -38,6 +38,10 @@ public:
 
     const PelletItem *getItem() const override;
 
+    void hitTo(Grid *grid) override;
+
+    Location getCentre() const override;
+
 
 };
 

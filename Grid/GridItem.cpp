@@ -16,12 +16,21 @@ void GridItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 QPainterPath GridItem::shape() const {
     QPainterPath path;
-    path.addRect(QRect(top, left, width, height));
+    path.addRect(rect);
     return path;
 }
 
-GridItem::GridItem(int left, int top, int width, int height, const QColor &color,
-                   const QString &label, QGraphicsItem *parent) : QGraphicsItem(parent), left(left), top(top),
+GridItem::GridItem(Grid* grid, int left, int top, int width, int height, const QColor &color,
+                   const QString &label, QGraphicsItem *parent) : grid(grid), QGraphicsItem(parent), left(left), top(top),
                                                                   width(width), height(height),
                                                                   color(color), label(label),
-                                                                  rect(QRect(top, left, width, height)) {}
+                                                                  rect(QRect(left, top, width, height)) {
+}
+
+void GridItem:: updateItem(int left, int top, int width, int height, QColor color, QString label) {
+    rect = {left, top, width, height};
+    this->color = color;
+    this->label = label;
+    prepareGeometryChange();
+}
+

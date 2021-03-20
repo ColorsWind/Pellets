@@ -13,8 +13,8 @@
 
 class Board {
 protected:
-    const int m;
-    const int n;
+    const int row;
+    const int col;
     Grid*** const grids;
     std::vector<Pellet*> existsPellets;
     Location target{0.0,0.0};
@@ -24,13 +24,15 @@ protected:
     int maxPellets = 3;
     unsigned int tick = 0;
 public:
-    Board(int m, int n);
+    Board(int row, int col);
     Grid* at(int x, int y) const;
     Pellet* shoot();
 
     Location getLaunchLocation() const;
 
-    void nextRound();
+    virtual void nextRound() = 0;
+
+    Grid *atOrNull(int x, int y) const noexcept;
 };
 
 
