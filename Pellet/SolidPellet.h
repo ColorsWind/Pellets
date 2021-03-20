@@ -38,9 +38,14 @@ public:
 
     const PelletItem *getItem() const override;
 
-    void hitTo(Grid *grid) override;
 
     Location getCentre() const override;
+
+    void setLocation(Location location) override;
+
+    void fixLocationX(Location base) override;
+
+    void fixLocationY(Location base) override;
 
 
 };

@@ -22,6 +22,8 @@ public:
 
     virtual Location getLocation() const = 0;
 
+    virtual void setLocation(Location location) = 0;
+
     virtual Location getCentre() const = 0;
 
     virtual Vector getVelocity() const = 0;
@@ -30,11 +32,13 @@ public:
 
     virtual void reflectX() = 0;
 
+    virtual void fixLocationX(Location base) = 0;
+
+    virtual void fixLocationY(Location base) = 0;
+
     virtual void move(double interval) = 0;
 
     virtual const PelletItem* getItem() const = 0;
-
-    virtual void hitTo(Grid *grid) = 0;
 };
 
 

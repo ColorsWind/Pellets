@@ -41,6 +41,8 @@ void GameBoard::doTick() {
 
 #include <iostream>
 
+using namespace std;
+
 bool GameBoard::collidingPellet(Pellet *pellet) {
     Vector velocity = pellet->getVelocity();
     Location pelletCentre = pellet->getCentre();
@@ -53,36 +55,89 @@ bool GameBoard::collidingPellet(Pellet *pellet) {
                    && pelletCentre.pointX + Config::pellet_size / 2 > Config::board_col * Config::grid_size)) {
         pellet->reflectY();
         return true;
-    } else if (velocity.vectorY > 0 && pelletCentre.pointY - Config::pellet_size / 2 > Config::board_row * Config::grid_size) {
+    } else if (velocity.vectorY > 0 &&
+               pelletCentre.pointY - Config::pellet_size / 2 > Config::board_row * Config::grid_size) {
         return false;
     }
     // grids check
-    int pelletX = int(pelletCentre.pointX / 50);
-    int pelletY = int(pelletCentre.pointY / 50);
-    int offsetX = velocity.vectorX > 0 ? 1 : -1;
-    int offsetY = velocity.vectorY > 0 ? 1 : -1;
-    //std::cout << pelletX << "\t" << pelletY << std::endl;
-    Grid *checkGrids[4] = {
-            atOrNull(pelletX, pelletY),
-            atOrNull(pelletX + offsetX, pelletY),
-            atOrNull(pelletX, pelletY + offsetY),
-            atOrNull(pelletX + offsetX, pelletY + pelletY)
-    };
-    double collidingRadius[4];
-    for (int i = 0; i < 4; i++) {
-        if (checkGrids[i] && checkGrids[i]->isAlive())
-            collidingRadius[i] = Vector{checkGrids[i]->getCentre(), pelletCentre}.norm();
-        else
-            collidingRadius[i] = 2021;
-    }
-    int collidingIndex = 0;
-    for (int i = 1 ; i < 4; i++) if (collidingRadius[i] < collidingRadius[collidingIndex]) collidingIndex = i;
 
-    if (collidingRadius[collidingIndex] < (Config::pellet_size + Config::grid_size) / 2) {
-        Grid* collidingGrid = checkGrids[collidingIndex];
-        std::cout << checkGrids[collidingIndex]->colliding(pellet) << std::endl;
-        collidingGrid->update(scene);
+    if (velocity.vectorX > 0 && velocity.vectorY < 0) {
+        Grid *up = atOrNull(int(pelletCentre.pointX / 50), int(pelletCentre.pointY / 50) - 1);
+        Grid *right = atOrNull(int(pelletCentre.pointX / 50) + 1, int(pelletCentre.pointY / 50));
+        if (up && up->isAlive() &&
+            pelletCentre.pointY - Config::pellet_size / 2 < up->getCentre().pointY + Config::grid_size / 2) {
+            //up->colliding(pellet);
+            up->hit(pellet);
+            pellet->reflectX();
+            up->update(scene);
+        }
+        else if (right && right->isAlive() &&
+                 pelletCentre.pointX + Config::pellet_size / 2 > right->getCentre().pointX - Config::grid_size / 2) {
+            //right->colliding(pellet);
+            right->hit(pellet);
+            pellet->reflectY();
+            right->update(scene);
+        }
+    } else if (velocity.vectorX > 0 && velocity.vectorY > 0) {
+        Grid *down = atOrNull(int(pelletCentre.pointX / 50), int(pelletCentre.pointY / 50) + 1);
+        Grid *right = atOrNull(int(pelletCentre.pointX / 50) + 1, int(pelletCentre.pointY / 50));
+        if (down && down ->isAlive() &&
+            pelletCentre.pointY + Config::pellet_size / 2 > down ->getCentre().pointY - Config::grid_size / 2) {
+            //down->colliding(pellet);
+            down->hit(pellet);
+            pellet->reflectX();
+            down->update(scene);
+        }
+        else if (right && right->isAlive() &&
+                 pelletCentre.pointX + Config::pellet_size / 2 > right->getCentre().pointX - Config::grid_size / 2) {
+            //right->colliding(pellet);
+            right->hit(pellet);
+            pellet->reflectY();
+            right->update(scene);
+        }
+    } else if (velocity.vectorX < 0 && velocity.vectorY < 0) {
+        Grid *up = atOrNull(int(pelletCentre.pointX / 50), int(pelletCentre.pointY / 50) - 1);
+        Grid *left = atOrNull(int(pelletCentre.pointX / 50) - 1, int(pelletCentre.pointY / 50));
+        if (up && up->isAlive() &&
+            pelletCentre.pointY - Config::pellet_size / 2 < up->getCentre().pointY + Config::grid_size / 2) {
+            //up->colliding(pellet);
+            up->hit(pellet);
+            pellet->reflectX();
+            up->update(scene);
+        }
+        else if (left && left->isAlive() &&
+                 pelletCentre.pointX - Config::pellet_size / 2 < left->getCentre().pointX + Config::grid_size / 2) {
+            //left->colliding(pellet);
+            left->hit(pellet);
+            pellet->reflectY();
+            left->update(scene);
+        }
+    } else if (velocity.vectorX < 0 && velocity.vectorY > 0) {
+        Grid *down = atOrNull(int(pelletCentre.pointX / 50), int(pelletCentre.pointY / 50) + 1);
+        Grid *left = atOrNull(int(pelletCentre.pointX / 50) - 1, int(pelletCentre.pointY / 50));
+        if (down && down ->isAlive() &&
+            pelletCentre.pointY + Config::pellet_size / 2 > down ->getCentre().pointY - Config::grid_size / 2) {
+            //down->colliding(pellet);
+            down->hit(pellet);
+            pellet->reflectX();
+            down->update(scene);
+        }
+        else if (left && left->isAlive() &&
+                 pelletCentre.pointX - Config::pellet_size / 2 < left->getCentre().pointX + Config::grid_size / 2) {
+            //left->colliding(pellet);
+            left->hit(pellet);
+            pellet->reflectY();
+            left->update(scene);
+        }
+    } else {
+        Grid* curr =atOrNull(int(pelletCentre.pointX / 50), int(pelletCentre.pointY / 50));
+        if (curr && curr->isAlive()) {
+            curr->colliding(pellet);
+            curr->update(scene);
+            cout << "A" << endl;
+        }
     }
+    pellet->update(scene);
     return true;
 }
 

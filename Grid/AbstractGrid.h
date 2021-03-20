@@ -21,6 +21,8 @@ public:
     AbstractGrid(const Location &point);
 
     Location getCentre() const override;
+
+    void setLocation(const Location location) override;
 };
 
 #endif //PELLETS_ABSTRACTGRID_H

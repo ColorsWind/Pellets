@@ -13,7 +13,7 @@ Board::Board(int row, int col) : row(row), col(col), grids(new Grid **[row]) {
     for (int y = 0; y < row; y++) {
         this->grids[y] = new Grid *[col];
         for (int x = 0; x < col; x++)
-            this->grids[y][x] = new AirGrid(Location(y * 50, x * 50));
+            this->grids[y][x] = new AirGrid(Location(y * Config::grid_size, x * Config::grid_size));
     }
     srand(time(nullptr));
 }
@@ -32,7 +32,7 @@ Grid* Board::atOrNull(int x, int y) const noexcept {
 
 
 Location Board::getLaunchLocation() const {
-    return Location((col - 1) * 50 / 2, (row - 1) * 50);
+    return Location((col - 1) * Config::grid_size / 2, (row - 1) * Config::grid_size);
 }
 
 Pellet *Board::shoot() {

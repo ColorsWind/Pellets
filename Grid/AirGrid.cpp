@@ -20,5 +20,8 @@ bool AirGrid::isAlive() {
     return false;
 }
 
+bool AirGrid::hit(Pellet *pellet) {
+    return false;
+}
 
 

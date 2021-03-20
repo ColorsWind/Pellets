@@ -15,6 +15,7 @@ class Pellet;
 class Grid {
 public:
     virtual Location getLocation() const = 0;
+    virtual void setLocation(const Location location) = 0;
     virtual Location getCentre() const = 0;
     virtual void draw(QGraphicsScene *scene) = 0;
     virtual void remove(QGraphicsScene *scene) = 0;
@@ -22,6 +23,7 @@ public:
     virtual void move(Vector vector) = 0;
     virtual bool colliding(Pellet *pellet) = 0;
     virtual bool isAlive() = 0;
+    virtual bool hit(Pellet* pellet) = 0;
 };
 
 

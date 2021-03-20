@@ -15,7 +15,6 @@ class HPGrid : public AbstractGrid {
 protected:
     int health;
     GridItem* gridItem;
-    int mod = 0;
 public:
     void draw(QGraphicsScene *scene) override;
 
@@ -29,6 +28,8 @@ public:
     bool colliding(Pellet *pellet) override;
 
     bool isAlive() override;
+
+    bool hit(Pellet *pellet) override;
 
 };
 

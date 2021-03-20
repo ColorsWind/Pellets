@@ -22,6 +22,8 @@ public:
 
     bool isAlive() override;
 
+    bool hit(Pellet *pellet) override;
+
 
 };
 

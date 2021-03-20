@@ -3,6 +3,7 @@
 //
 
 #include "SolidPellet.h"
+#include "../Constants.h"
 
 Vector SolidPellet::getVelocity() const {
     return velocity;
@@ -10,12 +11,16 @@ Vector SolidPellet::getVelocity() const {
 
 SolidPellet::SolidPellet(const Location &initial, const Vector &velocity) :
         location(initial), velocity(velocity),
-        pelletItem(new PelletItem{initial.pointX, initial.pointY, 30.0, 30.0}) {
+        pelletItem(new PelletItem{initial.pointX, initial.pointY, double(Config::pellet_size), double(Config::pellet_size)}) {
 }
 
 
 Location SolidPellet::getLocation() const {
     return location;
+}
+
+void SolidPellet::setLocation(Location location) {
+    this -> location = location;
 }
 
 void SolidPellet::move(double interval) {
@@ -32,7 +37,7 @@ void SolidPellet::remove(QGraphicsScene *scene) {
 
 void SolidPellet::update(QGraphicsScene *scene) {
     //remove(scene);
-    pelletItem->updateItem(location.pointX, location.pointY, 30.0, 30.0);
+    pelletItem->updateItem(location.pointX, location.pointY, Config::pellet_size, Config::pellet_size);
     pelletItem->update();
 }
 
@@ -45,18 +50,27 @@ void SolidPellet::reflectX() {
     velocity.vectorY = - velocity.vectorY;
 }
 
+void SolidPellet::fixLocationX(Location base) {
+    if (velocity.vectorX > 0) {
+        this->location.pointX = base.pointX + Config::grid_size + Config::pellet_size / 2;
+    } else {
+        this->location.pointX = base.pointX + Config::pellet_size / 2;
+    }
+    location.pointY = base.pointY + Config::grid_size / 2;
+}
+
+void SolidPellet::fixLocationY(Location base) {
+    if (velocity.vectorY > 0) {
+        this->location.pointY = base.pointY + Config::grid_size + Config::pellet_size / 2;
+    } else {
+        this->location.pointY = base.pointY + Config::pellet_size / 2;
+    }
+    location.pointX = base.pointX + Config::grid_size / 2;
+}
+
 const PelletItem *SolidPellet::getItem() const {
     return pelletItem;
 }
-
-void SolidPellet::hitTo(Grid *grid) {
-    auto girdLoc = grid->getLocation();
-    double deltaX = abs(location.pointX - girdLoc.pointX);
-    double deltaY =  abs(location.pointY - girdLoc.pointY);
-    if (deltaX < deltaY) reflectX();
-    else reflectY();
-}
-
 
 Location SolidPellet::getCentre() const {
     return location.add({15,15});

@@ -8,6 +8,10 @@ Location AbstractGrid::getLocation() const {
     return location;
 }
 
+void AbstractGrid::setLocation(const Location location) {
+    this->location = location;
+}
+
 AbstractGrid::AbstractGrid(const Location &point) : location(point) {}
 
 Location AbstractGrid::getCentre() const {

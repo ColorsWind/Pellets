@@ -18,7 +18,6 @@ protected:
     Grid*** const grids;
     std::vector<Pellet*> existsPellets;
     Location target{0.0,0.0};
-    friend class GameBoxWidget;
     int round = 0;
     int launchPellets = 0;
     int maxPellets = 3;

@@ -4,6 +4,7 @@
 
 #include "HPGrid.h"
 #include <iostream>
+#include <cmath>
 //using namespace std;
 void HPGrid::draw(QGraphicsScene *scene) {
     if (gridItem) {
@@ -14,16 +15,13 @@ void HPGrid::draw(QGraphicsScene *scene) {
 
 void HPGrid::remove(QGraphicsScene *scene) {
     if (gridItem) {
-        //mod++;
-        //cout << "remove\t" << gridItem << "\t" <<  mod << endl;
+        gridItem->hide();
         scene->removeItem(gridItem);
-        //delete gridItem;
         gridItem = nullptr;
     }
 }
 
 void HPGrid::update(QGraphicsScene *scene) {
-
     if (isAlive()) {
         //cout << "update\t" << gridItem << endl;
         gridItem->updateItem(location.getGridX(), location.getGridY(), 50, 50, getColor(), QString::number(health));
@@ -51,22 +49,38 @@ bool HPGrid::isAlive() {
     return health > 0;
 }
 
+using namespace std;
 bool HPGrid::colliding(Pellet *pellet) {
     const Vector velocity = pellet->getVelocity();
-    const Vector delta = Vector(pellet->getCentre(), this -> getCentre());
+    const Vector delta = Vector(this->getCentre(), pellet->getCentre());
     bool xColliding = signbit(delta.vectorX) == signbit(velocity.vectorX);
     bool yColliding = signbit(delta.vectorY) == signbit(velocity.vectorY);
     if (xColliding && yColliding) {
-        health--;
-        if (abs(delta.vectorX) < abs(delta.vectorY)) pellet->reflectX();
-        else pellet->reflectY();
-    } else if (xColliding) {
-        health--;
-        pellet->reflectX();
-    } else if (yColliding) {
+        cout << "xy" << endl;
         health--;
         pellet->reflectY();
-    } else return false;
+        pellet->reflectX();
+        //pellet->fixLocationX(location);
+        //pellet->fixLocationY(location);
+    } else if (xColliding) {
+        cout << "x" << endl;
+        health--;
+        pellet->reflectX();
+        //pellet->fixLocationY(location);
+    } else if (yColliding) {
+        cout << "y" << endl;
+        health--;
+        pellet->reflectY();
+        //pellet->fixLocationX(location);
+    } else {
+        cout << "ERROR" << endl;
+        return false;
+    }
+
     return true;
 }
 
+bool HPGrid::hit(Pellet *pellet) {
+    health--;
+    return false;
+}
