@@ -47,7 +47,7 @@ public:
 
     void fixLocationY(Location base) override;
 
-
+    void hit(Board *board, Grid *grid) override;
 };
 
 

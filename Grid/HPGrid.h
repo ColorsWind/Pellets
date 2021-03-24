@@ -13,9 +13,10 @@
 
 class HPGrid : public AbstractGrid {
 protected:
-    int health;
     GridItem* gridItem;
 public:
+    int health;
+
     void draw(QGraphicsScene *scene) override;
 
     void remove(QGraphicsScene *scene) override;

@@ -11,6 +11,7 @@
 #include "../Grid/Grid.h"
 
 class Grid;
+class Board;
 class Pellet {
 
 public:
@@ -39,6 +40,8 @@ public:
     virtual void move(double interval) = 0;
 
     virtual const PelletItem* getItem() const = 0;
+
+    virtual void hit(Board *board, Grid *grid) = 0;
 };
 
 

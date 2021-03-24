@@ -8,7 +8,7 @@
 #include "Grid/AirGrid.h"
 #include "Grid/HPGrid.h"
 #include "Constants.h"
-
+#include <random>
 void GameBoard::doTick() {
     for (auto pellet : existsPellets)
         collidingPellet(pellet);
@@ -120,6 +120,7 @@ bool GameBoard::collidingPellet(Pellet *pellet) {
             //down->colliding(pellet);
             down->hit(pellet);
             pellet->reflectX();
+            pellet->hit(this, down);
             down->update(scene);
         }
         else if (left && left->isAlive() &&
@@ -144,8 +145,10 @@ bool GameBoard::collidingPellet(Pellet *pellet) {
 
 void GameBoard::nextRound() {
     for (int x = 0; x < col; x++) {
-        grids[row - 1][x]->remove(scene);
-        delete grids[row - 1][x];
+        Grid* grid = grids[row - 1][x];
+        grid->remove(scene);
+        if (grid->isAlive()) cout << "游戏结束" << endl;
+        delete grid;
     }
     for (int y = row - 1; y > 0; y--) {
         Grid **from = grids[y - 1];
@@ -156,13 +159,18 @@ void GameBoard::nextRound() {
             to[x]->update(scene);
         }
     }
+    // generate grids
+
+    double pi = acos(-1);
+    double possibility = (1 / (1 + exp(-round/20.0 + 1))) * abs(cos(double(round % 16) * pi / 17));
+    cout<<possibility<<endl;
     for (int x = 0; x < col; x++) {
-        int random = rand() % 50;
-        if (random == 0 || random > 30) {
-            grids[0][x] = new AirGrid(Location{double(x * 50), 0.0});
-        } else {
-            grids[0][x] = new HPGrid(Location{double(x * 50), 0.0}, random);
+        std::uniform_int_distribution<int> intGenerator(1, 2 * round + 1);
+        if (doubleGenerator(randomEngine) < possibility) {
+            grids[0][x] = new HPGrid(Location{double(x * 50), 0.0}, intGenerator(randomEngine));
             grids[0][x]->draw(scene);
+        } else {
+            grids[0][x] = new AirGrid(Location{double(x * 50), 0.0});
         }
 
 
@@ -181,12 +189,15 @@ void GameBoard::setup(QWidget *widget) {
     for (int y = 0; y < row; y++)
         for (int x = 0; x < col; x++)
             grids[y][x]->draw(scene);
+    nextRound();
 
 }
 
 GameBoard::GameBoard(int row, int col) : Board(row, col),
                                          region(0, 0, col * 50, row * 50) {
-
+    std::random_device rd;
+    randomEngine = std::mt19937(rd());
+    doubleGenerator = std::uniform_real_distribution<double>(0.0,1.0);
 }
 
 void GameBoard::mouseEvent(int x, int y) {

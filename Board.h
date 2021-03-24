@@ -10,7 +10,7 @@
 #include "Grid/Grid.h"
 #include "Pellet/Pellet.h"
 #include "Pellet/SolidPellet.h"
-
+class Pellet;
 class Board {
 protected:
     const int row;

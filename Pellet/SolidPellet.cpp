@@ -4,6 +4,7 @@
 
 #include "SolidPellet.h"
 #include "../Constants.h"
+#include "../Grid/HPGrid.h"
 
 Vector SolidPellet::getVelocity() const {
     return velocity;
@@ -76,3 +77,10 @@ Location SolidPellet::getCentre() const {
     return location.add({15,15});
 }
 
+void SolidPellet::hit(Board *board, Grid* grid) {
+    HPGrid* hpGrid = dynamic_cast<HPGrid*>(grid);
+    if (hpGrid != nullptr) {
+        hpGrid->health--;
+        return;
+    }
+}

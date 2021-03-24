@@ -11,6 +11,7 @@
 #include "../Location.h"
 #include "../Pellet/Pellet.h"
 
+class Board;
 class Pellet;
 class Grid {
 public:
