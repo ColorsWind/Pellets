@@ -9,6 +9,7 @@
 #include "Grid/HPGrid.h"
 #include "Constants.h"
 #include <random>
+
 void GameBoard::doTick() {
     for (auto pellet : existsPellets)
         collidingPellet(pellet);
@@ -60,83 +61,24 @@ bool GameBoard::collidingPellet(Pellet *pellet) {
         return false;
     }
     // grids check
-
-    if (velocity.vectorX > 0 && velocity.vectorY < 0) {
-        Grid *up = atOrNull(int(pelletCentre.pointX / 50), int(pelletCentre.pointY / 50) - 1);
-        Grid *right = atOrNull(int(pelletCentre.pointX / 50) + 1, int(pelletCentre.pointY / 50));
-        if (up && up->isAlive() &&
-            pelletCentre.pointY - Config::pellet_size / 2 < up->getCentre().pointY + Config::grid_size / 2) {
-            //up->colliding(pellet);
-            up->hit(pellet);
-            pellet->reflectX();
-            up->update(scene);
-        }
-        else if (right && right->isAlive() &&
-                 pelletCentre.pointX + Config::pellet_size / 2 > right->getCentre().pointX - Config::grid_size / 2) {
-            //right->colliding(pellet);
-            right->hit(pellet);
-            pellet->reflectY();
-            right->update(scene);
-        }
-    } else if (velocity.vectorX > 0 && velocity.vectorY > 0) {
-        Grid *down = atOrNull(int(pelletCentre.pointX / 50), int(pelletCentre.pointY / 50) + 1);
-        Grid *right = atOrNull(int(pelletCentre.pointX / 50) + 1, int(pelletCentre.pointY / 50));
-        if (down && down ->isAlive() &&
-            pelletCentre.pointY + Config::pellet_size / 2 > down ->getCentre().pointY - Config::grid_size / 2) {
-            //down->colliding(pellet);
-            down->hit(pellet);
-            pellet->reflectX();
-            down->update(scene);
-        }
-        else if (right && right->isAlive() &&
-                 pelletCentre.pointX + Config::pellet_size / 2 > right->getCentre().pointX - Config::grid_size / 2) {
-            //right->colliding(pellet);
-            right->hit(pellet);
-            pellet->reflectY();
-            right->update(scene);
-        }
-    } else if (velocity.vectorX < 0 && velocity.vectorY < 0) {
-        Grid *up = atOrNull(int(pelletCentre.pointX / 50), int(pelletCentre.pointY / 50) - 1);
-        Grid *left = atOrNull(int(pelletCentre.pointX / 50) - 1, int(pelletCentre.pointY / 50));
-        if (up && up->isAlive() &&
-            pelletCentre.pointY - Config::pellet_size / 2 < up->getCentre().pointY + Config::grid_size / 2) {
-            //up->colliding(pellet);
-            up->hit(pellet);
-            pellet->reflectX();
-            up->update(scene);
-        }
-        else if (left && left->isAlive() &&
-                 pelletCentre.pointX - Config::pellet_size / 2 < left->getCentre().pointX + Config::grid_size / 2) {
-            //left->colliding(pellet);
-            left->hit(pellet);
-            pellet->reflectY();
-            left->update(scene);
-        }
-    } else if (velocity.vectorX < 0 && velocity.vectorY > 0) {
-        Grid *down = atOrNull(int(pelletCentre.pointX / 50), int(pelletCentre.pointY / 50) + 1);
-        Grid *left = atOrNull(int(pelletCentre.pointX / 50) - 1, int(pelletCentre.pointY / 50));
-        if (down && down ->isAlive() &&
-            pelletCentre.pointY + Config::pellet_size / 2 > down ->getCentre().pointY - Config::grid_size / 2) {
-            //down->colliding(pellet);
-            down->hit(pellet);
-            pellet->reflectX();
-            pellet->hit(this, down);
-            down->update(scene);
-        }
-        else if (left && left->isAlive() &&
-                 pelletCentre.pointX - Config::pellet_size / 2 < left->getCentre().pointX + Config::grid_size / 2) {
-            //left->colliding(pellet);
-            left->hit(pellet);
-            pellet->reflectY();
-            left->update(scene);
-        }
-    } else {
-        Grid* curr =atOrNull(int(pelletCentre.pointX / 50), int(pelletCentre.pointY / 50));
-        if (curr && curr->isAlive()) {
-            curr->colliding(pellet);
-            curr->update(scene);
-            cout << "A" << endl;
-        }
+    int signX = velocity.vectorX > 0 ? 1 : -1;
+    int signY = velocity.vectorY > 0 ? 1 : -1;
+    Grid *gridX = atOrNull(int(pelletCentre.pointX / 50) + signX, int(pelletCentre.pointY / 50));
+    Grid *gridY = atOrNull(int(pelletCentre.pointX / 50), int(pelletCentre.pointY / 50) + signY);
+    bool collideX = gridX && signX * (pellet->getCentre().pointX + signX * Config::pellet_size / 2) >
+                     signX * (gridX->getCentre().pointX - signX * Config::grid_size / 2);
+    bool collideY = gridY && signY * (pellet->getCentre().pointY + signY * Config::pellet_size / 2) >
+                     signY * (gridY->getCentre().pointY - signY * Config::grid_size / 2);
+    if (collideX && gridX->isAlive()) {
+        //pellet->hit(this, gridX);
+        gridX->hit(pellet);
+        pellet->reflectY();
+        gridX->update(scene);
+    } else if (collideY && gridY->isAlive()) {
+        //pellet->hit(this, gridY);
+        gridY->hit(pellet);
+        pellet->reflectX();
+        gridY->update(scene);
     }
     pellet->update(scene);
     return true;
@@ -145,7 +87,7 @@ bool GameBoard::collidingPellet(Pellet *pellet) {
 
 void GameBoard::nextRound() {
     for (int x = 0; x < col; x++) {
-        Grid* grid = grids[row - 1][x];
+        Grid *grid = grids[row - 1][x];
         grid->remove(scene);
         if (grid->isAlive()) cout << "游戏结束" << endl;
         delete grid;
@@ -162,8 +104,8 @@ void GameBoard::nextRound() {
     // generate grids
 
     double pi = acos(-1);
-    double possibility = (1 / (1 + exp(-round/20.0 + 1))) * abs(cos(double(round % 16) * pi / 17));
-    cout<<possibility<<endl;
+    double possibility = (1 / (1 + exp(-round / 20.0 + 1))) * abs(cos(double(round % 16) * pi / 17));
+    cout << possibility << endl;
     for (int x = 0; x < col; x++) {
         std::uniform_int_distribution<int> intGenerator(1, 2 * round + 1);
         if (doubleGenerator(randomEngine) < possibility) {
@@ -197,7 +139,7 @@ GameBoard::GameBoard(int row, int col) : Board(row, col),
                                          region(0, 0, col * 50, row * 50) {
     std::random_device rd;
     randomEngine = std::mt19937(rd());
-    doubleGenerator = std::uniform_real_distribution<double>(0.0,1.0);
+    doubleGenerator = std::uniform_real_distribution<double>(0.0, 1.0);
 }
 
 void GameBoard::mouseEvent(int x, int y) {
