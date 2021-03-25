@@ -12,6 +12,9 @@
 
 class Grid;
 class Board;
+enum PelletResult {
+    DISAPPEAR, REFLECT, NONE
+};
 class Pellet {
 
 public:
@@ -41,7 +44,7 @@ public:
 
     virtual const PelletItem* getItem() const = 0;
 
-    virtual void hit(Board *board, Grid *grid) = 0;
+    virtual PelletResult hit(Board *board, Grid *grid) = 0;
 };
 
 

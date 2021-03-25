@@ -13,6 +13,7 @@
 
 class Board;
 class Pellet;
+enum PelletResult;
 class Grid {
 public:
     virtual Location getLocation() const = 0;
@@ -24,7 +25,7 @@ public:
     virtual void move(Vector vector) = 0;
     virtual bool colliding(Pellet *pellet) = 0;
     virtual bool isAlive() = 0;
-    virtual bool hit(Pellet* pellet) = 0;
+    virtual PelletResult hit(int damage=1) = 0;
 };
 
 

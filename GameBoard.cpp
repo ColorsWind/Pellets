@@ -44,6 +44,19 @@ void GameBoard::doTick() {
 
 using namespace std;
 
+bool GameBoard::isCollided(int sign, double pelletCentreComponent, double gridCentreComponent) {
+    return sign * (pelletCentreComponent + sign * Config::pellet_size / 2) >
+             sign * (gridCentreComponent - sign * Config::grid_size / 2);
+}
+
+int GameBoard::locationToIndex(double locationComponent) {
+    return int(locationComponent / Config::grid_size);
+}
+
+int GameBoard::signOfComponent(double component) {
+    return component > 0 ? 1 :
+           (component == 0) ? 0 : -1;
+}
 bool GameBoard::collidingPellet(Pellet *pellet) {
     Vector velocity = pellet->getVelocity();
     Location pelletCentre = pellet->getCentre();
@@ -61,24 +74,31 @@ bool GameBoard::collidingPellet(Pellet *pellet) {
         return false;
     }
     // grids check
-    int signX = velocity.vectorX > 0 ? 1 : -1;
-    int signY = velocity.vectorY > 0 ? 1 : -1;
-    Grid *gridX = atOrNull(int(pelletCentre.pointX / 50) + signX, int(pelletCentre.pointY / 50));
-    Grid *gridY = atOrNull(int(pelletCentre.pointX / 50), int(pelletCentre.pointY / 50) + signY);
-    bool collideX = gridX && signX * (pellet->getCentre().pointX + signX * Config::pellet_size / 2) >
-                     signX * (gridX->getCentre().pointX - signX * Config::grid_size / 2);
-    bool collideY = gridY && signY * (pellet->getCentre().pointY + signY * Config::pellet_size / 2) >
-                     signY * (gridY->getCentre().pointY - signY * Config::grid_size / 2);
-    if (collideX && gridX->isAlive()) {
-        //pellet->hit(this, gridX);
-        gridX->hit(pellet);
+    int signX = signOfComponent(velocity.vectorX);
+    int signY = signOfComponent(velocity.vectorY);
+    int indexX = locationToIndex(pelletCentre.pointX);
+    int indexY = locationToIndex(pelletCentre.pointY);
+    Grid *gridX = atOrNull(indexX + signX, indexY);
+    Grid *gridY = atOrNull(indexX, indexY + signY);
+    Grid *gridXY = atOrNull(indexX + signX, indexX + indexY);
+    bool collideX = gridX && isCollided(signX, pelletCentre.pointX, gridX->getCentre().pointX);
+    bool collideY = gridY && isCollided(signY, pelletCentre.pointY, gridY->getCentre().pointY);
+    if (gridX && collideX && gridX->isAlive()) {
+        pellet->hit(this, gridX);
+        //gridX->hit(pellet);
         pellet->reflectY();
         gridX->update(scene);
-    } else if (collideY && gridY->isAlive()) {
-        //pellet->hit(this, gridY);
-        gridY->hit(pellet);
+    } else if (gridY && collideY && gridY->isAlive()) {
+        pellet->hit(this, gridY);
+        //gridY->hit(pellet);
         pellet->reflectX();
         gridY->update(scene);
+    } else if (gridXY && collideX && collideY && gridXY->isAlive()) {
+        //gridXY->hit(pellet);
+        pellet->hit(this, gridXY);
+        pellet->reflectX();
+        pellet->reflectY();
+        gridXY->update(scene);
     }
     pellet->update(scene);
     return true;

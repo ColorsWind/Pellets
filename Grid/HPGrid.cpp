@@ -80,7 +80,7 @@ bool HPGrid::colliding(Pellet *pellet) {
     return true;
 }
 
-bool HPGrid::hit(Pellet *pellet) {
-    health--;
-    return false;
+PelletResult HPGrid::hit(int damage) {
+    health -= damage;
+    return PelletResult::REFLECT;
 }

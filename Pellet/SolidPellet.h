@@ -11,43 +11,15 @@
 #include "Pellet.h"
 #include "../Location.h"
 #include "PelletItem.h"
+#include "AbstractPellet.h"
 
-class SolidPellet : public Pellet {
-private:
-    Location location;
-    Vector velocity;
-    PelletItem *pelletItem;
+class SolidPellet : public AbstractPellet {
 public:
-    SolidPellet(const Location &initial, const Vector &velocity);
+    SolidPellet(const Location &location, const Vector &velocity);
 
-    Location getLocation() const override;
-
-    void draw(QGraphicsScene *scene) override;
-
-    void remove(QGraphicsScene *scene) override;
-
-    void update(QGraphicsScene *scene) override;
-
-    Vector getVelocity() const override;
-
-    void move(double interval) override;
-
-    void reflectY() override;
-
-    void reflectX() override;
-
-    const PelletItem *getItem() const override;
+    PelletResult hit(Board *board, Grid *grid) override;
 
 
-    Location getCentre() const override;
-
-    void setLocation(Location location) override;
-
-    void fixLocationX(Location base) override;
-
-    void fixLocationY(Location base) override;
-
-    void hit(Board *board, Grid *grid) override;
 };
 
 

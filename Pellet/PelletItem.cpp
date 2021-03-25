@@ -11,7 +11,6 @@ PelletItem::PelletItem(double left, double top, double width, double height, QGr
 
 QRectF PelletItem::boundingRect() const {
     return rect;
-    //return QRectF{rect.left() - 10, rect.top() -10, rect.width() + 20, rect.height() + 20};
 }
 
 void PelletItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {

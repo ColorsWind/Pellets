@@ -30,7 +30,7 @@ public:
 
     bool isAlive() override;
 
-    bool hit(Pellet *pellet) override;
+    PelletResult hit(int damage) override;
 
 };
 

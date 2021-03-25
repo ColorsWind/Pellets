@@ -39,6 +39,12 @@ public:
 
 
     bool collidingPellet(Pellet *pellet);
+
+    inline bool isCollided(int sign, double pelletCentreComponent, double gridCentreComponent);
+
+    inline int locationToIndex(double locationComponent);
+
+    int signOfComponent(double component);
 };
 
 
