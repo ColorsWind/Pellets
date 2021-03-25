@@ -157,8 +157,6 @@ void GameBoard::setup(QWidget *widget) {
 
 GameBoard::GameBoard(int row, int col) : Board(row, col),
                                          region(0, 0, col * 50, row * 50) {
-    std::random_device rd;
-    randomEngine = std::mt19937(rd());
     doubleGenerator = std::uniform_real_distribution<double>(0.0, 1.0);
 }
 

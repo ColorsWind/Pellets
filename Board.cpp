@@ -10,12 +10,13 @@
 #include <iostream>
 #include "Constants.h"
 Board::Board(int row, int col) : row(row), col(col), grids(new Grid **[row]) {
+    std::random_device rd;
+    randomEngine = std::mt19937(rd());
     for (int y = 0; y < row; y++) {
         this->grids[y] = new Grid *[col];
         for (int x = 0; x < col; x++)
             this->grids[y][x] = new AirGrid(Location(y * Config::grid_size, x * Config::grid_size));
     }
-    srand(time(nullptr));
 }
 
 Grid *Board::at(int x, int y) const {

@@ -6,6 +6,7 @@
 #define PELLETS_BOARD_H
 
 #include <vector>
+#include <random>
 
 #include "Grid/Grid.h"
 #include "Pellet/Pellet.h"
@@ -13,6 +14,9 @@
 class Pellet;
 class Board {
 protected:
+    std::mt19937 randomEngine;
+
+
     const int row;
     const int col;
     Grid*** const grids;
