@@ -12,7 +12,7 @@ class AbsorbGrid : public HPGrid {
 public:
     AbsorbGrid(const Location &point, int health);
 
-    PelletResult hit(int damage) override;
+    PelletResult hit(Board *board, int damage) override;
 
     QColor getColor() const override;
 };

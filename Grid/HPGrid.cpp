@@ -3,8 +3,10 @@
 //
 
 #include "HPGrid.h"
+#include "../Constants.h"
 #include <iostream>
 #include <cmath>
+
 //using namespace std;
 void HPGrid::draw(QGraphicsScene *scene) {
     if (gridItem) {
@@ -41,8 +43,13 @@ QColor HPGrid::getColor() const {
 }
 
 
-HPGrid::HPGrid(const Location &point, int health) : AbstractGrid(point), health(health), gridItem(
-        new GridItem(this, point.getGridX(), point.getGridY(), 50, 50, getColor(), QString::number(health))) {
+HPGrid::HPGrid(const Location &point, int health, GridItem *gridItem) : AbstractGrid(point), health(health) {
+    if (gridItem) {
+        this->gridItem = gridItem;
+    } else {
+        this->gridItem = new GridItem(this, point.getGridX(), point.getGridY(), Config::grid_size, Config::grid_size, getColor(),
+                                      QString::number(health));
+    }
 }
 
 bool HPGrid::isAlive() {
@@ -50,6 +57,7 @@ bool HPGrid::isAlive() {
 }
 
 using namespace std;
+
 bool HPGrid::colliding(Pellet *pellet) {
     const Vector velocity = pellet->getVelocity();
     const Vector delta = Vector(this->getCentre(), pellet->getCentre());
@@ -80,7 +88,8 @@ bool HPGrid::colliding(Pellet *pellet) {
     return true;
 }
 
-PelletResult HPGrid::hit(int damage) {
+PelletResult HPGrid::hit(Board *board, int damage) {
     health -= damage;
     return PelletResult::REFLECT;
 }
+

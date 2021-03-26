@@ -14,8 +14,10 @@
 #include "AbstractPellet.h"
 
 class SolidPellet : public AbstractPellet {
+private:
+    int damage;
 public:
-    SolidPellet(const Location &location, const Vector &velocity);
+    SolidPellet(const Location &location, const Vector &velocity, int damage=1);
 
     PelletResult hit(Board *board, Grid *grid) override;
 

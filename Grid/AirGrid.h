@@ -22,7 +22,7 @@ public:
 
     bool isAlive() override;
 
-    PelletResult hit(int damage) override;
+    PelletResult hit(Board *board, int damage) override;
 
 
 };

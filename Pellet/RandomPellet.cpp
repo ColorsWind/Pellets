@@ -6,7 +6,7 @@
 #include "../Board.h"
 
 PelletResult RandomPellet::hit(Board *board, Grid *grid) {
-    grid->hit(intGenerator(board->randomEngine));
+    grid->hit(board, intGenerator(board->randomEngine));
     return REFLECT;
 }
 

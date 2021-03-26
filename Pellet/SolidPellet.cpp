@@ -5,10 +5,10 @@
 #include "SolidPellet.h"
 
 
-SolidPellet::SolidPellet(const Location &location, const Vector &velocity) :
-        AbstractPellet(location, velocity) {
+SolidPellet::SolidPellet(const Location &location, const Vector &velocity, int damage) :
+        AbstractPellet(location, velocity), damage(damage) {
 }
 
 PelletResult SolidPellet::hit(Board *board, Grid *grid) {
-    return grid->hit(1);
+    return grid->hit(board, damage);
 }

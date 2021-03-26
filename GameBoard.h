@@ -37,13 +37,16 @@ public:
     void nextRound() override;
 
 
-    bool collidingPellet(Pellet *pellet);
+    bool handlePellet(Pellet *pellet);
 
     inline bool isCollided(int sign, double pelletCentreComponent, double gridCentreComponent);
 
     inline int locationToIndex(double locationComponent);
 
     int signOfComponent(double component);
+
+    void handleShoot();
+
 };
 
 

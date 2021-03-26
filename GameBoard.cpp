@@ -8,14 +8,14 @@
 #include "Grid/AirGrid.h"
 #include "Grid/HPGrid.h"
 #include "Constants.h"
+#include "Grid/RewardGrid.h"
 #include <random>
 
 void GameBoard::doTick() {
-    for (auto pellet : existsPellets)
-        collidingPellet(pellet);
+    bool hasPellet = !existsPellets.empty();
     for (auto iter = existsPellets.begin(); iter != existsPellets.cend();) {
-        auto pellet = *iter;
-        if (collidingPellet(pellet)) {
+        Pellet* pellet = *iter;
+        if (handlePellet(pellet)) {
             iter++;
             pellet->move(1.0);
             pellet->update(scene);
@@ -25,16 +25,9 @@ void GameBoard::doTick() {
             delete pellet;
         }
     }
-    if (shootMode && launchPellets < maxPellets && tick % 10 == 0) {
-        auto pellet = shoot();
-        pellet->draw(scene);
-        launchPellets++;
-    }
-
-    if (existsPellets.empty() && launchPellets == maxPellets) {
+    handleShoot();
+    if (hasPellet && existsPellets.empty() && !shootMode) {
         nextRound();
-        launchPellets = 0;
-        shootMode = false;
     }
     scene->update();
     tick++;
@@ -58,7 +51,7 @@ int GameBoard::signOfComponent(double component) {
            (component == 0) ? 0 : -1;
 }
 
-bool GameBoard::collidingPellet(Pellet *pellet) {
+bool GameBoard::handlePellet(Pellet *pellet) {
     Vector velocity = pellet->getVelocity();
     Location pelletCentre = pellet->getCentre();
     // boundary check
@@ -84,25 +77,25 @@ bool GameBoard::collidingPellet(Pellet *pellet) {
     Grid *gridXY = atOrNull(indexX + signX, indexX + indexY);
     bool collideX = gridX && isCollided(signX, pelletCentre.pointX, gridX->getCentre().pointX);
     bool collideY = gridY && isCollided(signY, pelletCentre.pointY, gridY->getCentre().pointY);
+    PelletResult result = NONE;
     if (gridX && collideX && gridX->isAlive()) {
-        pellet->hit(this, gridX);
-        //gridX->hit(pellet);
-        pellet->reflectY();
+        result = pellet->hit(this, gridX);
+        if (result == REFLECT) pellet->reflectY();
         gridX->update(scene);
     } else if (gridY && collideY && gridY->isAlive()) {
-        pellet->hit(this, gridY);
-        //gridY->hit(pellet);
-        pellet->reflectX();
+        result = pellet->hit(this, gridY);
+        if (result == REFLECT) pellet->reflectX();
         gridY->update(scene);
     } else if (gridXY && collideX && collideY && gridXY->isAlive()) {
-        //gridXY->hit(pellet);
-        pellet->hit(this, gridXY);
-        pellet->reflectX();
-        pellet->reflectY();
+        result = pellet->hit(this, gridXY);
+        if (result == REFLECT) {
+            pellet->reflectX();
+            pellet->reflectY();
+        }
         gridXY->update(scene);
     }
     pellet->update(scene);
-    return true;
+    return result != DISAPPEAR;
 }
 
 
@@ -116,27 +109,41 @@ void GameBoard::nextRound() {
     for (int y = row - 1; y > 0; y--) {
         Grid **from = grids[y - 1];
         Grid **to = grids[y];
-        for (int x = 0; x < col; x++) {
+        for (int x = 0; x < Config::board_col; x++) {
             to[x] = from[x];
             to[x]->move(Vector{0, 50});
             to[x]->update(scene);
         }
     }
     // generate grids
-
     double pi = acos(-1);
     double possibility = (1 / (1 + exp(-round / 20.0 + 1))) * abs(cos(double(round % 16) * pi / 17));
     cout << possibility << endl;
-    for (int x = 0; x < col; x++) {
+    int numHPGrids = 0;
+    for (int x = 0; x < Config::board_col; x++) {
         std::uniform_int_distribution<int> intGenerator(1, 2 * round + 1);
+        Location location = {double(x * 50), 0.0};
         if (doubleGenerator(randomEngine) < possibility) {
-            grids[0][x] = new HPGrid(Location{double(x * 50), 0.0}, intGenerator(randomEngine));
+            grids[0][x] = new HPGrid{location, intGenerator(randomEngine)};
             grids[0][x]->draw(scene);
+            numHPGrids++;
         } else {
-            grids[0][x] = new AirGrid(Location{double(x * 50), 0.0});
+            grids[0][x] = nullptr;
         }
-
-
+    }
+    if (numHPGrids < Config::board_col) {
+        int indexToGenerate = std::uniform_int_distribution<int>(0, numHPGrids)(randomEngine);
+        for (int x = 0; x < Config::board_col; x++) {
+            Location location = {double(x * 50), 0.0};
+            if (grids[0][x]) continue;
+            if (indexToGenerate == 0) {
+                grids[0][x] = new RewardGrid(location, 1);
+                grids[0][x]->draw(scene);
+            } else {
+                grids[0][x] = new AirGrid(location);
+            }
+            indexToGenerate--;
+        }
     }
     round++;
 }
@@ -158,12 +165,23 @@ void GameBoard::setup(QWidget *widget) {
 
 GameBoard::GameBoard(int row, int col) : Board(row, col),
                                          region(0, 0, col * Config::grid_size, row * Config::grid_size) {
+
 }
 
 void GameBoard::mouseEvent(int x, int y) {
     if (!shootMode) {
+        pelletsToLanuch = maxPellets;
         target = {(double) x, (double) y};
         shootMode = true;
+    }
+}
+
+void GameBoard::handleShoot() {
+    if (shootMode && pelletsToLanuch > 0 && tick % 10 == 0) {
+        auto pellet = shoot();
+        pellet->draw(scene);
+        pelletsToLanuch--;
+        if (pelletsToLanuch == 0) shootMode = false;
     }
 }
 

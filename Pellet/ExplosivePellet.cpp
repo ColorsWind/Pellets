@@ -22,7 +22,6 @@ int ExplosivePellet::square(int x) {
 }
 
 PelletResult ExplosivePellet::hit(Board *board, Grid *grid) {
-    std::uniform_int_distribution<int> intGenerator(1, damage);
     int gridX = grid->getLocation().getGridX();
     int gridY = grid->getLocation().getGridY();
     int minX = max(0, gridX-radius), minY = max(0, gridY-radius);
@@ -32,7 +31,7 @@ PelletResult ExplosivePellet::hit(Board *board, Grid *grid) {
         double damageMax = damage / (realRadius + 1);
         Grid* toDamage = board->at(x, y);
         double realDamage = board->doubleGenerator(board->randomEngine) * damageMax;
-        toDamage->hit((int)realDamage);
+            toDamage->hit(board, (int) realDamage);
     }
     return DISAPPEAR;
 }

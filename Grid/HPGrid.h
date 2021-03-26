@@ -23,14 +23,15 @@ public:
 
     void update(QGraphicsScene *scene) override;
 
-    HPGrid(const Location &point, int health);
+    HPGrid(const Location &point, int health, GridItem* gridItem = nullptr);
+
     virtual QColor getColor() const;
 
     bool colliding(Pellet *pellet) override;
 
     bool isAlive() override;
 
-    PelletResult hit(int damage) override;
+    PelletResult hit(Board *board, int damage) override;
 
 };
 

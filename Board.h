@@ -22,10 +22,10 @@ protected:
     std::vector<Pellet*> existsPellets;
     Location target{0.0,0.0};
     int round = 0;
-    int launchPellets = 0;
-    int maxPellets = 3;
+    int pelletsToLanuch = 0;
     unsigned int tick = 0;
 public:
+    int maxPellets = 3;
     Board(int row, int col);
     Grid* at(int x, int y) const;
     Pellet* shoot();

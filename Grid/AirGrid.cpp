@@ -20,7 +20,7 @@ bool AirGrid::isAlive() {
     return false;
 }
 
-PelletResult AirGrid::hit(int damage) {
+PelletResult AirGrid::hit(Board *board, int damage) {
     return PelletResult::NONE;
 }
 

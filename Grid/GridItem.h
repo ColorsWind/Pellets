@@ -10,26 +10,26 @@
 #include "Grid.h"
 
 class GridItem : public QGraphicsItem {
-private:
+protected:
     int left;
     int top;
     int width;
     int height;
     QColor color;
     QString label;
-    QRect rect;
     Grid* grid;
+    QRect rect;
 public:
     GridItem(Grid* grid, int left, int top, int width, int height, const QColor &color,
              const QString &label, QGraphicsItem *parent = nullptr);
 
-    QRectF boundingRect() const override;
+    virtual QRectF boundingRect() const override;
 
-    QPainterPath shape() const override;
+    virtual QPainterPath shape() const override;
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
-    void updateItem(int left, int top, int width, int height, QColor color, QString label);
+    virtual void updateItem(int left, int top, int width, int height, QColor color, QString label);
 
 };
 

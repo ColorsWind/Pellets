@@ -6,8 +6,8 @@
 
 AbsorbGrid::AbsorbGrid(const Location &point, int health) : HPGrid(point, health) {}
 
-PelletResult AbsorbGrid::hit(int damage) {
-    HPGrid::hit(damage);
+PelletResult AbsorbGrid::hit(Board *board, int damage) {
+    HPGrid::hit(nullptr, damage);
     return NONE;
 }
 
