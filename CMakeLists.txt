@@ -10,10 +10,10 @@ set(CMAKE_AUTOUIC ON)
 set(QT_VERSION 5)
 set(REQUIRED_LIBS Core Gui Widgets)
 set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
-add_executable(${PROJECT_NAME} main.cpp Location.h Location.cpp Vector.h Vector.cpp Pellet/Pellet.h Board.cpp Board.h Grid/Grid.h
+add_executable(${PROJECT_NAME} main.cpp Location.h Location.cpp Vector.h Vector.cpp Pellet/Pellet.h Board/Board.cpp Board/Board.h Grid/Grid.h
         Grid/AbstractGrid.cpp Grid/AbstractGrid.h Grid/HPGrid.cpp Grid/HPGrid.h
         Pellet/SolidPellet.cpp Pellet/SolidPellet.h Grid/AirGrid.cpp Grid/AirGrid.h Grid/GridItem.cpp Grid/GridItem.h Pellet/PelletItem.cpp Pellet/PelletItem.h
-        GameBoard.cpp GameBoard.h
+        Board/GameBoard.cpp Board/GameBoard.h
         GameWidget.h GameWidget.cpp GameWidget.ui Constants.h Pellet/AbstractPellet.cpp Pellet/AbstractPellet.h Pellet/ExplosivePellet.cpp Pellet/ExplosivePellet.h Pellet/RandomPellet.cpp Pellet/RandomPellet.h Grid/AbsorbGrid.cpp Grid/AbsorbGrid.h Grid/RewardGrid.cpp Grid/RewardGrid.h Grid/PelletGridItem.cpp Grid/PelletGridItem.h)
 
 if (NOT CMAKE_PREFIX_PATH)

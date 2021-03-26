@@ -3,7 +3,7 @@
 //
 
 #include "RandomPellet.h"
-#include "../Board.h"
+#include "../Board/Board.h"
 
 PelletResult RandomPellet::hit(Board *board, Grid *grid) {
     grid->hit(board, intGenerator(board->randomEngine));

@@ -44,6 +44,10 @@ Location AbstractPellet::getLocation() const {
     return location;
 }
 
+void AbstractPellet::setLocation(Location location) {
+    this->location = location;
+}
+
 Location AbstractPellet::getCentre() const {
     return location.add({Config::grid_size / 2.0, Config::grid_size / 2.0});
 }
@@ -67,9 +71,6 @@ void AbstractPellet::fixLocationY(Location base) {
 }
 
 
-void AbstractPellet::setLocation(Location location) {
-    this->location = location;
-}
 
 Vector AbstractPellet::getVelocity() const {
     return velocity;

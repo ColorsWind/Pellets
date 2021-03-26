@@ -4,17 +4,16 @@
 
 #include "GameBoard.h"
 #include <QGraphicsView>
-#include "Grid/Grid.h"
-#include "Grid/AirGrid.h"
-#include "Grid/HPGrid.h"
-#include "Constants.h"
-#include "Grid/RewardGrid.h"
+#include "../Grid/AirGrid.h"
+#include "../Grid/HPGrid.h"
+#include "../Constants.h"
+#include "../Grid/RewardGrid.h"
 #include <random>
 
 void GameBoard::doTick() {
     bool hasPellet = !existsPellets.empty();
     for (auto iter = existsPellets.begin(); iter != existsPellets.cend();) {
-        Pellet* pellet = *iter;
+        Pellet *pellet = *iter;
         if (handlePellet(pellet)) {
             iter++;
             pellet->move(1.0);
@@ -22,6 +21,12 @@ void GameBoard::doTick() {
         } else {
             iter = existsPellets.erase(iter);
             pellet->remove(scene);
+            if (!launchLocationUpdate) {
+                launchLocationUpdate = true;
+                launchLocation = pellet->getLocation();
+                launchIndicate->setLocation(launchLocation);
+                launchIndicate->update(scene);
+            }
             delete pellet;
         }
     }
@@ -156,6 +161,7 @@ void GameBoard::setup(QWidget *widget) {
     graphicsView->setSceneRect(region);
     //graphicsView->setFixedSize(600, 800);
     graphicsView->show();
+    launchIndicate->draw(scene);
     for (int y = 0; y < row; y++)
         for (int x = 0; x < col; x++)
             grids[y][x]->draw(scene);
@@ -164,24 +170,27 @@ void GameBoard::setup(QWidget *widget) {
 }
 
 GameBoard::GameBoard(int row, int col) : Board(row, col),
-                                         region(0, 0, col * Config::grid_size, row * Config::grid_size) {
-
+                                         region(0, 0, col * Config::grid_size, row * Config::grid_size),
+                                         launchIndicate(new SolidPellet(launchLocation, {0.0, 0.0})) {
 }
 
 void GameBoard::mouseEvent(int x, int y) {
-    if (!shootMode) {
-        pelletsToLanuch = maxPellets;
-        target = {(double) x, (double) y};
+    if (shootMode || !existsPellets.empty()) return;
+    if (x != 0 && abs(double(Config::board_row * Config::grid_size - y) / x) <= Config::min_angle) return;
+    if (!shootMode && existsPellets.empty()) {
+        pelletsToLaunch = maxPellets;
+        targetLocation = {(double) x, (double) y};
         shootMode = true;
+        launchLocationUpdate = false;
     }
 }
 
 void GameBoard::handleShoot() {
-    if (shootMode && pelletsToLanuch > 0 && tick % 10 == 0) {
+    if (shootMode && pelletsToLaunch > 0 && tick % 10 == 0) {
         auto pellet = shoot();
         pellet->draw(scene);
-        pelletsToLanuch--;
-        if (pelletsToLanuch == 0) shootMode = false;
+        pelletsToLaunch--;
+        if (pelletsToLaunch == 0) shootMode = false;
     }
 }
 

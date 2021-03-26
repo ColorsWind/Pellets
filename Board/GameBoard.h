@@ -17,7 +17,9 @@ class GameBoard : public Board {
 
 private:
     QRectF region;
+    SolidPellet* launchIndicate;
     QGraphicsScene *scene;
+    bool launchLocationUpdate = false;
     bool shootMode = false;
 
 public:

@@ -13,6 +13,7 @@ namespace Config {
     static int board_col = 12;
     static double absolute_velocity = grid_size * 12;
     static double relative_velocity = absolute_velocity / fps;
+    static double min_angle = 1.0 / 6;
 }
 
 #endif //PELLETS_CONSTANTS_H

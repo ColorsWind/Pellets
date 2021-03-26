@@ -2,7 +2,7 @@
 #define GAMEWIDGETT_H
 
 #include <QWidget>
-#include "GameBoard.h"
+#include "Board/GameBoard.h"
 #include <QMouseEvent>
 
 namespace Ui {

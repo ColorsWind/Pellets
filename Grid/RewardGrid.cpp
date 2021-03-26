@@ -3,7 +3,7 @@
 //
 
 #include "RewardGrid.h"
-#include "../Board.h"
+#include "../Board/Board.h"
 #include "PelletGridItem.h"
 #include "../Constants.h"
 

@@ -3,7 +3,7 @@
 //
 
 #include <random>
-#include "../Board.h"
+#include "../Board/Board.h"
 #include "../Constants.h"
 #include "ExplosivePellet.h"
 
