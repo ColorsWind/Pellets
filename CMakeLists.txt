@@ -14,7 +14,7 @@ add_executable(${PROJECT_NAME} main.cpp Location.h Location.cpp Vector.h Vector.
         Grid/AbstractGrid.cpp Grid/AbstractGrid.h Grid/HPGrid.cpp Grid/HPGrid.h
         Pellet/SolidPellet.cpp Pellet/SolidPellet.h Grid/AirGrid.cpp Grid/AirGrid.h Grid/GridItem.cpp Grid/GridItem.h Pellet/PelletItem.cpp Pellet/PelletItem.h
         GameBoard.cpp GameBoard.h
-        GameWidget.h GameWidget.cpp GameWidget.ui Constants.h Pellet/AbstractPellet.cpp Pellet/AbstractPellet.h)
+        GameWidget.h GameWidget.cpp GameWidget.ui Constants.h Pellet/AbstractPellet.cpp Pellet/AbstractPellet.h Pellet/ExplosivePellet.cpp Pellet/ExplosivePellet.h Pellet/RandomPellet.cpp Pellet/RandomPellet.h)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "

@@ -12,6 +12,7 @@
 Board::Board(int row, int col) : row(row), col(col), grids(new Grid **[row]) {
     std::random_device rd;
     randomEngine = std::mt19937(rd());
+    doubleGenerator = std::uniform_real_distribution<double>(0.0, 1.0);
     for (int y = 0; y < row; y++) {
         this->grids[y] = new Grid *[col];
         for (int x = 0; x < col; x++)

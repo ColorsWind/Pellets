@@ -46,7 +46,7 @@ using namespace std;
 
 bool GameBoard::isCollided(int sign, double pelletCentreComponent, double gridCentreComponent) {
     return sign * (pelletCentreComponent + sign * Config::pellet_size / 2) >
-             sign * (gridCentreComponent - sign * Config::grid_size / 2);
+           sign * (gridCentreComponent - sign * Config::grid_size / 2);
 }
 
 int GameBoard::locationToIndex(double locationComponent) {
@@ -57,6 +57,7 @@ int GameBoard::signOfComponent(double component) {
     return component > 0 ? 1 :
            (component == 0) ? 0 : -1;
 }
+
 bool GameBoard::collidingPellet(Pellet *pellet) {
     Vector velocity = pellet->getVelocity();
     Location pelletCentre = pellet->getCentre();
@@ -156,8 +157,7 @@ void GameBoard::setup(QWidget *widget) {
 }
 
 GameBoard::GameBoard(int row, int col) : Board(row, col),
-                                         region(0, 0, col * 50, row * 50) {
-    doubleGenerator = std::uniform_real_distribution<double>(0.0, 1.0);
+                                         region(0, 0, col * Config::grid_size, row * Config::grid_size) {
 }
 
 void GameBoard::mouseEvent(int x, int y) {

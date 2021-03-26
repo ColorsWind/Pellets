@@ -14,7 +14,6 @@
 class Pellet;
 class Board {
 protected:
-    std::mt19937 randomEngine;
 
 
     const int row;
@@ -36,6 +35,9 @@ public:
     virtual void nextRound() = 0;
 
     Grid *atOrNull(int x, int y) const noexcept;
+
+    std::mt19937 randomEngine;
+    std::uniform_real_distribution<double> doubleGenerator;
 };
 
 

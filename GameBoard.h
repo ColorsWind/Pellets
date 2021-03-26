@@ -19,7 +19,7 @@ private:
     QRectF region;
     QGraphicsScene *scene;
     bool shootMode = false;
-    std::uniform_real_distribution<double> doubleGenerator;
+
 public:
     GameBoard(int row, int col);
 
