@@ -24,7 +24,7 @@ public:
     void update(QGraphicsScene *scene) override;
 
     HPGrid(const Location &point, int health);
-    QColor getColor() const;
+    virtual QColor getColor() const;
 
     bool colliding(Pellet *pellet) override;
 
