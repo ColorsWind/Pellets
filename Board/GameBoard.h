@@ -25,12 +25,7 @@ private:
 public:
     GameBoard(int row, int col);
 
-
-    Location getLaunchLocation();
-
     void setup(QWidget *widget);
-
-    void launch();
 
     void doTick();
 

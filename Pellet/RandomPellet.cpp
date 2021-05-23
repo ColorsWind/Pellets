@@ -6,10 +6,10 @@
 #include "../Board/Board.h"
 
 PelletResult RandomPellet::hit(Board *board, Grid *grid) {
-    grid->hit(board, intGenerator(board->randomEngine));
+    grid->hit(board, board->nextInt(minDamage, maxDamage));
     return REFLECT;
 }
 
 RandomPellet::RandomPellet(const Location &location, const Vector &velocity, int minDamage, int maxDamage)
-        : AbstractPellet(location, velocity), intGenerator(minDamage, maxDamage) {
+        : AbstractPellet(location, velocity), minDamage(minDamage), maxDamage(maxDamage) {
 }

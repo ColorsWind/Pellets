@@ -29,3 +29,7 @@ double Vector::norm() const {
     return sqrt(vectorX * vectorX + vectorY * vectorY);
 }
 
+Vector operator*(const double k, const Vector &vector) {
+    return vector.operator*(k);
+}
+

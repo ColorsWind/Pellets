@@ -21,6 +21,8 @@ public:
     Vector operator-() const;
 
     double norm() const;
+
+    friend Vector operator*(const double k, const Vector &vector);
 };
 
 

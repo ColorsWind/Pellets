@@ -10,7 +10,7 @@
 
 PelletResult RewardGrid::hit(Board *board, int damage) {
     health--;
-    board->maxPellets++;
+    board->getOwnedPellets() += 1;
     if (health > 0)
         return REFLECT;
     else

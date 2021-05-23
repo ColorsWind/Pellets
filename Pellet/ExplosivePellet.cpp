@@ -30,7 +30,7 @@ PelletResult ExplosivePellet::hit(Board *board, Grid *grid) {
         double realRadius = sqrt(square(x - gridX) + square(y - gridY));
         double damageMax = damage / (realRadius + 1);
         Grid* toDamage = board->at(x, y);
-        double realDamage = board->doubleGenerator(board->randomEngine) * damageMax;
+        double realDamage = board->nextDouble(damageMax);
             toDamage->hit(board, (int) realDamage);
     }
     return DISAPPEAR;

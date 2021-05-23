@@ -1,4 +1,4 @@
-//
+﻿//
 // Created by colors_wind on 2021/3/18.
 //
 
@@ -77,9 +77,9 @@ bool GameBoard::handlePellet(Pellet *pellet) {
     int signY = signOfComponent(velocity.vectorY);
     int indexX = locationToIndex(pelletCentre.pointX);
     int indexY = locationToIndex(pelletCentre.pointY);
-    Grid *gridX = atOrNull(indexX + signX, indexY);
-    Grid *gridY = atOrNull(indexX, indexY + signY);
-    Grid *gridXY = atOrNull(indexX + signX, indexX + indexY);
+    Grid *gridX = getOrNull(indexX + signX, indexY);
+    Grid *gridY = getOrNull(indexX, indexY + signY);
+    Grid *gridXY = getOrNull(indexX + signX, indexX + indexY);
     bool collideX = gridX && isCollided(signX, pelletCentre.pointX, gridX->getCentre().pointX);
     bool collideY = gridY && isCollided(signY, pelletCentre.pointY, gridY->getCentre().pointY);
     PelletResult result = NONE;
@@ -122,7 +122,8 @@ void GameBoard::nextRound() {
     }
     // generate grids
     double pi = acos(-1);
-    double possibility = (1 / (1 + exp(-round / 20.0 + 1))) * abs(cos(double(round % 16) * pi / 17));
+    int x = round;
+    double possibility = (1 / (1 + exp(-x / 20.0 + 1))) * abs(cos(double(x % 16) * pi / 17));
     cout << possibility << endl;
     int numHPGrids = 0;
     for (int x = 0; x < Config::board_col; x++) {

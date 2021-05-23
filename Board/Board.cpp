@@ -1,4 +1,4 @@
-//
+﻿//
 // Created by colors_wind on 2021/3/16.
 //
 
@@ -15,8 +15,7 @@ Board::Board(int row, int col) :
         launchLocation({(col - 1) * Config::grid_size / 2.0, row * (double) Config::grid_size - Config::grid_size / 4}),
         targetLocation({0.0, 0.0}),
         randomEngine(std::mt19937{std::random_device()()}),
-        doubleGenerator(std::uniform_real_distribution<double>{0.0, 1.0})
-{
+        doubleGenerator(std::uniform_real_distribution<double>{0.0, 1.0}) {
     for (int y = 0; y < row; y++) {
         this->grids[y] = new Grid *[col];
         for (int x = 0; x < col; x++)
@@ -31,7 +30,7 @@ Grid *Board::at(int x, int y) const {
     return grids[y][x];
 }
 
-Grid *Board::atOrNull(int x, int y) const noexcept {
+Grid *Board::getOrNull(int x, int y) const noexcept {
     if (x < 0 || x >= col || y < 0 || y >= row)
         return nullptr;
     return grids[y][x];
@@ -43,4 +42,16 @@ Pellet *Board::shoot() {
             Config::relative_velocity));
     existsPellets.push_back(pellet);
     return pellet;
+}
+
+unsigned int &Board::getOwnedPellets() {
+    return maxPellets;
+}
+
+int Board::nextInt(int min, int max) {
+    return min + (int) lround((max - min) * doubleGenerator(randomEngine));
+}
+
+double Board::nextDouble(double max) {
+    return doubleGenerator(randomEngine) * max;
 }

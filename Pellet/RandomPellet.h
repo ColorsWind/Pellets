@@ -10,13 +10,15 @@
 #include "AbstractPellet.h"
 
 class RandomPellet : public AbstractPellet {
-private:
-    std::uniform_int_distribution<int> intGenerator;
+protected:
+    int minDamage;
+    int maxDamage;
 public:
     RandomPellet(const Location &location, const Vector &velocity,
                  int minDamage, int maxDamage);
-
     PelletResult hit(Board *board, Grid *grid) override;
+
+
 };
 
 
