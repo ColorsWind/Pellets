@@ -10,5 +10,6 @@ SolidPellet::SolidPellet(const Location &location, const Vector &velocity, int d
 }
 
 PelletResult SolidPellet::hit(Board *board, Grid *grid) {
+    handleHit(board, grid);
     return grid->hit(board, damage);
 }

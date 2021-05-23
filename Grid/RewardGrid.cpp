@@ -4,13 +4,15 @@
 
 #include "RewardGrid.h"
 #include "../Board/Board.h"
+#include "../Board/GameBoard.h"
 #include "PelletGridItem.h"
-#include "../Constants.h"
 
 
 PelletResult RewardGrid::hit(Board *board, int damage) {
     health--;
-    board->getOwnedPellets() += 1;
+    board->addOwnPellets(1);
+    board->addScore(1);
+
     if (health > 0)
         return REFLECT;
     else

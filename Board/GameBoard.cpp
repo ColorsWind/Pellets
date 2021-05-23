@@ -6,24 +6,26 @@
 #include <QGraphicsView>
 #include "../Grid/AirGrid.h"
 #include "../Grid/HPGrid.h"
-#include "../Constants.h"
 #include "../Grid/RewardGrid.h"
+#include "../Backend/Collision.h"
+#include "../Widget/GameWindow.h"
 #include <random>
 
 void GameBoard::doTick() {
-    bool hasPellet = !existsPellets.empty();
-    for (auto iter = existsPellets.begin(); iter != existsPellets.cend();) {
+    bool hasPellet = !trackingPellets.empty();
+    for (auto iter = trackingPellets.begin(); iter != trackingPellets.cend();) {
         Pellet *pellet = *iter;
-        if (handlePellet(pellet)) {
+        if (updatePellet(this, pellet, this->scene, launchLocationUpdate)) {
             iter++;
             pellet->move(1.0);
             pellet->update(scene);
         } else {
-            iter = existsPellets.erase(iter);
+            iter = trackingPellets.erase(iter);
             pellet->remove(scene);
             if (!launchLocationUpdate) {
                 launchLocationUpdate = true;
                 launchLocation = pellet->getLocation();
+                launchLocation.pointX = pellet->getLocation().pointX;
                 launchIndicate->setLocation(launchLocation);
                 launchIndicate->update(scene);
             }
@@ -31,7 +33,7 @@ void GameBoard::doTick() {
         }
     }
     handleShoot();
-    if (hasPellet && existsPellets.empty() && !shootMode) {
+    if (hasPellet && trackingPellets.empty() && !shootMode) {
         nextRound();
     }
     scene->update();
@@ -41,67 +43,6 @@ void GameBoard::doTick() {
 #include <iostream>
 
 using namespace std;
-
-bool GameBoard::isCollided(int sign, double pelletCentreComponent, double gridCentreComponent) {
-    return sign * (pelletCentreComponent + sign * Config::pellet_size / 2) >
-           sign * (gridCentreComponent - sign * Config::grid_size / 2);
-}
-
-int GameBoard::locationToIndex(double locationComponent) {
-    return int(locationComponent / Config::grid_size);
-}
-
-int GameBoard::signOfComponent(double component) {
-    return component > 0 ? 1 :
-           (component == 0) ? 0 : -1;
-}
-
-bool GameBoard::handlePellet(Pellet *pellet) {
-    Vector velocity = pellet->getVelocity();
-    Location pelletCentre = pellet->getCentre();
-    // boundary check
-    if (velocity.vectorY < 0 && pelletCentre.pointY - Config::pellet_size / 2 < 0) {
-        pellet->reflectX();
-        return true;
-    } else if ((velocity.vectorX < 0 && pelletCentre.pointX - Config::pellet_size / 2 < 0)
-               || (velocity.vectorX > 0
-                   && pelletCentre.pointX + Config::pellet_size / 2 > Config::board_col * Config::grid_size)) {
-        pellet->reflectY();
-        return true;
-    } else if (velocity.vectorY > 0 &&
-               pelletCentre.pointY - Config::pellet_size / 2 > Config::board_row * Config::grid_size) {
-        return false;
-    }
-    // grids check
-    int signX = signOfComponent(velocity.vectorX);
-    int signY = signOfComponent(velocity.vectorY);
-    int indexX = locationToIndex(pelletCentre.pointX);
-    int indexY = locationToIndex(pelletCentre.pointY);
-    Grid *gridX = getOrNull(indexX + signX, indexY);
-    Grid *gridY = getOrNull(indexX, indexY + signY);
-    Grid *gridXY = getOrNull(indexX + signX, indexX + indexY);
-    bool collideX = gridX && isCollided(signX, pelletCentre.pointX, gridX->getCentre().pointX);
-    bool collideY = gridY && isCollided(signY, pelletCentre.pointY, gridY->getCentre().pointY);
-    PelletResult result = NONE;
-    if (gridX && collideX && gridX->isAlive()) {
-        result = pellet->hit(this, gridX);
-        if (result == REFLECT) pellet->reflectY();
-        gridX->update(scene);
-    } else if (gridY && collideY && gridY->isAlive()) {
-        result = pellet->hit(this, gridY);
-        if (result == REFLECT) pellet->reflectX();
-        gridY->update(scene);
-    } else if (gridXY && collideX && collideY && gridXY->isAlive()) {
-        result = pellet->hit(this, gridXY);
-        if (result == REFLECT) {
-            pellet->reflectX();
-            pellet->reflectY();
-        }
-        gridXY->update(scene);
-    }
-    pellet->update(scene);
-    return result != DISAPPEAR;
-}
 
 
 void GameBoard::nextRound() {
@@ -122,9 +63,8 @@ void GameBoard::nextRound() {
     }
     // generate grids
     double pi = acos(-1);
-    int x = round;
-    double possibility = (1 / (1 + exp(-x / 20.0 + 1))) * abs(cos(double(x % 16) * pi / 17));
-    cout << possibility << endl;
+    int r = round;
+    double possibility = (1 / (1 + exp(-r / 20.0 + 1))) * abs(cos(double(r % 16) * pi / 17));
     int numHPGrids = 0;
     for (int x = 0; x < Config::board_col; x++) {
         std::uniform_int_distribution<int> intGenerator(1, 2 * round + 1);
@@ -152,23 +92,9 @@ void GameBoard::nextRound() {
         }
     }
     round++;
+    gameWindow->setRound(round);
 }
 
-
-void GameBoard::setup(QWidget *widget) {
-    scene = new QGraphicsScene(widget);
-    auto graphicsView = new QGraphicsView(widget);
-    graphicsView->setScene(scene);
-    graphicsView->setSceneRect(region);
-    //graphicsView->setFixedSize(600, 800);
-    graphicsView->show();
-    launchIndicate->draw(scene);
-    for (int y = 0; y < row; y++)
-        for (int x = 0; x < col; x++)
-            grids[y][x]->draw(scene);
-    nextRound();
-
-}
 
 GameBoard::GameBoard(int row, int col) : Board(row, col),
                                          region(0, 0, col * Config::grid_size, row * Config::grid_size),
@@ -176,14 +102,16 @@ GameBoard::GameBoard(int row, int col) : Board(row, col),
 }
 
 void GameBoard::mouseEvent(int x, int y) {
-    if (shootMode || !existsPellets.empty()) return;
-    if (x != 0 && abs(double(Config::board_row * Config::grid_size - y) / x) <= Config::min_angle) return;
-    if (!shootMode && existsPellets.empty()) {
-        pelletsToLaunch = maxPellets;
-        targetLocation = {(double) x, (double) y};
-        shootMode = true;
-        launchLocationUpdate = false;
-    }
+    if (shootMode || !trackingPellets.empty())
+        // 检查是否正处于发射模式或者是否有尚未计算完的弹珠
+        return;
+    if (x != 0 && abs(double(Config::board_row * Config::grid_size - y) / x) <= Config::min_angle)
+        // 检查发射角度是否过小
+        return;
+    pelletsToLaunch = maxPellets;
+    targetLocation = {(double) x, (double) y};
+    shootMode = true;
+    launchLocationUpdate = false;
 }
 
 void GameBoard::handleShoot() {
@@ -193,6 +121,28 @@ void GameBoard::handleShoot() {
         pelletsToLaunch--;
         if (pelletsToLaunch == 0) shootMode = false;
     }
+}
+
+void GameBoard::setup(GameWindow *gameWindow, QGraphicsView *graphicsView) {
+    this->scene = new QGraphicsScene(nullptr);
+    this->gameWindow = gameWindow;
+    graphicsView->setScene(scene);
+    graphicsView->setSceneRect(scene->sceneRect());
+    launchIndicate->draw(scene);
+    for (int y = 0; y < row; y++)
+        for (int x = 0; x < col; x++)
+            grids[y][x]->draw(scene);
+    nextRound();
+}
+
+void GameBoard::addOwnPellets(int n) {
+    Board::addOwnPellets(n);
+    gameWindow->setPellets(maxPellets);
+}
+
+void GameBoard::addScore(int n) {
+    Board::addScore(n);
+    gameWindow->setScore(score);
 }
 
 

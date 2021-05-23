@@ -10,7 +10,6 @@
 #include <cmath>
 #include "../Grid/Grid.h"
 #include "../Pellet/Pellet.h"
-#include "../Pellet/SolidPellet.h"
 class Pellet;
 
 /**
@@ -21,13 +20,14 @@ protected:
     const unsigned int row; // 行
     const unsigned int col; // 列
     Grid*** const grids; // 格子
-    std::vector<Pellet*> existsPellets; // 正在移动的弹珠
+    std::vector<Pellet*> trackingPellets; // 需要追踪的弹珠
     Location targetLocation; // 上一次鼠标点击的位置
     Location launchLocation; // 弹珠发射的位置
     unsigned int round = 0; // 当前回合
     unsigned int pelletsToLaunch = 0; // 还未发射的弹珠
     unsigned int tick = 0; // 当前的 tick
     unsigned int maxPellets = 3; // 玩家拥有的弹珠数
+    unsigned int score = 0; // 玩家当前的分数
 
     // 随机数相关
     std::mt19937 randomEngine;
@@ -68,6 +68,13 @@ public:
     int nextInt(int min, int max);
 
 
+    const Location &getTargetLocation();
+
+    const Location &getLaunchLocation();
+
+    virtual void addOwnPellets(int n);
+
+    virtual void addScore(int n);
 };
 
 

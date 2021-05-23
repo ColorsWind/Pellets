@@ -22,6 +22,7 @@ int ExplosivePellet::square(int x) {
 }
 
 PelletResult ExplosivePellet::hit(Board *board, Grid *grid) {
+    handleHit(board, grid);
     int gridX = grid->getLocation().getGridX();
     int gridY = grid->getLocation().getGridY();
     int minX = max(0, gridX-radius), minY = max(0, gridY-radius);

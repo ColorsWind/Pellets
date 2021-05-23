@@ -7,6 +7,7 @@
 #include <ctime>
 #include <iostream>
 #include "../Constants.h"
+#include "../Pellet/SolidPellet.h"
 
 Board::Board(int row, int col) :
         row(row),
@@ -40,7 +41,7 @@ Grid *Board::getOrNull(int x, int y) const noexcept {
 Pellet *Board::shoot() {
     auto pellet = new SolidPellet(launchLocation, targetLocation.add(-launchLocation.toVector()).toVector().normalize(
             Config::relative_velocity));
-    existsPellets.push_back(pellet);
+    trackingPellets.push_back(pellet);
     return pellet;
 }
 
@@ -54,4 +55,20 @@ int Board::nextInt(int min, int max) {
 
 double Board::nextDouble(double max) {
     return doubleGenerator(randomEngine) * max;
+}
+
+const Location &Board::getTargetLocation() {
+    return targetLocation;
+}
+
+const Location &Board::getLaunchLocation() {
+    return launchLocation;
+}
+
+void Board::addOwnPellets(int n) {
+    maxPellets += n;
+}
+
+void Board::addScore(int n) {
+    score += n;
 }

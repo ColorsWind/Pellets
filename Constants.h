@@ -13,7 +13,10 @@ namespace Config {
     static int board_col = 12;
     static double absolute_velocity = grid_size * 12;
     static double relative_velocity = absolute_velocity / fps;
+    static double back_velocity = 2 * relative_velocity;
     static double min_angle = 1.0 / 6;
+    static double point_error = back_velocity;
+    static int initial_pellets = 3;
 }
 
 #endif //PELLETS_CONSTANTS_H

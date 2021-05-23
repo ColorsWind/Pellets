@@ -1,4 +1,4 @@
-//
+﻿//
 // Created by colors_wind on 2021/3/25.
 //
 
@@ -8,12 +8,14 @@
 
 #include "../Location.h"
 #include "Pellet.h"
-
+#include "../Constants.h"
+class Board;
 class AbstractPellet : public Pellet {
 protected:
     Location location;
     Vector velocity;
     PelletItem *pelletItem;
+    int hitCount = 0;
 public:
     AbstractPellet(const Location &location, const Vector &velocity);
 
@@ -36,6 +38,16 @@ public:
 
     void reflectY() override;
     void reflectX() override;
+
+    void handleHit(Board *board, Grid *grid);
+
+    void leaveBoard() override;
+
+    bool inBoard() override;
+
+    void setVelocity(Vector vector) override;
+
+
 };
 
 

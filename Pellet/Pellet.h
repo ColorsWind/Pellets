@@ -16,7 +16,6 @@ enum PelletResult {
     DISAPPEAR, REFLECT, NONE
 };
 class Pellet {
-
 public:
     virtual void draw(QGraphicsScene *scene) = 0;
 
@@ -32,6 +31,8 @@ public:
 
     virtual Vector getVelocity() const = 0;
 
+    virtual void setVelocity(Vector vector) = 0;
+
     virtual void reflectY() = 0;
 
     virtual void reflectX() = 0;
@@ -45,6 +46,10 @@ public:
     virtual const PelletItem* getItem() const = 0;
 
     virtual PelletResult hit(Board *board, Grid *grid) = 0;
+
+    virtual void leaveBoard() = 0;
+
+    virtual bool inBoard() = 0;
 };
 
 

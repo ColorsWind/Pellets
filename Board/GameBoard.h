@@ -1,4 +1,4 @@
-//
+﻿//
 // Created by colors_wind on 2021/3/18.
 //
 
@@ -7,25 +7,27 @@
 
 
 #include "Board.h"
+#include "../Pellet/SolidPellet.h"
 #include <QGraphicsScene>
 #include <QTimer>
 #include <QRectF>
 #include <QWidget>
 #include <random>
+class GameWindow;
 class GameBoard : public Board {
 
 
 private:
     QRectF region;
     SolidPellet* launchIndicate;
-    QGraphicsScene *scene;
+    QGraphicsScene *scene = nullptr;
     bool launchLocationUpdate = false;
-    bool shootMode = false;
-
+    bool shootMode = false; // 标记是否正在发射弹珠
+    GameWindow *gameWindow;
 public:
     GameBoard(int row, int col);
 
-    void setup(QWidget *widget);
+    void setup(GameWindow* gameWindow, QGraphicsView *graphicsView);
 
     void doTick();
 
@@ -34,15 +36,12 @@ public:
     void nextRound() override;
 
 
-    bool handlePellet(Pellet *pellet);
-
-    inline bool isCollided(int sign, double pelletCentreComponent, double gridCentreComponent);
-
-    inline int locationToIndex(double locationComponent);
-
-    int signOfComponent(double component);
-
     void handleShoot();
+
+    void addOwnPellets(int n) override;
+
+    void addScore(int n) override;
+
 
 };
 

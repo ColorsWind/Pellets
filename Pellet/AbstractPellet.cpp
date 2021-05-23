@@ -3,6 +3,7 @@
 //
 
 #include "AbstractPellet.h"
+#include "../Board/Board.h"
 #include "../Constants.h"
 
 AbstractPellet::AbstractPellet(const Location &location, const Vector &velocity) :
@@ -17,6 +18,10 @@ void AbstractPellet::reflectY() {
 
 void AbstractPellet::reflectX() {
     velocity.vectorY = -velocity.vectorY;
+}
+
+void AbstractPellet::setVelocity(Vector vector) {
+    velocity = vector;
 }
 
 void AbstractPellet::move(double interval) {
@@ -70,9 +75,20 @@ void AbstractPellet::fixLocationY(Location base) {
     location.pointX = base.pointX + Config::grid_size / 2;
 }
 
-
-
 Vector AbstractPellet::getVelocity() const {
     return velocity;
+}
+
+void AbstractPellet::handleHit(Board *board, Grid *grid) {
+    hitCount++;
+    board->addScore(1);
+}
+
+void AbstractPellet::leaveBoard() {
+    hitCount = -1;
+}
+
+bool AbstractPellet::inBoard() {
+    return hitCount >= 0;
 }
 
