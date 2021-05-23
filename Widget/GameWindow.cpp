@@ -17,6 +17,7 @@ GameWindow::GameWindow(QWidget *parent) :
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(qDoTick()));
     timer->start(1000/ Config::fps);
+    ui->graphicsView->setup(&gameBoard);
     gameBoard.setup(this, ui->graphicsView);
 }
 
@@ -24,9 +25,7 @@ GameWindow::~GameWindow() {
     delete ui;
 }
 
-void GameWindow::mousePressEvent(QMouseEvent *event) {
-    gameBoard.mouseEvent(event->x(), event->y());
-}
+
 
 void GameWindow::qDoTick() {
     gameBoard.doTick();

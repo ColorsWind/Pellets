@@ -20,7 +20,6 @@ public slots:
     void qDoTick();
 public:
     explicit GameWindow(QWidget *parent = nullptr);
-    void mousePressEvent(QMouseEvent *event) override;
     ~GameWindow() override;
     void setScore(int n);
     void setPellets(int n);
