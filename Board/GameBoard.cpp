@@ -124,7 +124,7 @@ void GameBoard::handleShoot() {
 }
 
 void GameBoard::setup(GameWindow *gameWindow, QGraphicsView *graphicsView) {
-    this->scene = new QGraphicsScene(nullptr);
+    this->scene = new QGraphicsScene(0,0,600,800,nullptr);
     this->gameWindow = gameWindow;
     graphicsView->setScene(scene);
     graphicsView->setSceneRect(scene->sceneRect());
