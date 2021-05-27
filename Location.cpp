@@ -14,11 +14,11 @@ int Location::getGridY() const {
     return int(pointY + EPS);
 }
 
-Location Location::add(Vector vector) const {
+Location Location::add(const Vector vector) const {
     return Location(pointX + vector.vectorX, pointY + vector.vectorY);
 }
 
 Vector Location::toVector() const {
-    return Vector(pointX, pointY);
+    return {pointX, pointY};
 }
 

@@ -45,7 +45,7 @@ Pellet *Board::shoot() {
     return pellet;
 }
 
-unsigned int &Board::getOwnedPellets() {
+int &Board::getOwnedPellets() {
     return maxPellets;
 }
 

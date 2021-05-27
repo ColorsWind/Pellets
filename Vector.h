@@ -11,10 +11,10 @@ class Vector {
 public:
     double vectorX, vectorY;
 
-    Vector(const double velocityX, const double velocityY);
+    Vector(double x, double y);
     Vector(const Location& to, const Location& from);
 
-    Vector operator*(const double k) const;
+    Vector operator*(double k) const;
 
     Vector normalize(double length) const;
 
@@ -22,7 +22,7 @@ public:
 
     double norm() const;
 
-    friend Vector operator*(const double k, const Vector &vector);
+    friend Vector operator*(double k, const Vector &vector);
 };
 
 

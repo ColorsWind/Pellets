@@ -12,12 +12,12 @@ class Location {
 public:
     double pointX, pointY;
 
-    Location(const double pointX, const double pointY);
+    Location(double pointX, double pointY);
 
     int getGridX() const;
     int getGridY() const;
 
-    Location add(Vector vector) const;
+    Location add(const Vector vector) const;
     Vector toVector() const;
     Location& operator=(const Location &location) = default;
 

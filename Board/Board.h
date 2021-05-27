@@ -23,11 +23,11 @@ protected:
     std::vector<Pellet*> trackingPellets; // 需要追踪的弹珠
     Location targetLocation; // 上一次鼠标点击的位置
     Location launchLocation; // 弹珠发射的位置
-    unsigned int round = 0; // 当前回合
-    unsigned int pelletsToLaunch = 0; // 还未发射的弹珠
-    unsigned int tick = 0; // 当前的 tick
-    unsigned int maxPellets = 3; // 玩家拥有的弹珠数
-    unsigned int score = 0; // 玩家当前的分数
+    int round = 0; // 当前回合
+    int pelletsToLaunch = 0; // 还未发射的弹珠
+    int tick = 0; // 当前的 tick
+    int maxPellets = 3; // 玩家拥有的弹珠数
+    int score = 0; // 玩家当前的分数
 
     // 随机数相关
     std::mt19937 randomEngine;
@@ -58,7 +58,7 @@ public:
     Pellet* shoot();
 
     // 获取玩家拥有的弹珠数量(即每回合可以发射的数量)
-    unsigned int & getOwnedPellets();
+    int & getOwnedPellets();
 
     // 下一关
     virtual void nextRound() = 0;

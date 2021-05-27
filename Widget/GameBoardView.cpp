@@ -20,3 +20,5 @@ void GameBoardView::wheelEvent(QWheelEvent *event) {
 void GameBoardView::setup(GameBoard *gameBoard) {
     this -> gameBoard = gameBoard;
 }
+
+GameBoardView::GameBoardView(QWidget *widget) : QGraphicsView(widget) {}

@@ -7,11 +7,12 @@
 
 #include <QGraphicsView>
 class GameBoard;
+/*Qt UI*/
 class GameBoardView : public QGraphicsView {
 private:
     GameBoard* gameBoard = nullptr;
 public:
-    GameBoardView(QWidget* widget) : QGraphicsView(widget) {}
+    explicit GameBoardView(QWidget* widget);
 
     void setup(GameBoard* gameBoard);
 

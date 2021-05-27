@@ -18,13 +18,11 @@ class GameBoard : public Board {
 
 
 private:
-    QRectF region;
     SolidPellet* launchIndicate;
     QGraphicsScene *scene = nullptr;
     bool launchLocationUpdate = false;
     bool shootMode = false; // 标记是否正在发射弹珠
     GameWindow *gameWindow;
-    QGraphicsView *graphicsView;
 public:
     GameBoard(int row, int col);
 

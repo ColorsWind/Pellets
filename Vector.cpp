@@ -6,13 +6,13 @@
 #include "Vector.h"
 #include "Location.h"
 
-Vector::Vector(const double velocityX, const double velocityY) : vectorX(velocityX), vectorY(velocityY) {}
+Vector::Vector(const double x, const double y) : vectorX(x), vectorY(y) {}
 
 Vector Vector::operator*(const double k) const {
     return Vector(vectorX * k, vectorY * k);
 }
 
-Vector Vector::normalize(double length) const {
+Vector Vector::normalize(const double length) const {
     double k = length / norm();
     return *this * k;
 }
