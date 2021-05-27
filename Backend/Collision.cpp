@@ -10,8 +10,10 @@ bool updatePellet(Board *board, Pellet *pellet, QGraphicsScene *scene, bool show
     Location pelletCentre = pellet->getCentre();
     // 检查与区域的碰撞
     if (!pellet->inBoard()) {
+        // 检查是否需要展示回收动画 第一颗回收的弹珠需要展示
         if (showToTarget) {
-            if (abs(board->getLaunchLocation().pointX -  pellet->getLocation().pointX) > Config::point_error) {
+            // 检查是否已经移动到回收区域
+            if (abs(board->getLaunchLocation().pointX - pellet->getLocation().pointX) > Config::point_error) {
                 pellet->setVelocity({signOfComponent(board->getLaunchLocation().pointX - pellet->getLocation().pointX) *
                                      Config::relative_velocity, 0});
                 return true;
@@ -20,17 +22,17 @@ bool updatePellet(Board *board, Pellet *pellet, QGraphicsScene *scene, bool show
             }
         } else return false;
     } else if (velocity.vectorY < 0 && pelletCentre.pointY - Config::pellet_size / 2 < 0) {
-        // 碰到 X 边界
+        // 碰到 Y 边界
         pellet->reflectX();
         return true;
     } else if ((velocity.vectorX < 0 && pelletCentre.pointX - Config::pellet_size / 2 < 0)
                || (velocity.vectorX > 0
                    && pelletCentre.pointX + Config::pellet_size / 2 > Config::board_col * Config::grid_size)) {
-        // 碰到 Y 边界
+        // 碰到 X 边界
         pellet->reflectY();
         return true;
     } else if (velocity.vectorY > 0 &&
-               pelletCentre.pointY - Config::pellet_size / 2 > Config::board_row * Config::grid_size) {
+               pelletCentre.pointY + Config::pellet_size / 2 > Config::board_row * Config::grid_size) {
         // 离开区域
         pellet->leaveBoard();
         return true;

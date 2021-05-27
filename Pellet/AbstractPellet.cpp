@@ -54,7 +54,7 @@ void AbstractPellet::setLocation(Location location) {
 }
 
 Location AbstractPellet::getCentre() const {
-    return location.add({Config::grid_size / 2.0, Config::grid_size / 2.0});
+    return location.add({Config::pellet_size / 2.0, Config::pellet_size / 2.0});
 }
 
 void AbstractPellet::fixLocationX(Location base) {
