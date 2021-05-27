@@ -11,6 +11,11 @@
 #include "../Widget/GameWindow.h"
 #include <random>
 
+GameBoard::GameBoard(int row, int col) : Board(row, col),
+                                         region(0, 0, col * Config::grid_size, row * Config::grid_size),
+                                         launchIndicate(new SolidPellet(launchLocation, {0.0, 0.0})) {
+}
+
 void GameBoard::doTick() {
     bool hasPellet = !trackingPellets.empty();
     for (auto iter = trackingPellets.begin(); iter != trackingPellets.cend();) {
@@ -29,6 +34,7 @@ void GameBoard::doTick() {
                 launchIndicate->setLocation(launchLocation);
                 launchIndicate->update(scene);
             }
+
             delete pellet;
         }
     }
@@ -37,6 +43,7 @@ void GameBoard::doTick() {
         nextRound();
     }
     scene->update();
+    graphicsView->updateGeometry();
     tick++;
 }
 
@@ -96,10 +103,7 @@ void GameBoard::nextRound() {
 }
 
 
-GameBoard::GameBoard(int row, int col) : Board(row, col),
-                                         region(0, 0, col * Config::grid_size, row * Config::grid_size),
-                                         launchIndicate(new SolidPellet(launchLocation, {0.0, 0.0})) {
-}
+
 
 void GameBoard::mouseEvent(int x, int y) {
     if (shootMode || !trackingPellets.empty())
@@ -126,7 +130,9 @@ void GameBoard::handleShoot() {
 void GameBoard::setup(GameWindow *gameWindow, QGraphicsView *graphicsView) {
     this->scene = new QGraphicsScene(0,0,600,800,nullptr);
     this->gameWindow = gameWindow;
+    this->graphicsView = graphicsView;
     graphicsView->setScene(scene);
+
     graphicsView->setSceneRect(scene->sceneRect());
     launchIndicate->draw(scene);
     for (int y = 0; y < row; y++)

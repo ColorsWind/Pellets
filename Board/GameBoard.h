@@ -24,6 +24,7 @@ private:
     bool launchLocationUpdate = false;
     bool shootMode = false; // 标记是否正在发射弹珠
     GameWindow *gameWindow;
+    QGraphicsView *graphicsView;
 public:
     GameBoard(int row, int col);
 
@@ -41,6 +42,7 @@ public:
     void addOwnPellets(int n) override;
 
     void addScore(int n) override;
+
 
 
 };

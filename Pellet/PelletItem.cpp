@@ -3,6 +3,7 @@
 //
 
 #include "PelletItem.h"
+#include "../Constants.h"
 
 PelletItem::PelletItem(double left, double top, double width, double height, QGraphicsItem *parent)
         : left(left), top(top), width(width), height(height), QGraphicsItem(parent), rect(left, top, width, height) {
@@ -10,7 +11,10 @@ PelletItem::PelletItem(double left, double top, double width, double height, QGr
 
 
 QRectF PelletItem::boundingRect() const {
-    return rect;
+    return {left - Config::relative_velocity,
+            top + Config::relative_velocity,
+            width + 2 * Config::relative_velocity,
+            height + 2 * Config::relative_velocity,};
 }
 
 void PelletItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
@@ -28,6 +32,7 @@ QPainterPath PelletItem::shape() const {
 void PelletItem::updateItem(double left, double top, double width, double height) {
     rect = {left, top, width, height};
     prepareGeometryChange();
+
 }
 
 
