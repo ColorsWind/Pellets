@@ -1,7 +1,6 @@
 #include <QApplication>
 #include <QPushButton>
 #include <iostream>
-#include "Widget/GameWidget.h"
 #include "Widget/MainWindow.h"
 
 using namespace std;

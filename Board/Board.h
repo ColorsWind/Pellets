@@ -75,6 +75,7 @@ public:
     virtual void addOwnPellets(int n);
 
     virtual void addScore(int n);
+
 };
 
 
