@@ -11,17 +11,14 @@
 
 class GridItem : public QGraphicsItem {
 protected:
-    int left;
-    int top;
-    int width;
-    int height;
     QColor color;
     QString label;
     Grid* grid;
     QRect rect;
 public:
-    GridItem(Grid* grid, int left, int top, int width, int height, const QColor &color,
+    GridItem(Grid* grid, const QColor &color,
              const QString &label, QGraphicsItem *parent = nullptr);
+
 
     virtual QRectF boundingRect() const override;
 

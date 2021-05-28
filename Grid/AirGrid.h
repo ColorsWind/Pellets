@@ -18,11 +18,10 @@ public:
 
     void update(QGraphicsScene *scene) override;
 
-    bool colliding(Pellet* pellet) override;
-
     bool isAlive() override;
 
     PelletResult hit(Board *board, int damage) override;
+
 
 
 };

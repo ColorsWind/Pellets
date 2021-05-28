@@ -12,7 +12,8 @@
 #include <QGraphicsScene>
 
 class HPGrid : public AbstractGrid {
-
+protected:
+    GridItem* gridItem = nullptr;
 public:
     int health;
 
@@ -22,18 +23,15 @@ public:
 
     void update(QGraphicsScene *scene) override;
 
-    HPGrid(const Location &point, int health, GridItem* gridItem = nullptr);
+    HPGrid(const Location &point, int health);
 
     virtual QColor getColor() const;
-
-    bool colliding(Pellet *pellet) override;
 
     bool isAlive() override;
 
     PelletResult hit(Board *board, int damage) override;
 
-    GridItem *initGridItem() override;
-
+    virtual GridItem* initGridItem();
 };
 
 

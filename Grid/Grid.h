@@ -23,7 +23,6 @@ public:
     virtual void remove(QGraphicsScene *scene) = 0;
     virtual void update(QGraphicsScene *scene) = 0;
     virtual void move(Vector vector) = 0;
-    virtual bool colliding(Pellet *pellet) = 0;
     virtual bool isAlive() = 0;
     virtual PelletResult hit(Board *board, int damage) = 0;
 };

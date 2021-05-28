@@ -12,10 +12,6 @@ void AirGrid::remove(QGraphicsScene *scene) {}
 
 void AirGrid::update(QGraphicsScene *scene) {}
 
-bool AirGrid::colliding(Pellet *pellet) {
-    return false;
-}
-
 bool AirGrid::isAlive() {
     return false;
 }
@@ -23,5 +19,3 @@ bool AirGrid::isAlive() {
 PelletResult AirGrid::hit(Board *board, int damage) {
     return PelletResult::NONE;
 }
-
-

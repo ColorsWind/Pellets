@@ -3,16 +3,14 @@
 //
 
 #include "HPGrid.h"
-#include "../Constants.h"
 #include <iostream>
 #include <cmath>
 
 //using namespace std;
 void HPGrid::draw(QGraphicsScene *scene) {
-    if (gridItem) {
-        //cout << "draw\t" << gridItem << endl;
-        scene->addItem(gridItem);
-    }
+    if (!gridItem)
+        gridItem = initGridItem();
+    scene->addItem(gridItem);
 }
 
 void HPGrid::remove(QGraphicsScene *scene) {
@@ -43,53 +41,24 @@ QColor HPGrid::getColor() const {
 }
 
 
-HPGrid::HPGrid(const Location &point, int health, GridItem *gridItem) : AbstractGrid(point, gridItem), health(health) {
+
+HPGrid::HPGrid(const Location &point, int health) : AbstractGrid(point), health(health) {
+
 }
 
 bool HPGrid::isAlive() {
     return health > 0;
 }
 
-GridItem *HPGrid::initGridItem() {
-    return new GridItem(this, location.getGridX(), location.getGridY(), Config::grid_size, Config::grid_size,
-                        getColor(),
-                        QString::number(health));
-}
-
-using namespace std;
-
-bool HPGrid::colliding(Pellet *pellet) {
-    const Vector velocity = pellet->getVelocity();
-    const Vector delta = Vector(this->getCentre(), pellet->getCentre());
-    bool xColliding = signbit(delta.vectorX) == signbit(velocity.vectorX);
-    bool yColliding = signbit(delta.vectorY) == signbit(velocity.vectorY);
-    if (xColliding && yColliding) {
-        cout << "xy" << endl;
-        health--;
-        pellet->reflectY();
-        pellet->reflectX();
-        //pellet->fixLocationX(location);
-        //pellet->fixLocationY(location);
-    } else if (xColliding) {
-        cout << "x" << endl;
-        health--;
-        pellet->reflectX();
-        //pellet->fixLocationY(location);
-    } else if (yColliding) {
-        cout << "y" << endl;
-        health--;
-        pellet->reflectY();
-        //pellet->fixLocationX(location);
-    } else {
-        cout << "ERROR" << endl;
-        return false;
-    }
-
-    return true;
-}
 
 PelletResult HPGrid::hit(Board *board, int damage) {
     health -= damage;
     return PelletResult::REFLECT;
+}
+
+GridItem *HPGrid::initGridItem() {
+    return new GridItem(this,
+                        getColor(),
+                        QString::number(health));
 }
 

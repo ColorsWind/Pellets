@@ -12,19 +12,18 @@
 class AbstractGrid : public Grid {
 protected:
     Location location;
-    GridItem* gridItem;
 public:
     Location getLocation() const override;
 
     void move(Vector vector) override;
 
-    AbstractGrid(const Location &point, GridItem* gridItem = nullptr);
+    explicit AbstractGrid(const Location &point);
 
     Location getCentre() const override;
 
-    void setLocation(const Location location) override;
+    void setLocation(Location location) override;
 
-    virtual GridItem* initGridItem() = 0;
+
 };
 
 #endif //PELLETS_ABSTRACTGRID_H

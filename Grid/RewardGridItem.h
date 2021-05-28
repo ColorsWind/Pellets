@@ -2,15 +2,15 @@
 // Created by colors_wind on 2021/3/26.
 //
 
-#ifndef PELLETS_PELLETGRIDITEM_H
-#define PELLETS_PELLETGRIDITEM_H
+#ifndef PELLETS_REWARDGRIDITEM_H
+#define PELLETS_REWARDGRIDITEM_H
 
 
 #include "GridItem.h"
 
-class PelletGridItem : public GridItem {
+class RewardGridItem : public GridItem {
 public:
-    PelletGridItem(Grid* grid, int left, int top, int width, int height, const QColor &color,
+    RewardGridItem(Grid* grid, const QColor &color,
     const QString &label, QGraphicsItem *parent = nullptr);
 
     QRectF boundingRect() const override;
@@ -21,4 +21,4 @@ public:
 };
 
 
-#endif //PELLETS_PELLETGRIDITEM_H
+#endif //PELLETS_REWARDGRIDITEM_H

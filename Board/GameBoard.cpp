@@ -75,7 +75,7 @@ void GameBoard::nextRound() {
         std::uniform_int_distribution<int> intGenerator(1, 2 * round + 1);
         Location location = {double(x * 50), 0.0};
         if (doubleGenerator(randomEngine) < possibility) {
-            grids[0][x] = new HPGrid{location, intGenerator(randomEngine)};
+            grids[0][x] = new HPGrid(location, intGenerator(randomEngine));
             grids[0][x]->draw(scene);
             numHPGrids++;
         } else {

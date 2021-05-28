@@ -20,7 +20,7 @@ add_executable(${PROJECT_NAME} main.cpp Location.h Location.cpp Vector.h Vector.
         Pellet/RandomPellet.cpp Pellet/RandomPellet.h
         Grid/AbsorbGrid.cpp Grid/AbsorbGrid.h
         Grid/RewardGrid.cpp Grid/RewardGrid.h
-        Grid/PelletGridItem.cpp Grid/PelletGridItem.h
+        Grid/RewardGridItem.cpp Grid/RewardGridItem.h
         Backend/Collision.cpp Backend/Collision.h
         Widget/MainWindow.cpp Widget/MainWindow.h Widget/MainWindow.ui Widget/GameWindow.cpp Widget/GameWindow.h Widget/GameWindow.ui Widget/GameBoardView.cpp Widget/GameBoardView.h Grid/ExplosiveGird.cpp Grid/ExplosiveGird.h)
 

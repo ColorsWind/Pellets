@@ -5,7 +5,7 @@
 #include "RewardGrid.h"
 #include "../Board/Board.h"
 #include "../Board/GameBoard.h"
-#include "PelletGridItem.h"
+#include "RewardGridItem.h"
 
 
 PelletResult RewardGrid::hit(Board *board, int damage) {
@@ -19,14 +19,19 @@ PelletResult RewardGrid::hit(Board *board, int damage) {
         return NONE;
 }
 
-RewardGrid::RewardGrid(const Location &point, int health) : HPGrid(point, health, new PelletGridItem(this, point.getGridX(),
-                                                                                               point.getGridY(), Config::grid_size, Config::grid_size,
-                                                                                               getColor(),
-                                                                                               QString::number(
-                                                                                                       health))) {
+RewardGrid::RewardGrid(const Location &point, int health) :
+        HPGrid(point, health) {
 
 }
 
 QColor RewardGrid::getColor() const {
     return {250, 210, 20, 250};
+}
+
+
+GridItem *RewardGrid::initGridItem() {
+    return new RewardGridItem(this,
+                              getColor(),
+                              QString::number(
+                                      health));
 }

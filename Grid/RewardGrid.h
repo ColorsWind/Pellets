@@ -19,6 +19,9 @@ public:
     PelletResult hit(Board *board, int damage);
 
     QColor getColor() const override;
+
+    GridItem *initGridItem() override;
+
 };
 
 

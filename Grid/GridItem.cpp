@@ -3,6 +3,7 @@
 //
 
 #include "GridItem.h"
+#include "../Constants.h"
 
 QRectF GridItem::boundingRect() const {
     return rect;
@@ -20,17 +21,20 @@ QPainterPath GridItem::shape() const {
     return path;
 }
 
-GridItem::GridItem(Grid* grid, int left, int top, int width, int height, const QColor &color,
-                   const QString &label, QGraphicsItem *parent) : grid(grid), QGraphicsItem(parent), left(left), top(top),
-                                                                  width(width), height(height),
+GridItem::GridItem(Grid *grid, const QColor &color,
+                   const QString &label, QGraphicsItem *parent) : grid(grid), QGraphicsItem(parent),
                                                                   color(color), label(label),
-                                                                  rect(QRect(left, top, width, height)) {
+                                                                  rect({grid->getLocation().getGridX(),
+                                                                        grid->getLocation().getGridY(),
+                                                                        Config::grid_size, Config::grid_size}) {
 }
 
-void GridItem:: updateItem(int left, int top, int width, int height, QColor color, QString label) {
+
+void GridItem::updateItem(int left, int top, int width, int height, QColor color, QString label) {
     rect = {left, top, width, height};
     this->color = color;
     this->label = label;
     prepareGeometryChange();
 }
+
 

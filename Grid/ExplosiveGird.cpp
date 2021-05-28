@@ -6,21 +6,23 @@
 #include "../Constants.h"
 #include "../Board/Board.h"
 #include "../Backend/Collision.h"
-ExplosiveGird::ExplosiveGird(const Location &point, int health, int damage, int radius) : HPGrid(point, health),
-                                                                                          damage(damage),
-                                                                                          radius(radius) {
+
+ExplosiveGird::ExplosiveGird(const Location &point, int health, int damage, int radius) :
+        HPGrid(point, health),
+        damage(damage),
+        radius(radius) {
 }
 
 QColor ExplosiveGird::getColor() const {
-    return  {200, 200, 150, 60};
+    return {200, 200, 150, 60};
 }
 
 
 PelletResult ExplosiveGird::hit(Board *board, int damage) {
     double radius2 = radius * radius;
     double multiDamage = min(damage, health) * this->damage;
-    for (int y=0;y<Config::board_row;y++)
-        for (int x=0;x<Config::board_col;x++) {
+    for (int y = 0; y < Config::board_row; y++)
+        for (int x = 0; x < Config::board_col; x++) {
             auto hit = board->getOrNull(x, y);
             if (!hit || !hit->isAlive()) continue;
             double rDistance2 = location.distance2(hit->getLocation()) / radius2;
