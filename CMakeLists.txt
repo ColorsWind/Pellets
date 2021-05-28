@@ -22,7 +22,7 @@ add_executable(${PROJECT_NAME} main.cpp Location.h Location.cpp Vector.h Vector.
         Grid/RewardGrid.cpp Grid/RewardGrid.h
         Grid/PelletGridItem.cpp Grid/PelletGridItem.h
         Backend/Collision.cpp Backend/Collision.h
-        Widget/MainWindow.cpp Widget/MainWindow.h Widget/MainWindow.ui Widget/GameWindow.cpp Widget/GameWindow.h Widget/GameWindow.ui Widget/GameBoardView.cpp Widget/GameBoardView.h)
+        Widget/MainWindow.cpp Widget/MainWindow.h Widget/MainWindow.ui Widget/GameWindow.cpp Widget/GameWindow.h Widget/GameWindow.ui Widget/GameBoardView.cpp Widget/GameBoardView.h Grid/ExplosiveGird.cpp Grid/ExplosiveGird.h)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "

@@ -81,3 +81,13 @@ bool isCollided(int sign, double pelletCentreComponent, double gridCentreCompone
     return sign * (pelletCentreComponent + sign * Config::pellet_size / 2) >
            sign * (gridCentreComponent - sign * Config::grid_size / 2);
 }
+
+int min(int x, int y) {
+    if (x > y) return y;
+    else return x;
+}
+
+int max(int x, int y) {
+    if (x > y) return x;
+    else return y;
+}

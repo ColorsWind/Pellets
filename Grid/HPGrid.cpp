@@ -43,17 +43,17 @@ QColor HPGrid::getColor() const {
 }
 
 
-HPGrid::HPGrid(const Location &point, int health, GridItem *gridItem) : AbstractGrid(point), health(health) {
-    if (gridItem) {
-        this->gridItem = gridItem;
-    } else {
-        this->gridItem = new GridItem(this, point.getGridX(), point.getGridY(), Config::grid_size, Config::grid_size, getColor(),
-                                      QString::number(health));
-    }
+HPGrid::HPGrid(const Location &point, int health, GridItem *gridItem) : AbstractGrid(point, gridItem), health(health) {
 }
 
 bool HPGrid::isAlive() {
     return health > 0;
+}
+
+GridItem *HPGrid::initGridItem() {
+    return new GridItem(this, location.getGridX(), location.getGridY(), Config::grid_size, Config::grid_size,
+                        getColor(),
+                        QString::number(health));
 }
 
 using namespace std;

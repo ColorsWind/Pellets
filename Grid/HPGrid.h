@@ -12,8 +12,7 @@
 #include <QGraphicsScene>
 
 class HPGrid : public AbstractGrid {
-protected:
-    GridItem* gridItem;
+
 public:
     int health;
 
@@ -32,6 +31,8 @@ public:
     bool isAlive() override;
 
     PelletResult hit(Board *board, int damage) override;
+
+    GridItem *initGridItem() override;
 
 };
 

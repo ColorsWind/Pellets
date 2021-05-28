@@ -17,6 +17,9 @@ public:
     int getGridX() const;
     int getGridY() const;
 
+    double distance2(const Location &other) const;
+    double distance(const Location &other) const;
+
     Location add(const Vector vector) const;
     Vector toVector() const;
     Location& operator=(const Location &location) = default;

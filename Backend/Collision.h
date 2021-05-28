@@ -20,5 +20,9 @@ inline bool isCollided(int sign, double pelletCentreComponent, double gridCentre
  */
 bool updatePellet(Board *board, Pellet *pellet, QGraphicsScene *scene, bool showToTarget);
 
+int min(int x, int y);
+
+int max(int x, int y);
+
 
 #endif //PELLETS_COLLISION_H

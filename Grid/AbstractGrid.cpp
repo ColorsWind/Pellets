@@ -12,7 +12,10 @@ void AbstractGrid::setLocation(const Location location) {
     this->location = location;
 }
 
-AbstractGrid::AbstractGrid(const Location &point) : location(point) {}
+AbstractGrid::AbstractGrid(const Location &point, GridItem *gridItem) : location(point) {
+    if (gridItem) this->gridItem = gridItem;
+    else this->gridItem = initGridItem();
+}
 
 Location AbstractGrid::getCentre() const {
     return location.add({25,25});
@@ -21,3 +24,4 @@ Location AbstractGrid::getCentre() const {
 void AbstractGrid::move(Vector vector) {
     location = location.add(vector);
 }
+
