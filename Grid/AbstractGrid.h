@@ -24,6 +24,7 @@ public:
     void setLocation(Location location) override;
 
 
+
 };
 
 #endif //PELLETS_ABSTRACTGRID_H

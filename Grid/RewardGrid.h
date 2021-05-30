@@ -20,6 +20,8 @@ public:
 
     QColor getColor() const override;
 
+    QString getLabel() const override;
+
     GridItem *initGridItem() override;
 
 };

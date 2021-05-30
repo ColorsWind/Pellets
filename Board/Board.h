@@ -51,6 +51,8 @@ public:
      */
     Grid *getOrNull(int x, int y) const noexcept;
 
+    int getRound() const noexcept;
+
     /**
      * 发射一颗弹珠
      * @return
@@ -60,11 +62,12 @@ public:
     // 获取玩家拥有的弹珠数量(即每回合可以发射的数量)
     int & getOwnedPellets();
 
+
     // 下一关
     virtual void nextRound() = 0;
 
     // 随机数相关
-    double nextDouble(double max);
+    double nextDouble(double max=1.0);
     int nextInt(int min, int max);
 
 

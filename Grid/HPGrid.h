@@ -27,6 +27,8 @@ public:
 
     virtual QColor getColor() const;
 
+    virtual QString getLabel() const;
+
     bool isAlive() override;
 
     PelletResult hit(Board *board, int damage) override;

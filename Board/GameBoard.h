@@ -7,7 +7,7 @@
 
 
 #include "Board.h"
-#include "../Pellet/SolidPellet.h"
+#include "../Pellet/Pellet.h"
 #include <QGraphicsScene>
 #include <QTimer>
 #include <QRectF>

@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QMouseEvent>
 #include "ui_GameWindow.h"
+#include "../Constants.h"
 
 
 GameWindow::GameWindow(QWidget *parent) :

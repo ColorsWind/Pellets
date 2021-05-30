@@ -2,14 +2,14 @@
 // Created by colors_wind on 2021/3/25.
 //
 
-#include "AbstractPellet.h"
+#include "Pellet.h"
 #include "../Board/Board.h"
 #include "../Constants.h"
 
 AbstractPellet::AbstractPellet(const Location &location, const Vector &velocity) :
-        location(location), velocity(velocity), pelletItem(
-        new PelletItem{location.pointX, location.pointY, double(Config::pellet_size), double(Config::pellet_size)}) {
+        location(location), velocity(velocity) {
 }
+
 
 void AbstractPellet::reflectY() {
     velocity.vectorX = -velocity.vectorX;
@@ -29,11 +29,16 @@ void AbstractPellet::move(double interval) {
 }
 
 void AbstractPellet::draw(QGraphicsScene *scene) {
+    if (pelletItem) return;
+    pelletItem = new PelletItem(location.pointX, location.pointY, double(Config::pellet_size), double(Config::pellet_size),
+                   getColor());
     scene->addItem(pelletItem);
 }
 
 void AbstractPellet::remove(QGraphicsScene *scene) {
+    if (!pelletItem) return;
     scene->removeItem(pelletItem);
+    pelletItem = nullptr;
 }
 
 void AbstractPellet::update(QGraphicsScene *scene) {
@@ -57,31 +62,12 @@ Location AbstractPellet::getCentre() const {
     return location.add({Config::pellet_size / 2.0, Config::pellet_size / 2.0});
 }
 
-void AbstractPellet::fixLocationX(Location base) {
-    if (velocity.vectorX > 0) {
-        this->location.pointX = base.pointX + Config::grid_size + Config::pellet_size / 2;
-    } else {
-        this->location.pointX = base.pointX + Config::pellet_size / 2;
-    }
-    location.pointY = base.pointY + Config::grid_size / 2;
-}
-
-void AbstractPellet::fixLocationY(Location base) {
-    if (velocity.vectorY > 0) {
-        this->location.pointY = base.pointY + Config::grid_size + Config::pellet_size / 2;
-    } else {
-        this->location.pointY = base.pointY + Config::pellet_size / 2;
-    }
-    location.pointX = base.pointX + Config::grid_size / 2;
-}
-
 Vector AbstractPellet::getVelocity() const {
     return velocity;
 }
 
 void AbstractPellet::handleHit(Board *board, Grid *grid) {
     hitCount++;
-    board->addScore(1);
 }
 
 void AbstractPellet::leaveBoard() {

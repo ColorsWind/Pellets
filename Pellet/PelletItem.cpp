@@ -5,8 +5,8 @@
 #include "PelletItem.h"
 #include "../Constants.h"
 
-PelletItem::PelletItem(double left, double top, double width, double height, QGraphicsItem *parent)
-        : left(left), top(top), width(width), height(height), QGraphicsItem(parent), rect(left, top, width, height) {
+PelletItem::PelletItem(double left, double top, double width, double height, QColor color, QGraphicsItem *parent)
+        : left(left), top(top), width(width), height(height), color(color), QGraphicsItem(parent), rect(left, top, width, height) {
 }
 
 
@@ -14,11 +14,11 @@ QRectF PelletItem::boundingRect() const {
     return {left - Config::relative_velocity,
             top + Config::relative_velocity,
             width + 2 * Config::relative_velocity,
-            height + 2 * Config::relative_velocity,};
+            height + 2 * Config::relative_velocity};
 }
 
 void PelletItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-    painter->setBrush(QBrush(QColor(250, 210, 20, 250), Qt::BrushStyle::SolidPattern));
+    painter->setBrush(QBrush(color, Qt::BrushStyle::SolidPattern));
     painter->drawEllipse(rect);
 }
 

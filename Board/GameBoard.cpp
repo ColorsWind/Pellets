@@ -19,21 +19,37 @@ void GameBoard::doTick() {
     bool hasPellet = !trackingPellets.empty();
     for (auto iter = trackingPellets.begin(); iter != trackingPellets.cend();) {
         Pellet *pellet = *iter;
-        if (updatePellet(this, pellet, this->scene, launchLocationUpdate)) {
-            iter++;
-            pellet->move(1.0);
-            pellet->update(scene);
-        } else {
-            iter = trackingPellets.erase(iter);
-            pellet->remove(scene);
-            if (!launchLocationUpdate) {
-                launchLocationUpdate = true;
-                launchLocation = pellet->getLocation();
-                launchLocation.pointX = pellet->getLocation().pointX;
-                launchIndicate->setLocation(launchLocation);
-                launchIndicate->update(scene);
-            }
-            delete pellet;
+        PelletResult result = updatePellet(this, pellet, this->scene, launchLocationUpdate);
+        switch(result) {
+            case DISAPPEAR:
+                iter = trackingPellets.erase(iter);
+                pellet->remove(scene);
+                if (!launchLocationUpdate) {
+                    launchLocationUpdate = true;
+                    launchLocation = pellet->getLocation();
+                    launchLocation.pointX = pellet->getLocation().pointX;
+                    launchIndicate->setLocation(launchLocation);
+                    launchIndicate->update(scene);
+                }
+                delete pellet;
+                break;
+            case TRANSFORM:
+                *iter = pellet -> transform(this);
+                if (*iter == pellet) {
+                    pellet->move(1.0);
+                    pellet->update(scene);
+                } else {
+                    pellet->remove(scene);
+                    (*iter)->move(1.0);
+                    (*iter)->draw(scene);
+                }
+                iter++;
+                break;
+            default:
+                iter++;
+                pellet->move(1.0);
+                pellet->update(scene);
+                break;
         }
     }
     handleShoot();
@@ -67,34 +83,39 @@ void GameBoard::nextRound() {
         }
     }
     // generate grids
-    double pi = acos(-1);
-    int r = round;
-    double possibility = (1 / (1 + exp(-r / 20.0 + 1))) * abs(cos(double(r % 16) * pi / 17));
-    int numHPGrids = 0;
-    for (int x = 0; x < Config::board_col; x++) {
-        std::uniform_int_distribution<int> intGenerator(1, 2 * round + 1);
-        Location location = {double(x * 50), 0.0};
-        if (doubleGenerator(randomEngine) < possibility) {
-            grids[0][x] = new HPGrid(location, intGenerator(randomEngine));
-            grids[0][x]->draw(scene);
-            numHPGrids++;
-        } else {
-            grids[0][x] = nullptr;
-        }
-    }
-    if (numHPGrids < Config::board_col) {
-        int indexToGenerate = std::uniform_int_distribution<int>(0, numHPGrids)(randomEngine);
-        for (int x = 0; x < Config::board_col; x++) {
-            Location location = {double(x * 50), 0.0};
-            if (grids[0][x]) continue;
-            if (indexToGenerate == 0) {
-                grids[0][x] = new RewardGrid(location, 1);
-                grids[0][x]->draw(scene);
-            } else {
-                grids[0][x] = new AirGrid(location);
-            }
-            indexToGenerate--;
-        }
+//    double pi = acos(-1);
+//    int r = round;
+//    double possibility = (1 / (1 + exp(-r / 20.0 + 1))) * abs(cos(double(r % 16) * pi / 17));
+//    int numHPGrids = 0;
+//    for (int x = 0; x < Config::board_col; x++) {
+//        std::uniform_int_distribution<int> intGenerator(1, 2 * round + 1);
+//        Location location = {double(x * 50), 0.0};
+//        if (doubleGenerator(randomEngine) < possibility) {
+//            grids[0][x] = new HPGrid(location, intGenerator(randomEngine));
+//            grids[0][x]->draw(scene);
+//            numHPGrids++;
+//        } else {
+//            grids[0][x] = nullptr;
+//        }
+//    }
+//    if (numHPGrids < Config::board_col) {
+//        int indexToGenerate = std::uniform_int_distribution<int>(0, numHPGrids)(randomEngine);
+//        for (int x = 0; x < Config::board_col; x++) {
+//            Location location = {double(x * 50), 0.0};
+//            if (grids[0][x]) continue;
+//            if (indexToGenerate == 0) {
+//                grids[0][x] = new RewardGrid(location, 1);
+//                grids[0][x]->draw(scene);
+//            } else {
+//                grids[0][x] = new AirGrid(location);
+//            }
+//            indexToGenerate--;
+//        }
+//    }
+    ::nextRound(this, grids, grids[0]);
+    for(int x=0;x<Config::board_col;x++) {
+        grids[0][x]->setLocation({double(x*50), 0.0});
+        grids[0][x]->draw(scene);
     }
     round++;
     gameWindow->setRound(round);

@@ -15,6 +15,8 @@ public:
     PelletResult hit(Board *board, int damage) override;
 
     QColor getColor() const override;
+
+    QString getLabel() const override;
 };
 
 

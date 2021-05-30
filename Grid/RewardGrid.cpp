@@ -35,3 +35,9 @@ GridItem *RewardGrid::initGridItem() {
                               QString::number(
                                       health));
 }
+
+QString RewardGrid::getLabel() const {
+    return "R";
+}
+
+

@@ -3,6 +3,7 @@
 //
 
 #include "HPGrid.h"
+#include "../Backend/Collision.h"
 #include <iostream>
 #include <cmath>
 
@@ -24,7 +25,7 @@ void HPGrid::remove(QGraphicsScene *scene) {
 void HPGrid::update(QGraphicsScene *scene) {
     if (isAlive()) {
         //cout << "update\t" << gridItem << endl;
-        gridItem->updateItem(location.getGridX(), location.getGridY(), 50, 50, getColor(), QString::number(health));
+        gridItem->updateItem(location.getGridX(), location.getGridY(), 50, 50, getColor(), getLabel());
         gridItem->update();
     } else if (gridItem) remove(scene);
 }
@@ -52,13 +53,20 @@ bool HPGrid::isAlive() {
 
 
 PelletResult HPGrid::hit(Board *board, int damage) {
-    health -= damage;
+    damage = min(this -> health, damage);
+    this -> health -= damage;
+    board->addScore(damage);
     return PelletResult::REFLECT;
 }
 
 GridItem *HPGrid::initGridItem() {
     return new GridItem(this,
                         getColor(),
-                        QString::number(health));
+                        getLabel());
 }
+
+QString HPGrid::getLabel() const {
+    return QString::number(health);
+}
+
 

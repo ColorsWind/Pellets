@@ -2,23 +2,23 @@
 // Created by colors_wind on 2021/5/28.
 //
 
-#include "ExplosiveGird.h"
+#include "ExplosiveGrid.h"
 #include "../Constants.h"
 #include "../Board/Board.h"
 #include "../Backend/Collision.h"
 
-ExplosiveGird::ExplosiveGird(const Location &point, int health, int damage, int radius) :
+ExplosiveGrid::ExplosiveGrid(const Location &point, int health, int damage, int radius) :
         HPGrid(point, health),
         damage(damage),
         radius(radius) {
 }
 
-QColor ExplosiveGird::getColor() const {
+QColor ExplosiveGrid::getColor() const {
     return {200, 200, 150, 60};
 }
 
 
-PelletResult ExplosiveGird::hit(Board *board, int damage) {
+PelletResult ExplosiveGrid::hit(Board *board, int damage) {
     double radius2 = radius * radius;
     double multiDamage = min(damage, health) * this->damage;
     for (int y = 0; y < Config::board_row; y++)
@@ -35,5 +35,9 @@ PelletResult ExplosiveGird::hit(Board *board, int damage) {
         }
     health -= damage;
     return REFLECT;
+}
+
+QString ExplosiveGrid::getLabel() const {
+    return "E";
 }
 

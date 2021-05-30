@@ -15,11 +15,12 @@ class PelletItem : public QGraphicsItem {
 
 private:
     QRectF rect;
+    QColor color;
     double width, height, left, top;
 public:
 
 
-    PelletItem(double left, double top, double width, double height, QGraphicsItem *parent= nullptr);
+    PelletItem(double left, double top, double width, double height, QColor color, QGraphicsItem *parent= nullptr);
 
     void updateItem(double left, double top, double width, double height);
 

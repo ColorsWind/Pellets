@@ -3,9 +3,17 @@
 //
 
 #include "Collision.h"
+#include "../Grid/RewardGrid.h"
+#include "../Grid/RandomGrid.h"
+#include "../Grid/AbsorbGrid.h"
+#include "../Grid/ExplosiveGrid.h"
+#include "../Grid/AirGrid.h"
 #include <cmath>
+#include <algorithm>
+#include <random>
 
-bool updatePellet(Board *board, Pellet *pellet, QGraphicsScene *scene, bool showToTarget) {
+
+PelletResult updatePellet(Board *board, Pellet *pellet, QGraphicsScene *scene, bool showToTarget) {
     Vector velocity = pellet->getVelocity();
     Location pelletCentre = pellet->getCentre();
     // 检查与区域的碰撞
@@ -16,26 +24,26 @@ bool updatePellet(Board *board, Pellet *pellet, QGraphicsScene *scene, bool show
             if (abs(board->getLaunchLocation().pointX - pellet->getLocation().pointX) > Config::point_error) {
                 pellet->setVelocity({signOfComponent(board->getLaunchLocation().pointX - pellet->getLocation().pointX) *
                                      Config::relative_velocity, 0});
-                return true;
+                return NONE;
             } else {
-                return false;
+                return DISAPPEAR;
             }
-        } else return false;
+        } else return DISAPPEAR;
     } else if (velocity.vectorY < 0 && pelletCentre.pointY - Config::pellet_size / 2 < 0) {
         // 碰到 Y 边界
         pellet->reflectX();
-        return true;
+        return REFLECT;
     } else if ((velocity.vectorX < 0 && pelletCentre.pointX - Config::pellet_size / 2 < 0)
                || (velocity.vectorX > 0
                    && pelletCentre.pointX + Config::pellet_size / 2 > Config::board_col * Config::grid_size)) {
         // 碰到 X 边界
         pellet->reflectY();
-        return true;
+        return REFLECT;
     } else if (velocity.vectorY > 0 &&
                pelletCentre.pointY + Config::pellet_size / 2 > Config::board_row * Config::grid_size) {
         // 离开区域
         pellet->leaveBoard();
-        return true;
+        return NONE;
     }
     // 检查与方块的碰撞
     int signX = signOfComponent(velocity.vectorX);
@@ -50,22 +58,22 @@ bool updatePellet(Board *board, Pellet *pellet, QGraphicsScene *scene, bool show
     PelletResult result = NONE; // 碰撞的结果
     if (gridX && collideX && gridX->isAlive()) { // X 方向碰撞
         result = pellet->hit(board, gridX);
-        if (result == REFLECT) pellet->reflectY();
+        if (result == REFLECT || result == TRANSFORM) pellet->reflectY();
         gridX->update(scene);
     } else if (gridY && collideY && gridY->isAlive()) { // Y 方向碰撞
         result = pellet->hit(board, gridY);
-        if (result == REFLECT) pellet->reflectX();
+        if (result == REFLECT || result == TRANSFORM) pellet->reflectX();
         gridY->update(scene);
     } else if (gridXY && collideX && collideY && gridXY->isAlive()) { // XY 方向碰撞
         result = pellet->hit(board, gridXY);
-        if (result == REFLECT) {
+        if (result == REFLECT || result == TRANSFORM) {
             pellet->reflectX();
             pellet->reflectY();
         }
         gridXY->update(scene);
     }
     pellet->update(scene);
-    return result != DISAPPEAR;
+    return result;
 }
 
 int signOfComponent(double component) {
@@ -90,4 +98,86 @@ int min(int x, int y) {
 int max(int x, int y) {
     if (x > y) return x;
     else return y;
+}
+
+
+void nextRound(Board *board, Grid ***grids, Grid** place) {
+    double possibleReward;
+    if (board->getOwnedPellets() > 50)
+        possibleReward = 0.5 / (board->getOwnedPellets() - 50);
+    else if (board->getOwnedPellets() > 32)
+        possibleReward = 1.0 - 0.5 * (board->getOwnedPellets() - 32 ) / 18;
+    else
+        possibleReward = 1.0;
+    int healthReward = 1;
+    // board->nextInt(1, board->getRound() / 100 + 1)
+
+    double possibleRandom;
+    if (board->getRound() < 50)
+        possibleRandom = 0.5;
+    else
+        possibleReward = abs(cos(double(board->getRound() % 16) * pi / 17));
+    int healthRandom = board->nextInt(2, board->getRound() / 100 + 5);
+
+    double possibleAbsorb;
+    if (board->getOwnedPellets() > 30)
+        possibleAbsorb = board->getOwnedPellets() / 1000.0;
+    else
+        possibleAbsorb = 0;
+    int healthAbsorb = max(board->nextInt(1, board->getRound() / 300 + 1), 3);
+
+    double possibleExplosive;
+    if (board->getRound() > 30)
+        possibleExplosive = possibleAbsorb * 2 + 0.2;
+    else
+        possibleExplosive = 0.05;
+    int healthExplosive = max(board->nextInt(1, board->getRound() / 100 + 2), 5);
+    int damageExplosive = board->getRound() / 5;
+    double radiusExplosive;
+    if (board->getRound() > 100)
+        radiusExplosive = (board->nextDouble(3) + 1) * Config::grid_size;
+    else
+        radiusExplosive = (board->nextDouble(2) + 1) * Config::grid_size;
+
+
+    int maxHealth = 2 * board->getRound() + 1;
+
+    int empty;
+    if (board->getRound() > 500)
+        empty = board->nextInt(0, 2);
+    else if (board->getRound() > 100)
+        empty = board->nextInt(1, 3);
+    else if (board->getRound() > 30)
+        empty = board->nextInt(1, 4);
+    else
+        empty = board->nextInt(1, 5);
+
+    int curr = 0;
+
+
+    possibleReward = 0;
+    possibleRandom = 1;
+
+    if (board->nextDouble(1.0) < possibleReward) {
+        place[curr++] = new RewardGrid({0,0}, healthReward);
+    } else if (board->nextDouble(1.0) < possibleRandom) {
+        place[curr++] = new RandomGrid({0,0}, healthRandom);
+    }
+
+    if (board->nextDouble() < possibleAbsorb) {
+        place[curr++] = new AbsorbGrid({0, 0}, healthAbsorb);
+    }
+    if (board->nextDouble() < possibleExplosive) {
+        place[curr++] = new ExplosiveGrid({0,0}, healthExplosive, damageExplosive, radiusExplosive);
+    }
+
+    for (int i=0;i<empty;i++) {
+        place[curr++] = new AirGrid({0,0 });
+    }
+
+    while(curr < Config::board_col) {
+        place[curr++] = new HPGrid({0, 0}, board->nextInt(1, maxHealth));
+    }
+
+    std::shuffle(place, place + Config::board_col, std::mt19937(std::random_device()()));
 }

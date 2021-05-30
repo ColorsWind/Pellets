@@ -9,10 +9,12 @@ QRectF GridItem::boundingRect() const {
     return rect;
 }
 
+#include <iostream>
+using namespace std;
 void GridItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
     painter->setBrush(QBrush(color, Qt::BrushStyle::SolidPattern));
     painter->drawRect(rect);
-    painter->drawText(rect, Qt::AlignCenter, label);
+    painter->drawText(rect, Qt::AlignCenter, label);;
 }
 
 QPainterPath GridItem::shape() const {

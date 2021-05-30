@@ -7,7 +7,7 @@
 #include <ctime>
 #include <iostream>
 #include "../Constants.h"
-#include "../Pellet/SolidPellet.h"
+#include "../Pellet/Pellet.h"
 
 Board::Board(int row, int col) :
         row(row),
@@ -72,3 +72,8 @@ void Board::addOwnPellets(int n) {
 void Board::addScore(int n) {
     score += n;
 }
+
+int Board::getRound() const noexcept {
+    return round;
+}
+
