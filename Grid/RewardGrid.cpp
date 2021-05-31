@@ -2,7 +2,7 @@
 // Created by colors_wind on 2021/3/26.
 //
 
-#include "RewardGrid.h"
+#include "Grid.h"
 #include "../Board/Board.h"
 #include "../Board/GameBoard.h"
 #include "RewardGridItem.h"

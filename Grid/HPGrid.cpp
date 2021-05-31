@@ -2,7 +2,7 @@
 // Created by colors_wind on 2021/3/16.
 //
 
-#include "HPGrid.h"
+#include "Grid.h"
 #include "../Backend/Collision.h"
 #include <iostream>
 #include <cmath>

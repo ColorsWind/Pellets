@@ -2,7 +2,7 @@
 // Created by colors_wind on 2021/3/26.
 //
 
-#include "AbsorbGrid.h"
+#include "Grid.h"
 
 AbsorbGrid::AbsorbGrid(const Location &point, int health) : HPGrid(point, health) {}
 

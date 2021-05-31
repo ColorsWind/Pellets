@@ -4,9 +4,7 @@
 
 #include "GameBoard.h"
 #include <QGraphicsView>
-#include "../Grid/AirGrid.h"
-#include "../Grid/HPGrid.h"
-#include "../Grid/RewardGrid.h"
+#include "../Grid/Grid.h"
 #include "../Backend/Collision.h"
 #include "../Widget/GameWindow.h"
 #include <QApplication>

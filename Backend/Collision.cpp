@@ -3,11 +3,7 @@
 //
 
 #include "Collision.h"
-#include "../Grid/RewardGrid.h"
-#include "../Grid/RandomGrid.h"
-#include "../Grid/AbsorbGrid.h"
-#include "../Grid/ExplosiveGrid.h"
-#include "../Grid/AirGrid.h"
+#include "../Grid/Grid.h"
 #include <cmath>
 #include <algorithm>
 #include <random>
@@ -132,7 +128,7 @@ void nextRound(Board *board, Grid ***grids, Grid** place) {
     else
         possibleExplosive = 0.05;
     int healthExplosive = max(board->nextInt(1, board->getRound() / 100 + 2), 5);
-    int damageExplosive = board->getRound() / 5;
+    int damageExplosive = max(1, board->getRound() / 5);
     double radiusExplosive;
     if (board->getRound() > 100)
         radiusExplosive = (board->nextDouble(3) + 1) * Config::grid_size;

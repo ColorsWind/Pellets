@@ -2,7 +2,7 @@
 // Created by colors_wind on 2021/3/17.
 //
 
-#include "AirGrid.h"
+#include "Grid.h"
 
 AirGrid::AirGrid(const Location &point) : AbstractGrid(point) {}
 

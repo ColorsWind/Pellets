@@ -5,9 +5,9 @@
 #ifndef PELLETS_GRIDITEM_H
 #define PELLETS_GRIDITEM_H
 
+class Grid;
 #include <QGraphicsItem>
 #include <QPainter>
-#include "Grid.h"
 
 class GridItem : public QGraphicsItem {
 protected:

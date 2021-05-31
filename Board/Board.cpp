@@ -3,11 +3,9 @@
 //
 
 #include "Board.h"
-#include "../Grid/AirGrid.h"
 #include <ctime>
 #include <iostream>
 #include "../Constants.h"
-#include "../Pellet/Pellet.h"
 
 Board::Board(int row, int col) :
         row(row),

@@ -4,7 +4,7 @@
 
 #include "GridItem.h"
 #include "../Constants.h"
-
+#include "Grid.h"
 QRectF GridItem::boundingRect() const {
     return rect;
 }

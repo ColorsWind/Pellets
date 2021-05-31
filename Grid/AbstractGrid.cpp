@@ -2,7 +2,7 @@
 // Created by colors_wind on 2021/3/16.
 //
 
-#include "AbstractGrid.h"
+#include "Grid.h"
 
 Location AbstractGrid::getLocation() const {
     return location;

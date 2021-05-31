@@ -11,18 +11,18 @@ set(QT_VERSION 5)
 set(REQUIRED_LIBS Core Gui Widgets)
 set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
 add_executable(${PROJECT_NAME} main.cpp Location.h Location.cpp Vector.h Vector.cpp Pellet/Pellet.h Board/Board.cpp Board/Board.h Grid/Grid.h
-        Grid/AbstractGrid.cpp Grid/AbstractGrid.h Grid/HPGrid.cpp Grid/HPGrid.h
-        Pellet/SolidPellet.cpp Grid/AirGrid.cpp Grid/AirGrid.h Grid/GridItem.cpp Grid/GridItem.h Pellet/PelletItem.cpp Pellet/PelletItem.h
+        Grid/AbstractGrid.cpp Grid/HPGrid.cpp
+        Pellet/SolidPellet.cpp Grid/AirGrid.cpp Grid/GridItem.cpp Grid/GridItem.h Pellet/PelletItem.cpp Pellet/PelletItem.h
         Board/GameBoard.cpp Board/GameBoard.h
         Constants.h
         Pellet/AbstractPellet.cpp
         Pellet/ExplosivePellet.cpp
         Pellet/RandomPellet.cpp
-        Grid/AbsorbGrid.cpp Grid/AbsorbGrid.h
-        Grid/RewardGrid.cpp Grid/RewardGrid.h
+        Grid/AbsorbGrid.cpp
+        Grid/RewardGrid.cpp
         Grid/RewardGridItem.cpp Grid/RewardGridItem.h
         Backend/Collision.cpp Backend/Collision.h
-        Widget/MainWindow.cpp Widget/MainWindow.h Widget/MainWindow.ui Widget/GameWindow.cpp Widget/GameWindow.h Widget/GameWindow.ui Widget/GameBoardView.cpp Widget/GameBoardView.h Grid/ExplosiveGrid.cpp Grid/ExplosiveGrid.h Grid/RandomGrid.cpp Grid/RandomGrid.h)
+        Widget/MainWindow.cpp Widget/MainWindow.h Widget/MainWindow.ui Widget/GameWindow.cpp Widget/GameWindow.h Widget/GameWindow.ui Widget/GameBoardView.cpp Widget/GameBoardView.h Grid/ExplosiveGrid.cpp Grid/RandomGrid.cpp)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "

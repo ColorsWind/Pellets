@@ -2,7 +2,7 @@
 // Created by colors_wind on 2021/5/28.
 //
 
-#include "RandomGrid.h"
+#include "Grid.h"
 #include "../Board/Board.h"
 
 PelletResult RandomGrid::hit(Board *board, int damage) {
