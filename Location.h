@@ -22,7 +22,7 @@ public:
 
     Location add(const Vector vector) const;
     Vector toVector() const;
-    Location& operator=(const Location &location) = default;
+    Location& operator=(const Location &location);
 
 };
 

@@ -9,6 +9,7 @@
 #include "../Grid/RewardGrid.h"
 #include "../Backend/Collision.h"
 #include "../Widget/GameWindow.h"
+#include <QApplication>
 #include <random>
 
 GameBoard::GameBoard(int row, int col) : Board(row, col),
@@ -16,48 +17,63 @@ GameBoard::GameBoard(int row, int col) : Board(row, col),
 }
 
 void GameBoard::doTick() {
-    bool hasPellet = !trackingPellets.empty();
-    for (auto iter = trackingPellets.begin(); iter != trackingPellets.cend();) {
-        Pellet *pellet = *iter;
-        PelletResult result = updatePellet(this, pellet, this->scene, launchLocationUpdate);
-        switch(result) {
-            case DISAPPEAR:
-                iter = trackingPellets.erase(iter);
-                pellet->remove(scene);
-                if (!launchLocationUpdate) {
-                    launchLocationUpdate = true;
-                    launchLocation = pellet->getLocation();
-                    launchLocation.pointX = pellet->getLocation().pointX;
-                    launchIndicate->setLocation(launchLocation);
-                    launchIndicate->update(scene);
-                }
-                delete pellet;
-                break;
-            case TRANSFORM:
-                *iter = pellet -> transform(this);
-                if (*iter == pellet) {
+    // shoot
+    if (shootMode && pelletsToLaunch > 0 && tick % 10 == 0) {
+        auto pellet = shoot();
+        pellet->draw(scene);
+        pelletsToLaunch--;
+        if (pelletsToLaunch == 0) // nothing to shoot
+            shootMode = false;
+    }
+
+    if (!trackingPellets.empty()) {
+        // process all pellets
+        for (auto iter = trackingPellets.begin(); iter != trackingPellets.cend();) {
+            Pellet *pellet = *iter;
+            // update pellet status
+            PelletResult result = updatePellet(this, pellet, this->scene, launchLocationUpdate);
+            switch(result) {
+                case DISAPPEAR:
+                    // disappear
+                    iter = trackingPellets.erase(iter);
+                    pellet->remove(scene);
+                    if (!launchLocationUpdate) {
+                        launchLocationUpdate = true;
+                        launchLocation = pellet->getLocation();
+                        launchLocation.pointX = pellet->getLocation().pointX;
+                        launchIndicate->setLocation(launchLocation);
+                        launchIndicate->update(scene);
+                    }
+                    delete pellet;
+                    break;
+                case TRANSFORM:
+                    // transform
+                    *iter = pellet -> transform(this);
+                    if (*iter == pellet) {
+                        pellet->move(1.0);
+                        pellet->update(scene);
+                    } else {
+                        pellet->remove(scene);
+                        (*iter)->move(1.0);
+                        (*iter)->draw(scene);
+                    }
+                    iter++;
+                    break;
+                default:
+                    // move
+                    iter++;
                     pellet->move(1.0);
                     pellet->update(scene);
-                } else {
-                    pellet->remove(scene);
-                    (*iter)->move(1.0);
-                    (*iter)->draw(scene);
-                }
-                iter++;
-                break;
-            default:
-                iter++;
-                pellet->move(1.0);
-                pellet->update(scene);
-                break;
+                    break;
+            }
         }
+
+        // next round
+        if (trackingPellets.empty() && !shootMode) {
+            nextRound();
+        }
+        scene->update();
     }
-    handleShoot();
-    if (hasPellet && trackingPellets.empty() && !shootMode) {
-        nextRound();
-    }
-    scene->update();
-    //graphicsView->updateGeometry();
     tick++;
 }
 
@@ -149,6 +165,7 @@ void GameBoard::handleShoot() {
 void GameBoard::setup(GameWindow *gameWindow, QGraphicsView *graphicsView) {
     this->scene = new QGraphicsScene(0,0,600,800,nullptr);
     this->gameWindow = gameWindow;
+    this->graphicsView = graphicsView;
     graphicsView->setScene(scene);
 
     graphicsView->setSceneRect(scene->sceneRect());

@@ -17,6 +17,7 @@ void GridItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->drawText(rect, Qt::AlignCenter, label);;
 }
 
+
 QPainterPath GridItem::shape() const {
     QPainterPath path;
     path.addRect(rect);
@@ -36,6 +37,8 @@ void GridItem::updateItem(int left, int top, int width, int height, QColor color
     rect = {left, top, width, height};
     this->color = color;
     this->label = label;
+
+
     prepareGeometryChange();
 }
 

@@ -157,7 +157,7 @@ void nextRound(Board *board, Grid ***grids, Grid** place) {
 
     possibleReward = 0;
     possibleRandom = 1;
-
+    possibleExplosive = 1;
     if (board->nextDouble(1.0) < possibleReward) {
         place[curr++] = new RewardGrid({0,0}, healthReward);
     } else if (board->nextDouble(1.0) < possibleRandom) {

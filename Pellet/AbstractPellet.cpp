@@ -27,7 +27,9 @@ void AbstractPellet::setVelocity(Vector vector) {
 void AbstractPellet::move(double interval) {
     location = location.add(velocity * interval);
 }
+#include <iostream>
 
+using namespace std;
 void AbstractPellet::draw(QGraphicsScene *scene) {
     if (pelletItem) return;
     pelletItem = new PelletItem(location.pointX, location.pointY, double(Config::pellet_size), double(Config::pellet_size),

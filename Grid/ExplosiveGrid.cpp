@@ -19,11 +19,14 @@ QColor ExplosiveGrid::getColor() const {
 
 
 PelletResult ExplosiveGrid::hit(Board *board, int damage) {
+    damage = min(damage, health);
+    health -= damage;
     double radius2 = radius * radius;
-    double multiDamage = min(damage, health) * this->damage;
+    double multiDamage = damage * this->damage;
     for (int y = 0; y < Config::board_row; y++)
         for (int x = 0; x < Config::board_col; x++) {
             auto hit = board->getOrNull(x, y);
+            if (dynamic_cast<ExplosiveGrid*>(hit)) continue;
             if (!hit || !hit->isAlive()) continue;
             double rDistance2 = location.distance2(hit->getLocation()) / radius2;
             if (rDistance2 < EPS) continue;
@@ -33,7 +36,7 @@ PelletResult ExplosiveGrid::hit(Board *board, int damage) {
             if (board->nextDouble(1.0) < realDamage - n) n++;
             hit->hit(board, n);
         }
-    health -= damage;
+
     return REFLECT;
 }
 

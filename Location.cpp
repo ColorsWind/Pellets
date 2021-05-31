@@ -33,3 +33,9 @@ double Location::distance(const Location &other) const {
     return sqrt(distance2(other));
 }
 
+Location &Location::operator=(const Location &location) {
+    this->pointX = location.pointX;
+    this->pointY = location.pointY;
+    return *this;
+}
+

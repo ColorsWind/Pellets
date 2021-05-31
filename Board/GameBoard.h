@@ -42,7 +42,7 @@ public:
     void addScore(int n) override;
 
 
-
+    QGraphicsView *graphicsView;
 };
 
 
