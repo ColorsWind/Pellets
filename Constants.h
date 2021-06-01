@@ -6,7 +6,7 @@
 #define PELLETS_CONSTANTS_H
 
 namespace Config {
-    static int fps = 60;
+    static int fps = 90;
     static int grid_size = 50;
     static int pellet_size = 18;
     static int board_row = 16;

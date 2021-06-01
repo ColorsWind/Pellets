@@ -37,11 +37,14 @@ void GameBoard::doTick() {
                     iter = trackingPellets.erase(iter);
                     pellet->remove(scene);
                     if (!launchLocationUpdate) {
+                        // first pellet
+                        launchIndicate->remove(scene);
                         launchLocationUpdate = true;
-                        launchLocation = pellet->getLocation();
                         launchLocation.pointX = pellet->getLocation().pointX;
-                        launchIndicate->setLocation(launchLocation);
+                        pellet->setLocation(launchLocation);
+                        launchIndicate->draw(scene);
                         launchIndicate->update(scene);
+
                     }
                     delete pellet;
                     break;
@@ -72,7 +75,8 @@ void GameBoard::doTick() {
         if (trackingPellets.empty() && !shootMode) {
             nextRound();
         }
-        scene->update();
+        //scene->update();
+
     }
     tick++;
 }

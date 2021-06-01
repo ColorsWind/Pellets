@@ -21,5 +21,4 @@ QPainterPath RewardGridItem::shape() const {
 void RewardGridItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
     painter->setBrush({color, Qt::BrushStyle::SolidPattern});
     painter->drawEllipse(rect);
-    painter->drawText(rect, Qt::AlignCenter, label);
 }

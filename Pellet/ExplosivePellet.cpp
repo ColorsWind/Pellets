@@ -42,7 +42,7 @@ ExplosivePellet::ExplosivePellet(const Location &location, const Vector &velocit
 }
 
 QColor ExplosivePellet::getColor() const {
-    return {135, 236, 74, 250};
+    return {255, 128, 128, 250};
 }
 
 QString ExplosivePellet::getLabel() const {

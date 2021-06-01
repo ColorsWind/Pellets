@@ -4,17 +4,18 @@
 
 #include "PelletItem.h"
 #include "../Constants.h"
-
+#include <iostream>
+using namespace std;
 PelletItem::PelletItem(double left, double top, double width, double height, QColor color, QGraphicsItem *parent)
         : left(left), top(left), width(width), height(height), color(color), QGraphicsItem(parent), rect(left, top, width, height) {
 }
 
 
 QRectF PelletItem::boundingRect() const {
-    return {left - Config::relative_velocity,
-            top + Config::relative_velocity,
-            width + 2 * Config::relative_velocity,
-            height + 2 * Config::relative_velocity};
+    return {left - 2 * Config::relative_velocity,
+            top - 2 * Config::relative_velocity,
+            Config::pellet_size + 4 * Config::relative_velocity,
+            Config::pellet_size + 4 * Config::relative_velocity};
 }
 
 
@@ -32,6 +33,10 @@ QPainterPath PelletItem::shape() const {
 
 
 void PelletItem::updateItem(double left, double top, double width, double height) {
+    this -> left = left;
+    this -> top = top;
+    this -> width = width;
+    this -> height = height;
     rect = {left, top, width, height};
     prepareGeometryChange();
 

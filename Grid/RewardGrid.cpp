@@ -8,16 +8,11 @@
 #include "RewardGridItem.h"
 
 
-PelletResult
-RewardGrid::damageBy(Board *board, int damage, QGraphicsScene *scene, Pellet *pelletSource, Grid *gridSource) {
-    health--;
-    board->addOwnPellets(1);
+PelletResult RewardGrid::damageBy(Board *board, int damage, QGraphicsScene *scene, Pellet *pelletSource, Grid *gridSource) {
     board->addScore(1);
-
-    if (health > 0)
-        return REFLECT;
-    else
-        return NONE;
+    HPGrid::damageBy(board, 1, scene, pelletSource, gridSource);
+    board->addOwnPellets(1);
+    return REFLECT;
 }
 
 RewardGrid::RewardGrid(const Location &point, int health) :
@@ -38,7 +33,7 @@ GridItem *RewardGrid::initGridItem() {
 }
 
 QString RewardGrid::getLabel() const {
-    return "R";
+    return "";
 }
 
 
