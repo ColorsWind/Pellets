@@ -6,9 +6,13 @@
 
 AbsorbGrid::AbsorbGrid(const Location &point, int health) : HPGrid(point, health) {}
 
-PelletResult AbsorbGrid::hit(Board *board, int damage) {
-    HPGrid::hit(board, damage);
-    return DISAPPEAR;
+PelletResult
+AbsorbGrid::damageBy(Board *board, int damage, QGraphicsScene *scene, Pellet *pelletSource, Grid *gridSource) {
+    HPGrid::damageBy(board, damage, scene, pelletSource, gridSource);
+    if (pelletSource)
+        return DISAPPEAR;
+    else
+        return NONE;
 }
 
 QColor AbsorbGrid::getColor() const {

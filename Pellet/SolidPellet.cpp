@@ -10,9 +10,9 @@ SolidPellet::SolidPellet(const Location &location, const Vector &velocity, int d
         AbstractPellet(location, velocity), damage(damage) {
 }
 
-PelletResult SolidPellet::hit(Board *board, Grid *grid) {
+PelletResult SolidPellet::damageGrid(Board *board, Grid *grid, QGraphicsScene *scene) {
     handleHit(board, grid);
-    return grid->hit(board, damage);
+    return grid->damageBy(board, damage, scene, this, nullptr);
 }
 
 Pellet *SolidPellet::transform(Board *board) {

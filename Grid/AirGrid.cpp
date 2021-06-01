@@ -16,6 +16,7 @@ bool AirGrid::isAlive() {
     return false;
 }
 
-PelletResult AirGrid::hit(Board *board, int damage) {
+PelletResult
+AirGrid::damageBy(Board *board, int damage, QGraphicsScene *scene, Pellet *pelletSource, Grid *gridSource) {
     return PelletResult::NONE;
 }

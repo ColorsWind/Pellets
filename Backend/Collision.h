@@ -26,4 +26,7 @@ int min(int x, int y);
 int max(int x, int y);
 
 void nextRound(Board* board, Grid*** grids, Grid** place);
+
+void makeExplosion(Board *board, Location &location, double damage, int radius, QGraphicsScene *scene,
+                   Pellet *pelletSource, Grid *gridSource);
 #endif //PELLETS_COLLISION_H

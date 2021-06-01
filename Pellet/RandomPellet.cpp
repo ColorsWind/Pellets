@@ -4,9 +4,9 @@
 
 #include "../Board/Board.h"
 
-PelletResult RandomPellet::hit(Board *board, Grid *grid) {
+PelletResult RandomPellet::damageGrid(Board *board, Grid *grid, QGraphicsScene *scene) {
     handleHit(board, grid);
-    grid->hit(board, board->nextInt(minDamage, maxDamage));
+    grid->damageBy(board, board->nextInt(minDamage, maxDamage), scene, this, nullptr);
     return REFLECT;
 }
 

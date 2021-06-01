@@ -52,10 +52,11 @@ bool HPGrid::isAlive() {
 }
 
 
-PelletResult HPGrid::hit(Board *board, int damage) {
+PelletResult HPGrid::damageBy(Board *board, int damage, QGraphicsScene *scene, Pellet *pelletSource, Grid *gridSource) {
     damage = min(this -> health, damage);
     this -> health -= damage;
     board->addScore(damage);
+    this ->update(scene);
     return PelletResult::REFLECT;
 }
 

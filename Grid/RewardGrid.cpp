@@ -8,7 +8,8 @@
 #include "RewardGridItem.h"
 
 
-PelletResult RewardGrid::hit(Board *board, int damage) {
+PelletResult
+RewardGrid::damageBy(Board *board, int damage, QGraphicsScene *scene, Pellet *pelletSource, Grid *gridSource) {
     health--;
     board->addOwnPellets(1);
     board->addScore(1);

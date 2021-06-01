@@ -5,10 +5,12 @@
 #include "Grid.h"
 #include "../Board/Board.h"
 
-PelletResult RandomGrid::hit(Board *board, int damage) {
-    this -> health -= 1;
-    board->addScore(1);
-    return TRANSFORM;
+PelletResult RandomGrid::damageBy(Board *board, int damage, QGraphicsScene *scene, Pellet *pelletSource, Grid *gridSource) {
+    HPGrid::damageBy(board, 1, scene, pelletSource, gridSource);
+    if (pelletSource)
+        return TRANSFORM;
+    else
+        return NONE;
 }
 
 

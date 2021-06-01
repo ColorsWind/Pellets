@@ -46,7 +46,7 @@ public:
 
     virtual const PelletItem *getItem() const = 0;
 
-    virtual PelletResult hit(Board *board, Grid *grid) = 0;
+    virtual PelletResult damageGrid(Board *board, Grid *grid, QGraphicsScene *scene) = 0;
 
     virtual void leaveBoard() = 0;
 
@@ -105,7 +105,7 @@ private:
 public:
     SolidPellet(const Location &location, const Vector &velocity, int damage = 1);
 
-    PelletResult hit(Board *board, Grid *grid) override;
+    PelletResult damageGrid(Board *board, Grid *grid, QGraphicsScene *scene) override;
 
     Pellet *transform(Board *board) override;
 
@@ -125,7 +125,7 @@ public:
     RandomPellet(const Location &location, const Vector &velocity, int minDamage, int maxDamage,
                  int rollbackDamage = -1);
 
-    PelletResult hit(Board *board, Grid *grid) override;
+    PelletResult damageGrid(Board *board, Grid *grid, QGraphicsScene *scene) override;
 
     Pellet *transform(Board *board) override;
 
@@ -146,7 +146,7 @@ public:
     ExplosivePellet(const Location &location, const Vector &velocity, double damage, double radius,
                     int rollbackDamage = -1);
 
-    PelletResult hit(Board *board, Grid *grid) override;
+    PelletResult damageGrid(Board *board, Grid *grid, QGraphicsScene *scene) override;
 
     inline int max(int x, int y);
 

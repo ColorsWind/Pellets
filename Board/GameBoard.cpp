@@ -30,6 +30,7 @@ void GameBoard::doTick() {
             Pellet *pellet = *iter;
             // update pellet status
             PelletResult result = updatePellet(this, pellet, this->scene, launchLocationUpdate);
+            Pellet* transPellet;
             switch(result) {
                 case DISAPPEAR:
                     // disappear
@@ -46,14 +47,15 @@ void GameBoard::doTick() {
                     break;
                 case TRANSFORM:
                     // transform
-                    *iter = pellet -> transform(this);
-                    if (*iter == pellet) {
+                    transPellet = pellet -> transform(this);
+                    if (transPellet != pellet) {
+                        pellet->remove(scene);
+                        transPellet->move(1.0);
+                        transPellet->draw(scene);
+                        *iter = transPellet;
+                    } else {
                         pellet->move(1.0);
                         pellet->update(scene);
-                    } else {
-                        pellet->remove(scene);
-                        (*iter)->move(1.0);
-                        (*iter)->draw(scene);
                     }
                     iter++;
                     break;

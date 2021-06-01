@@ -22,5 +22,13 @@ void AbstractGrid::move(Vector vector) {
     location = location.add(vector);
 }
 
+int AbstractGrid::getIndexX() const {
+    return location.getGridX() / 50;
+}
+
+int AbstractGrid::getIndexY() const {
+    return location.getGridY() / 50;
+}
+
 
 

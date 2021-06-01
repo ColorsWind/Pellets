@@ -53,20 +53,20 @@ PelletResult updatePellet(Board *board, Pellet *pellet, QGraphicsScene *scene, b
     bool collideY = gridY && isCollided(signY, pelletCentre.pointY, gridY->getCentre().pointY); // Y 方向确实发生了碰撞
     PelletResult result = NONE; // 碰撞的结果
     if (gridX && collideX && gridX->isAlive()) { // X 方向碰撞
-        result = pellet->hit(board, gridX);
+        result = pellet->damageGrid(board, gridX, scene);
         if (result == REFLECT || result == TRANSFORM) pellet->reflectY();
-        gridX->update(scene);
+        //gridX->update(scene);
     } else if (gridY && collideY && gridY->isAlive()) { // Y 方向碰撞
-        result = pellet->hit(board, gridY);
+        result = pellet->damageGrid(board, gridY, scene);
         if (result == REFLECT || result == TRANSFORM) pellet->reflectX();
-        gridY->update(scene);
+        //gridY->update(scene);
     } else if (gridXY && collideX && collideY && gridXY->isAlive()) { // XY 方向碰撞
-        result = pellet->hit(board, gridXY);
+        result = pellet->damageGrid(board, gridXY, scene);
         if (result == REFLECT || result == TRANSFORM) {
             pellet->reflectX();
             pellet->reflectY();
         }
-        gridXY->update(scene);
+        //gridXY->update(scene);
     }
     pellet->update(scene);
     return result;
@@ -176,4 +176,30 @@ void nextRound(Board *board, Grid ***grids, Grid** place) {
     }
 
     std::shuffle(place, place + Config::board_col, std::mt19937(std::random_device()()));
+}
+
+
+
+
+void makeExplosion(Board *board, Location &location, double damage, int radius, QGraphicsScene *scene, Pellet *pelletSource,
+              Grid *gridSource) {
+    double radius2 = radius * radius;
+    int delta = radius / 50 + 1;
+    int yMin = max(0, int(location.pointY / 50) - radius);
+    int yMax = min(Config::board_row, int(location.pointY / 50) + delta + 1);
+    int xMin = max(0, int(location.pointX / 50) - delta);
+    int xMax = min(Config::board_row, int(location.pointX / 50) + delta + 1);
+    for (int y = yMin; y < yMax; y++)
+        for (int x = xMin; x < xMax; x++) {
+            auto grid = board->getOrNull(x, y);
+            if (!grid || !grid->isAlive()) continue;
+            double rDistance2 = location.distance2(grid->getLocation()) / radius2;
+            if (rDistance2 < EPS) continue;
+            if (rDistance2 < 1.0) rDistance2 = 1.0;
+            double realDamage = damage / rDistance2;
+            int n = int(realDamage);
+            if (board->nextDouble(1.0) < realDamage - n) n++;
+            grid->damageBy(board, n, scene, pelletSource, gridSource);
+        }
+
 }

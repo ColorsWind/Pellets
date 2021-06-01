@@ -16,6 +16,7 @@ enum PelletResult;
 #include "GridItem.h"
 
 
+
 class Grid {
 public:
     virtual Location getLocation() const = 0;
@@ -23,6 +24,10 @@ public:
     virtual void setLocation(const Location location) = 0;
 
     virtual Location getCentre() const = 0;
+
+    virtual int getIndexX() const = 0;
+
+    virtual int getIndexY() const = 0;
 
     virtual void draw(QGraphicsScene *scene) = 0;
 
@@ -34,7 +39,8 @@ public:
 
     virtual bool isAlive() = 0;
 
-    virtual PelletResult hit(Board *board, int damage) = 0;
+    virtual PelletResult
+    damageBy(Board *board, int damage, QGraphicsScene *scene, Pellet *pelletSource, Grid *gridSource) = 0;
 };
 
 class AbstractGrid : public Grid {
@@ -42,6 +48,10 @@ protected:
     Location location;
 public:
     Location getLocation() const override;
+
+    int getIndexX() const override;
+
+    int getIndexY() const override;
 
     void move(Vector vector) override;
 
@@ -65,7 +75,8 @@ public:
 
     bool isAlive() override;
 
-    PelletResult hit(Board *board, int damage) override;
+    PelletResult
+    damageBy(Board *board, int damage, QGraphicsScene *scene, Pellet *pelletSource, Grid *gridSource) override;
 
 
 };
@@ -90,7 +101,8 @@ public:
 
     bool isAlive() override;
 
-    PelletResult hit(Board *board, int damage) override;
+    PelletResult
+    damageBy(Board *board, int damage, QGraphicsScene *scene, Pellet *pelletSource, Grid *gridSource) override;
 
     virtual GridItem* initGridItem();
 };
@@ -101,7 +113,8 @@ class RandomGrid : public HPGrid {
 public:
     RandomGrid(const Location &point, int health);
 
-    PelletResult hit(Board *board, int damage) override;
+    PelletResult
+    damageBy(Board *board, int damage, QGraphicsScene *scene, Pellet *pelletSource, Grid *gridSource) override;
 
     GridItem *initGridItem() override;
 
@@ -116,7 +129,8 @@ public:
     RewardGrid(const Location &point, int health);
 
 
-    PelletResult hit(Board *board, int damage);
+    PelletResult
+    damageBy(Board *board, int damage, QGraphicsScene *scene, Pellet *pelletSource, Grid *gridSource) override;
 
     QColor getColor() const override;
 
@@ -130,7 +144,8 @@ class AbsorbGrid : public HPGrid {
 public:
     AbsorbGrid(const Location &point, int health);
 
-    PelletResult hit(Board *board, int damage) override;
+    PelletResult
+    damageBy(Board *board, int damage, QGraphicsScene *scene, Pellet *pelletSource, Grid *gridSource) override;
 
     QColor getColor() const override;
 
@@ -140,12 +155,13 @@ public:
 class ExplosiveGrid : public HPGrid {
 
 protected:
-    int damage;
+    int power;
     int radius;
 public:
     ExplosiveGrid(const Location &point, int health, int damage, int radius);
 
-    PelletResult hit(Board *board, int damage) override;
+    PelletResult
+    damageBy(Board *board, int damage, QGraphicsScene *scene, Pellet *pelletSource, Grid *gridSource) override;
 
     QColor getColor() const override;
 
