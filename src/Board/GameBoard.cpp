@@ -13,6 +13,8 @@ GameBoard::GameBoard(int row, int col) : Board(row, col),
                                          launchIndicate(new SolidPellet(launchLocation, {0.0, 0.0})) {
 }
 
+#include <iostream>
+using namespace std;
 void GameBoard::doTick() {
     // shoot
     if (shootMode && pelletsToLaunch > 0 && tick % 10 == 0) {
@@ -40,7 +42,7 @@ void GameBoard::doTick() {
                         launchIndicate->remove(scene);
                         launchLocationUpdate = true;
                         launchLocation.pointX = pellet->getLocation().pointX;
-                        pellet->setLocation(launchLocation);
+                        launchIndicate->setLocation(launchLocation);
                         launchIndicate->draw(scene);
                         launchIndicate->update(scene);
 

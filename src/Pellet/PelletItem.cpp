@@ -33,12 +33,13 @@ QPainterPath PelletItem::shape() const {
 
 
 void PelletItem::updateItem(double left, double top, double width, double height) {
+    prepareGeometryChange();
     this -> left = left;
     this -> top = top;
     this -> width = width;
     this -> height = height;
     rect = {left, top, width, height};
-    prepareGeometryChange();
+
 
 }
 
