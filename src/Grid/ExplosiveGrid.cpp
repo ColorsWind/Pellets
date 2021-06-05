@@ -3,9 +3,8 @@
 //
 
 #include "Grid.h"
-#include "Constants.h"
 #include "Board.h"
-#include "../Backend/Collision.h"
+#include "Backend.h"
 
 ExplosiveGrid::ExplosiveGrid(const Location &point, int health, int damage, int radius) :
         HPGrid(point, health),

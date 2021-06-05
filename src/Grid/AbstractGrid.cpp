@@ -4,15 +4,17 @@
 
 #include "Grid.h"
 
+#include <utility>
+
 Location AbstractGrid::getLocation() const {
     return location;
 }
 
-void AbstractGrid::setLocation(const Location location) {
-    this->location = location;
+void AbstractGrid::setLocation(Location loc) {
+    this->location = loc;
 }
 
-AbstractGrid::AbstractGrid(const Location &point) : location(point) {}
+AbstractGrid::AbstractGrid(Location point) : location(std::move(point)) {}
 
 Location AbstractGrid::getCentre() const {
     return location.add({25,25});

@@ -3,6 +3,7 @@
 //
 
 #include "Board.h"
+#include "Backend.h"
 
 PelletResult RandomPellet::damageGrid(Board *board, Grid *grid, QGraphicsScene *scene) {
     handleHit(board, grid);
@@ -17,7 +18,7 @@ RandomPellet::RandomPellet(const Location &location, const Vector &velocity, int
 Pellet *RandomPellet::transform(Board *board) {
     if (board->nextDouble(1.0) < 0.1) { // 10%
         double transDamage = rollbackDamage > 0 ? rollbackDamage : minDamage;
-        return new SolidPellet(this->location, this->velocity, transDamage);
+        return new SolidPellet(this->location, this->velocity, randomRound(board, transDamage));
     } else return this; // 90%
 
 }

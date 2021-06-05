@@ -4,7 +4,7 @@
 
 #include "Board.h"
 #include <QGraphicsView>
-#include "../Backend/Collision.h"
+#include "Backend.h"
 #include "../Widget/GameWindow.h"
 #include <QApplication>
 #include <random>
@@ -82,9 +82,6 @@ void GameBoard::doTick() {
     tick++;
 }
 
-#include <iostream>
-
-using namespace std;
 
 
 void GameBoard::nextRound() {
@@ -104,9 +101,9 @@ void GameBoard::nextRound() {
         }
     }
     // generate grids
-//    double pi = acos(-1);
+//    double PI = acos(-1);
 //    int r = round;
-//    double possibility = (1 / (1 + exp(-r / 20.0 + 1))) * abs(cos(double(r % 16) * pi / 17));
+//    double possibility = (1 / (1 + exp(-r / 20.0 + 1))) * abs(cos(double(r % 16) * PI / 17));
 //    int numHPGrids = 0;
 //    for (int x = 0; x < Config::board_col; x++) {
 //        std::uniform_int_distribution<int> intGenerator(1, 2 * round + 1);
@@ -158,22 +155,13 @@ void GameBoard::mouseEvent(int x, int y) {
     launchLocationUpdate = false;
 }
 
-void GameBoard::handleShoot() {
-    if (shootMode && pelletsToLaunch > 0 && tick % 10 == 0) {
-        auto pellet = shoot();
-        pellet->draw(scene);
-        pelletsToLaunch--;
-        if (pelletsToLaunch == 0) shootMode = false;
-    }
-}
-
-void GameBoard::setup(GameWindow *gameWindow, QGraphicsView *graphicsView) {
+void GameBoard::setup(GameWindow *window, QGraphicsView *view) {
     this->scene = new QGraphicsScene(0,0,600,800,nullptr);
-    this->gameWindow = gameWindow;
-    this->graphicsView = graphicsView;
-    graphicsView->setScene(scene);
+    this->gameWindow = window;
+    this->graphicsView = view;
+    view->setScene(scene);
 
-    graphicsView->setSceneRect(scene->sceneRect());
+    view->setSceneRect(scene->sceneRect());
     launchIndicate->draw(scene);
     for (int y = 0; y < row; y++)
         for (int x = 0; x < col; x++)

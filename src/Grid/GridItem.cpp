@@ -10,11 +10,12 @@ QRectF GridItem::boundingRect() const {
 }
 
 #include <iostream>
+#include <utility>
 using namespace std;
 void GridItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
     painter->setBrush(QBrush(color, Qt::BrushStyle::SolidPattern));
     painter->drawRect(rect);
-    painter->drawText(rect, Qt::AlignCenter, label);;
+    painter->drawText(rect, Qt::AlignCenter, label);
 }
 
 
@@ -24,19 +25,19 @@ QPainterPath GridItem::shape() const {
     return path;
 }
 
-GridItem::GridItem(Grid *grid, const QColor &color,
-                   const QString &label, QGraphicsItem *parent) : grid(grid), QGraphicsItem(parent),
-                                                                  color(color), label(label),
+GridItem::GridItem(Grid *grid, QColor color,
+                   QString label, QGraphicsItem *parent) : grid(grid), QGraphicsItem(parent),
+                                                                  color(std::move(color)), label(std::move(label)),
                                                                   rect({grid->getLocation().getGridX(),
                                                                         grid->getLocation().getGridY(),
                                                                         Config::grid_size, Config::grid_size}) {
 }
 
 
-void GridItem::updateItem(int left, int top, int width, int height, QColor color, QString label) {
+void GridItem::updateItem(int left, int top, int width, int height, QColor qColor, QString qLabel) {
     rect = {left, top, width, height};
-    this->color = color;
-    this->label = label;
+    this->color = std::move(qColor);
+    this->label = std::move(qLabel);
 
 
     prepareGeometryChange();

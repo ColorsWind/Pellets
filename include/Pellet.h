@@ -148,12 +148,6 @@ public:
 
     PelletResult damageGrid(Board *board, Grid *grid, QGraphicsScene *scene) override;
 
-    inline int max(int x, int y);
-
-    inline int min(int x, int y);
-
-    inline int square(int x);
-
     Pellet *transform(Board *board) override;
 
     QColor getColor() const override;

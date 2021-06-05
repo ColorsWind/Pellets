@@ -5,9 +5,12 @@
 #include "PelletItem.h"
 #include "Constants.h"
 #include <iostream>
+
 using namespace std;
+
 PelletItem::PelletItem(double left, double top, double width, double height, QColor color, QGraphicsItem *parent)
-        : left(left), top(left), width(width), height(height), color(color), QGraphicsItem(parent), rect(left, top, width, height) {
+        : left(left), top(left), width(width), height(height), color(color), QGraphicsItem(parent),
+          rect(left, top, width, height) {
 }
 
 
@@ -34,10 +37,10 @@ QPainterPath PelletItem::shape() const {
 
 void PelletItem::updateItem(double left, double top, double width, double height) {
     prepareGeometryChange();
-    this -> left = left;
-    this -> top = top;
-    this -> width = width;
-    this -> height = height;
+    this->left = left;
+    this->top = top;
+    this->width = width;
+    this->height = height;
     rect = {left, top, width, height};
 
 

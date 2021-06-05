@@ -16,8 +16,8 @@ protected:
     Grid* grid;
     QRect rect;
 public:
-    GridItem(Grid* grid, const QColor &color,
-             const QString &label, QGraphicsItem *parent = nullptr);
+    GridItem(Grid* grid, QColor color,
+             QString label, QGraphicsItem *parent = nullptr);
 
 
     virtual QRectF boundingRect() const override;
@@ -26,7 +26,7 @@ public:
 
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
-    virtual void updateItem(int left, int top, int width, int height, QColor color, QString label);
+    virtual void updateItem(int left, int top, int width, int height, QColor qColor, QString qLabel);
 
 };
 

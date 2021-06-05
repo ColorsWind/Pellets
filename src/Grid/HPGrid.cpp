@@ -3,11 +3,10 @@
 //
 
 #include "Grid.h"
-#include "../Backend/Collision.h"
+#include "Backend.h"
 #include <iostream>
 #include <cmath>
 
-//using namespace std;
 void HPGrid::draw(QGraphicsScene *scene) {
     if (!gridItem)
         gridItem = initGridItem();

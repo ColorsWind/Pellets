@@ -55,11 +55,11 @@ public:
 
     void move(Vector vector) override;
 
-    explicit AbstractGrid(const Location &point);
+    explicit AbstractGrid(Location point);
 
     Location getCentre() const override;
 
-    void setLocation(Location location) override;
+    void setLocation(Location loc) override;
 
 };
 

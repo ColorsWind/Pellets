@@ -2,7 +2,7 @@
 // Created by colors_wind on 2021/5/23.
 //
 
-#include "Collision.h"
+#include "Backend.h"
 #include "Grid.h"
 #include <cmath>
 #include <algorithm>
@@ -25,18 +25,18 @@ PelletResult updatePellet(Board *board, Pellet *pellet, QGraphicsScene *scene, b
                 return DISAPPEAR;
             }
         } else return DISAPPEAR;
-    } else if (velocity.vectorY < 0 && pelletCentre.pointY - Config::pellet_size / 2 < 0) {
+    } else if (velocity.vectorY < 0 && pelletCentre.pointY - Config::pellet_size / 2.0 < 0) {
         // 碰到 Y 边界
         pellet->reflectX();
         return REFLECT;
-    } else if ((velocity.vectorX < 0 && pelletCentre.pointX - Config::pellet_size / 2 < 0)
+    } else if ((velocity.vectorX < 0 && pelletCentre.pointX - Config::pellet_size / 2.0 < 0)
                || (velocity.vectorX > 0
-                   && pelletCentre.pointX + Config::pellet_size / 2 > Config::board_col * Config::grid_size)) {
+                   && pelletCentre.pointX + Config::pellet_size / 2.0 > Config::board_col * Config::grid_size)) {
         // 碰到 X 边界
         pellet->reflectY();
         return REFLECT;
     } else if (velocity.vectorY > 0 &&
-               pelletCentre.pointY + Config::pellet_size / 2 > Config::board_row * Config::grid_size) {
+               pelletCentre.pointY + Config::pellet_size / 2.0 > Config::board_row * Config::grid_size) {
         // 离开区域
         pellet->leaveBoard();
         return NONE;
@@ -72,37 +72,23 @@ PelletResult updatePellet(Board *board, Pellet *pellet, QGraphicsScene *scene, b
     return result;
 }
 
-int signOfComponent(double component) {
-    return component > 0 ? 1 :
-           (component == 0) ? 0 : -1;
-}
 
 int locationToIndex(double locationComponent) {
     return int(locationComponent / Config::grid_size);
 }
 
 bool isCollided(int sign, double pelletCentreComponent, double gridCentreComponent) {
-    return sign * (pelletCentreComponent + sign * Config::pellet_size / 2) >
-           sign * (gridCentreComponent - sign * Config::grid_size / 2);
-}
-
-int min(int x, int y) {
-    if (x > y) return y;
-    else return x;
-}
-
-int max(int x, int y) {
-    if (x > y) return x;
-    else return y;
+    return sign * (pelletCentreComponent + sign * Config::pellet_size / 2.0) >
+           sign * (gridCentreComponent - sign * Config::grid_size / 2.0);
 }
 
 
-void nextRound(Board *board, Grid ***grids, Grid** place) {
+void nextRound(Board *board, Grid ***grids, Grid **place) {
     double possibleReward;
     if (board->getOwnedPellets() > 50)
         possibleReward = 0.5 / (board->getOwnedPellets() - 50);
     else if (board->getOwnedPellets() > 32)
-        possibleReward = 1.0 - 0.5 * (board->getOwnedPellets() - 32 ) / 18;
+        possibleReward = 1.0 - 0.5 * (board->getOwnedPellets() - 32) / 18;
     else
         possibleReward = 1.0;
     int healthReward = 1;
@@ -112,7 +98,7 @@ void nextRound(Board *board, Grid ***grids, Grid** place) {
     if (board->getRound() < 50)
         possibleRandom = 0.5;
     else
-        possibleReward = abs(cos(double(board->getRound() % 16) * pi / 17));
+        possibleReward = abs(cos(double(board->getRound() % 16) * PI / 17));
     int healthRandom = board->nextInt(2, board->getRound() / 100 + 5);
 
     double possibleAbsorb;
@@ -153,23 +139,24 @@ void nextRound(Board *board, Grid ***grids, Grid** place) {
 
     possibleAbsorb = 1;
     if (board->nextDouble(1.0) < possibleReward) {
-        place[curr++] = new RewardGrid({0,0}, healthReward);
+        place[curr++] = new RewardGrid({0, 0}, healthReward);
     } else if (board->nextDouble(1.0) < possibleRandom) {
-        place[curr++] = new RandomGrid({0,0}, healthRandom);
+        place[curr++] = new RandomGrid({0, 0}, healthRandom);
     }
 
     if (board->nextDouble() < possibleAbsorb) {
         place[curr++] = new AbsorbGrid({0, 0}, healthAbsorb);
     }
     if (board->nextDouble() < possibleExplosive) {
-        place[curr++] = new ExplosiveGrid({0,0}, healthExplosive, damageExplosive, radiusExplosive);
+        place[curr++] = new ExplosiveGrid({0, 0}, healthExplosive, damageExplosive,
+                                          randomRound(board, radiusExplosive));
     }
 
-    for (int i=0;i<empty;i++) {
-        place[curr++] = new AirGrid({0,0 });
+    for (int i = 0; i < empty; i++) {
+        place[curr++] = new AirGrid({0, 0});
     }
 
-    while(curr < Config::board_col) {
+    while (curr < Config::board_col) {
         place[curr++] = new HPGrid({0, 0}, board->nextInt(1, maxHealth));
     }
 
@@ -177,9 +164,8 @@ void nextRound(Board *board, Grid ***grids, Grid** place) {
 }
 
 
-
-
-void makeExplosion(Board *board, Location &location, double damage, int radius, QGraphicsScene *scene, Pellet *pelletSource,
+void
+makeExplosion(Board *board, Location &location, double damage, int radius, QGraphicsScene *scene, Pellet *pelletSource,
               Grid *gridSource) {
     double radius2 = radius * radius;
     int delta = radius / 50 + 1;

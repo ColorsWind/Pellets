@@ -24,8 +24,8 @@ add_executable(${PROJECT_NAME} src/main.cpp include/Coordinate.h src/Backend/Loc
         src/Grid/AbsorbGrid.cpp
         src/Grid/RewardGrid.cpp
         src/Grid/RewardGridItem.cpp
-        src/Backend/Collision.cpp src/Backend/Collision.h
-        src/Widget/MainWindow.cpp src/Widget/MainWindow.h src/Widget/MainWindow.ui src/Widget/GameWindow.cpp src/Widget/GameWindow.h src/Widget/GameWindow.ui src/Widget/GameBoardView.cpp src/Widget/GameBoardView.h src/Grid/ExplosiveGrid.cpp src/Grid/RandomGrid.cpp)
+        src/Backend/Boards.cpp include/Backend.h
+        src/Widget/MainWindow.cpp src/Widget/MainWindow.h src/Widget/MainWindow.ui src/Widget/GameWindow.cpp src/Widget/GameWindow.h src/Widget/GameWindow.ui src/Widget/GameBoardView.cpp src/Widget/GameBoardView.h src/Grid/ExplosiveGrid.cpp src/Grid/RandomGrid.cpp src/Backend/Math.cpp)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "

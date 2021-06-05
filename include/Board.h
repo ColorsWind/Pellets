@@ -20,8 +20,8 @@ class GameWindow;
  */
 class Board {
 protected:
-    const unsigned int row; // 行
-    const unsigned int col; // 列
+    const int row; // 行
+    const int col; // 列
     Grid*** const grids; // 格子
     std::vector<Pellet*> trackingPellets; // 需要追踪的弹珠
     Location targetLocation; // 上一次鼠标点击的位置
@@ -91,20 +91,18 @@ private:
     QGraphicsScene *scene = nullptr;
     bool launchLocationUpdate = false;
     bool shootMode = false; // 标记是否正在发射弹珠
-    GameWindow *gameWindow;
-    QGraphicsView *graphicsView;
+    GameWindow *gameWindow = nullptr;
+    QGraphicsView *graphicsView = nullptr;
 public:
     GameBoard(int row, int col);
 
-    void setup(GameWindow* gameWindow, QGraphicsView *graphicsView);
+    void setup(GameWindow* window, QGraphicsView *view);
 
     void doTick();
 
     void mouseEvent(int x, int y);
 
     void nextRound() override;
-
-    void handleShoot();
 
     void addOwnPellets(int n) override;
 

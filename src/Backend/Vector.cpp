@@ -8,7 +8,7 @@
 Vector::Vector(const double x, const double y) : vectorX(x), vectorY(y) {}
 
 Vector Vector::operator*(const double k) const {
-    return Vector(vectorX * k, vectorY * k);
+    return {vectorX * k, vectorY * k};
 }
 
 Vector Vector::normalize(const double length) const {
@@ -17,7 +17,7 @@ Vector Vector::normalize(const double length) const {
 }
 
 Vector Vector::operator-() const {
-    return Vector(-vectorX, -vectorY);
+    return {-vectorX, -vectorY};
 }
 
 Vector::Vector(const Location &to, const Location &from) : vectorX(to.pointX - from.pointX),

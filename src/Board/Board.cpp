@@ -11,7 +11,7 @@ Board::Board(int row, int col) :
         row(row),
         col(col),
         grids(new Grid **[row]),
-        launchLocation({(col - 1) * Config::grid_size / 2.0, row * (double) Config::grid_size - Config::grid_size / 4}),
+        launchLocation({(col - 1) * Config::grid_size / 2.0, row * (double) Config::grid_size - Config::grid_size / 4.0}),
         targetLocation({0.0, 0.0}),
         randomEngine(std::mt19937{std::random_device()()}),
         doubleGenerator(std::uniform_real_distribution<double>{0.0, 1.0}) {
