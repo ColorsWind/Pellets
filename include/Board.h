@@ -54,7 +54,7 @@ public:
      */
     Grid *getOrNull(int x, int y) const noexcept;
 
-    int getRound() const noexcept;
+    int getRound() const;
 
     /**
      * 发射一颗弹珠
@@ -63,7 +63,7 @@ public:
     Pellet* shoot();
 
     // 获取玩家拥有的弹珠数量(即每回合可以发射的数量)
-    int & getOwnedPellets();
+    int getOwnedPellets();
 
 
     // 下一关
@@ -82,6 +82,9 @@ public:
 
     virtual void addScore(int n);
 
+    int getScore() const;
+
+    virtual ~Board();
 };
 
 class GameBoard : public Board {
@@ -96,6 +99,7 @@ private:
 public:
     GameBoard(int row, int col);
 
+
     void setup(GameWindow* window, QGraphicsView *view);
 
     void doTick();
@@ -107,6 +111,5 @@ public:
     void addOwnPellets(int n) override;
 
     void addScore(int n) override;
-
 };
 #endif //PELLETS_BOARD_H

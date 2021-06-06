@@ -5,6 +5,8 @@
 #ifndef PELLETS_GAMEWINDOW_H
 #define PELLETS_GAMEWINDOW_H
 
+class MainWindow;
+class RecordWindow;
 #include <QWidget>
 #include "Board.h"
 
@@ -16,14 +18,17 @@ QT_END_NAMESPACE
 class GameWindow : public QWidget {
 Q_OBJECT
 
+
 public slots:
 
     void qDoTick();
 
 public:
-    explicit GameWindow(QWidget *parent = nullptr);
+    explicit GameWindow(MainWindow *main, RecordWindow *records, QWidget *parent = nullptr);
 
     ~GameWindow() override;
+
+    void init();
 
     void setScore(int n);
 
@@ -33,10 +38,16 @@ public:
 
     void closeEvent(QCloseEvent *e) override;
 
+    void gameForceEnd();
+
 private:
-    GameBoard gameBoard;
+    GameBoard* gameBoard = nullptr;
     Ui::GameWindow *ui;
     QTimer *timer;
+    RecordWindow *records;
+    MainWindow *main;
+
+
 };
 
 

@@ -45,7 +45,7 @@ Pellet *Board::shoot() {
     return pellet;
 }
 
-int &Board::getOwnedPellets() {
+int Board::getOwnedPellets() {
     return maxPellets;
 }
 
@@ -73,7 +73,23 @@ void Board::addScore(int n) {
     score += n;
 }
 
-int Board::getRound() const noexcept {
+int Board::getRound() const {
     return round;
 }
 
+int Board::getScore() const {
+    return score;
+}
+
+Board::~Board() {
+    for(int y=0;y<Config::board_row;y++) {
+        for(int x=0;x<Config::board_col;x++) {
+            if (grids[y][x]) {
+                delete grids[y][x];
+                grids[y][x] = nullptr;
+            }
+        }
+        delete [] grids[y];
+    }
+    delete [] grids;
+}

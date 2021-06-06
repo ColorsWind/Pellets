@@ -11,9 +11,6 @@ RecordWindow::RecordWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     loadData();
-    records.push_back(Record{QDateTime::currentDateTime(), "测试用户", 100, 10});
-    refresh();
-    saveData();
 }
 
 RecordWindow::~RecordWindow()
@@ -84,4 +81,8 @@ void RecordWindow::refresh() {
 
     }
     tableView->setModel(model);
+}
+
+void RecordWindow::addRecord(const Record &record) {
+    records.push_back(record);
 }

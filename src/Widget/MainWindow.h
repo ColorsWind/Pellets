@@ -5,9 +5,11 @@
 #ifndef PELLETS_MAINWINDOW_H
 #define PELLETS_MAINWINDOW_H
 
+class GameWindow;
+class RecordWindow;
+struct Record;
+
 #include <QWidget>
-#include "GameWindow.h"
-#include "RecordWindow.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -33,6 +35,7 @@ private:
 
 
 };
+
 
 
 #endif //PELLETS_MAINWINDOW_H

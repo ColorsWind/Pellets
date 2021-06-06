@@ -1,5 +1,5 @@
 #include <QApplication>
-#include <QPushButton>
+#include <QTextCodec>
 #include "Widget/MainWindow.h"
 
 int main(int argc, char *argv[]) {
@@ -10,3 +10,5 @@ int main(int argc, char *argv[]) {
     window.show();
     return QApplication::exec();
 }
+
+

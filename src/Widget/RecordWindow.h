@@ -6,7 +6,6 @@
 #include <QString>
 #include <QVector>
 
-using std::vector;
 
 namespace Ui { class RecordWindow; }
 
@@ -26,9 +25,13 @@ public:
 
     void loadData();
 
+    void addRecord(const Record& record);
+
     void saveData();
 
     void refresh();
+
+    friend class MainWindow;
 private:
     Ui::RecordWindow *ui;
     QVector<Record> records;

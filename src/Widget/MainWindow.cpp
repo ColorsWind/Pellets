@@ -5,14 +5,16 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_MainWindow.h" resolved
 
 #include "MainWindow.h"
+#include "GameWindow.h"
+#include "RecordWindow.h"
 #include "ui_MainWindow.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
         QWidget(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    game = new GameWindow(nullptr);
     record = new RecordWindow(nullptr);
+    game = new GameWindow(this, record, nullptr);
     connect(ui->button_start, SIGNAL(clicked()), this, SLOT(startGame()));
     connect(ui->button_quit, SIGNAL(clicked()), this, SLOT(exitGame()));
     connect(ui->button_record, SIGNAL(clicked()), this, SLOT(openRecord()));
@@ -24,6 +26,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::startGame() {
     setVisible(false);
+    game->init();
     game->show();
 }
 
@@ -32,6 +35,7 @@ void MainWindow::exitGame() {
 }
 
 void MainWindow::openRecord() {
+    record->refresh();
     record->setVisible(true);
 }
 

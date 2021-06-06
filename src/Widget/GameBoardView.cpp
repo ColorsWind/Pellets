@@ -17,8 +17,8 @@ void GameBoardView::wheelEvent(QWheelEvent *event) {
 
 }
 
-void GameBoardView::setup(GameBoard *gameBoard) {
-    this -> gameBoard = gameBoard;
+void GameBoardView::setup(GameBoard *board) {
+    this -> gameBoard = board;
 }
 
 GameBoardView::GameBoardView(QWidget *widget) : QGraphicsView(widget) {}

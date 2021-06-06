@@ -13,8 +13,6 @@ GameBoard::GameBoard(int row, int col) : Board(row, col),
                                          launchIndicate(new SolidPellet(launchLocation, {0.0, 0.0})) {
 }
 
-#include <iostream>
-using namespace std;
 void GameBoard::doTick() {
     // shoot
     if (shootMode && pelletsToLaunch > 0 && tick % 10 == 0) {
@@ -31,8 +29,8 @@ void GameBoard::doTick() {
             Pellet *pellet = *iter;
             // update pellet status
             PelletResult result = updatePellet(this, pellet, this->scene, launchLocationUpdate);
-            Pellet* transPellet;
-            switch(result) {
+            Pellet *transPellet;
+            switch (result) {
                 case DISAPPEAR:
                     // disappear
                     iter = trackingPellets.erase(iter);
@@ -51,7 +49,7 @@ void GameBoard::doTick() {
                     break;
                 case TRANSFORM:
                     // transform
-                    transPellet = pellet -> transform(this);
+                    transPellet = pellet->transform(this);
                     if (transPellet != pellet) {
                         pellet->remove(scene);
                         transPellet->move(1.0);
@@ -83,13 +81,18 @@ void GameBoard::doTick() {
 }
 
 
-
 void GameBoard::nextRound() {
+    bool end = false;
     for (int x = 0; x < col; x++) {
         Grid *grid = grids[row - 1][x];
         grid->remove(scene);
-        if (grid->isAlive()) cout << "游戏结束" << endl;
+        if (grid->isAlive())
+            end = true;
         delete grid;
+    }
+    if (end) {
+        gameWindow->gameForceEnd();
+        return;
     }
     for (int y = row - 1; y > 0; y--) {
         Grid **from = grids[y - 1];
@@ -131,15 +134,13 @@ void GameBoard::nextRound() {
 //        }
 //    }
     ::nextRound(this, grids, grids[0]);
-    for(int x=0;x<Config::board_col;x++) {
-        grids[0][x]->setLocation({double(x*50), 0.0});
+    for (int x = 0; x < Config::board_col; x++) {
+        grids[0][x]->setLocation({double(x * 50), 0.0});
         grids[0][x]->draw(scene);
     }
     round++;
     gameWindow->setRound(round);
 }
-
-
 
 
 void GameBoard::mouseEvent(int x, int y) {
@@ -156,7 +157,8 @@ void GameBoard::mouseEvent(int x, int y) {
 }
 
 void GameBoard::setup(GameWindow *window, QGraphicsView *view) {
-    this->scene = new QGraphicsScene(0,0,600,800,nullptr);
+    this->scene = new QGraphicsScene(0, 0, Config::board_col * Config::grid_size, Config::board_row * Config::grid_size,
+                                     nullptr);
     this->gameWindow = window;
     this->graphicsView = view;
     view->setScene(scene);
@@ -178,5 +180,7 @@ void GameBoard::addScore(int n) {
     Board::addScore(n);
     gameWindow->setScore(score);
 }
+
+
 
 

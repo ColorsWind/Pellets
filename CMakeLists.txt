@@ -29,8 +29,8 @@ add_executable(${PROJECT_NAME} src/main.cpp include/Coordinate.h src/Backend/Loc
         src/Widget/GameWindow.cpp src/Widget/GameWindow.h src/Widget/GameWindow.ui
         src/Widget/GameBoardView.cpp src/Widget/GameBoardView.h
         src/Widget/RecordWindow.cpp src/Widget/RecordWindow.h src/Widget/RecordWindow.ui
+        src/Widget/GetUserDialog.cpp src/Widget/GetUserDialog.h src/Widget/GetUserDialog.ui
         src/Grid/ExplosiveGrid.cpp src/Grid/RandomGrid.cpp src/Backend/Math.cpp
-
         )
 
 if (NOT CMAKE_PREFIX_PATH)
