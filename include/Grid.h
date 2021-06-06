@@ -41,6 +41,8 @@ public:
 
     virtual PelletResult
     damageBy(Board *board, int damage, QGraphicsScene *scene, Pellet *pelletSource, Grid *gridSource) = 0;
+
+    virtual ~Grid() = default;
 };
 
 class AbstractGrid : public Grid {

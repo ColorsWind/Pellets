@@ -32,5 +32,3 @@ int AbstractGrid::getIndexY() const {
     return location.getGridY() / 50;
 }
 
-
-

@@ -15,7 +15,7 @@ void HPGrid::draw(QGraphicsScene *scene) {
 
 void HPGrid::remove(QGraphicsScene *scene) {
     if (gridItem) {
-        gridItem->hide();
+        //gridItem->hide();
         scene->removeItem(gridItem);
         gridItem = nullptr;
     }

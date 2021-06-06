@@ -84,3 +84,4 @@ bool AbstractPellet::inBoard() {
     return hitCount >= 0;
 }
 
+

@@ -51,6 +51,8 @@ public:
     virtual void leaveBoard() = 0;
 
     virtual bool inBoard() = 0;
+
+    virtual ~Pellet() = default;
 };
 
 class AbstractPellet : public Pellet {
@@ -95,7 +97,6 @@ public:
 
     virtual QColor getColor() const = 0 ;
     virtual QString getLabel() const = 0;
-
 
 };
 

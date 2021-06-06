@@ -35,12 +35,12 @@ GridItem::GridItem(Grid *grid, QColor color,
 
 
 void GridItem::updateItem(int left, int top, int width, int height, QColor qColor, QString qLabel) {
+    prepareGeometryChange();
     rect = {left, top, width, height};
     this->color = std::move(qColor);
     this->label = std::move(qLabel);
 
 
-    prepareGeometryChange();
 }
 
 
