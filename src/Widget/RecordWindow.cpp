@@ -55,11 +55,14 @@ void RecordWindow::refresh() {
     auto model = new QStandardItemModel();
     model->setHorizontalHeaderLabels({"时间", "玩家", "关卡", "分数"});
     model->setSortRole(Qt::EditRole);
-    tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+
+
     int index=0;
     for(auto iter=records.begin();iter != records.cend();iter++) {
         auto dateItem = new QStandardItem(iter->date.toString("yyyy-MM-dd HH:mm"));
         dateItem->setData(iter->date, Qt::EditRole);
+        dateItem->setText(iter->date.toString("yyyy-MM-dd HH:mm"));
         dateItem->setEditable(false);
         model->setItem(index, 0, dateItem);
 
@@ -81,6 +84,10 @@ void RecordWindow::refresh() {
 
     }
     tableView->setModel(model);
+    tableView->setColumnWidth(0, 140);
+    tableView->setColumnWidth(1, 160);
+    tableView->setColumnWidth(2, 80);
+    tableView->setColumnWidth(3, 80);
 }
 
 void RecordWindow::addRecord(const Record &record) {
