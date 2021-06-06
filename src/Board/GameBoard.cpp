@@ -103,42 +103,12 @@ void GameBoard::nextRound() {
             to[x]->update(scene);
         }
     }
-    // generate grids
-//    double PI = acos(-1);
-//    int r = round;
-//    double possibility = (1 / (1 + exp(-r / 20.0 + 1))) * abs(cos(double(r % 16) * PI / 17));
-//    int numHPGrids = 0;
-//    for (int x = 0; x < Config::board_col; x++) {
-//        std::uniform_int_distribution<int> intGenerator(1, 2 * round + 1);
-//        Location location = {double(x * 50), 0.0};
-//        if (doubleGenerator(randomEngine) < possibility) {
-//            grids[0][x] = new HPGrid(location, intGenerator(randomEngine));
-//            grids[0][x]->draw(scene);
-//            numHPGrids++;
-//        } else {
-//            grids[0][x] = nullptr;
-//        }
-//    }
-//    if (numHPGrids < Config::board_col) {
-//        int indexToGenerate = std::uniform_int_distribution<int>(0, numHPGrids)(randomEngine);
-//        for (int x = 0; x < Config::board_col; x++) {
-//            Location location = {double(x * 50), 0.0};
-//            if (grids[0][x]) continue;
-//            if (indexToGenerate == 0) {
-//                grids[0][x] = new RewardGrid(location, 1);
-//                grids[0][x]->draw(scene);
-//            } else {
-//                grids[0][x] = new AirGrid(location);
-//            }
-//            indexToGenerate--;
-//        }
-//    }
+    round++;
     ::nextRound(this, grids, grids[0]);
     for (int x = 0; x < Config::board_col; x++) {
         grids[0][x]->setLocation({double(x * 50), 0.0});
         grids[0][x]->draw(scene);
     }
-    round++;
     gameWindow->setRound(round);
 }
 

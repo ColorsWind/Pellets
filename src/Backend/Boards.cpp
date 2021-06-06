@@ -98,21 +98,30 @@ void nextRound(Board *board, Grid ***grids, Grid **place) {
     if (board->getRound() < 50)
         possibleRandom = 0.5;
     else
-        possibleReward = abs(cos(double(board->getRound() % 16) * PI / 17));
+        possibleRandom = abs(cos(double(board->getRound() % 16) * PI / 17));
     int healthRandom = board->nextInt(2, board->getRound() / 100 + 5);
 
     double possibleAbsorb;
-    if (board->getOwnedPellets() > 30)
+    if (board->getRound() % 27 == 0) {
+        possibleAbsorb = 0.5;
+    } else if (board->getOwnedPellets() > 30)
         possibleAbsorb = board->getOwnedPellets() / 1000.0;
     else
         possibleAbsorb = 0;
-    int healthAbsorb = max(board->nextInt(1, board->getRound() / 300 + 1), 3);
+    int healthAbsorb = min(board->nextInt(1, board->getRound() / 300 + 1), 3);
+    if (board->getRound() == 9) {
+        possibleAbsorb = 1.0;
+        healthAbsorb = 1;
+    }
+
 
     double possibleExplosive;
-    if (board->getRound() > 30)
+    if (board->getRound() % 7 == 0) {
+        possibleExplosive = 1;
+    } else if (board->getRound() > 30)
         possibleExplosive = possibleAbsorb * 2 + 0.2;
     else
-        possibleExplosive = 0.05;
+        possibleExplosive = 0.2;
     int healthExplosive = max(board->nextInt(1, board->getRound() / 100 + 2), 5);
     int damageExplosive = max(1, board->getRound() / 5);
     double radiusExplosive;
@@ -122,22 +131,29 @@ void nextRound(Board *board, Grid ***grids, Grid **place) {
         radiusExplosive = (board->nextDouble(2) + 1) * Config::grid_size;
 
 
-    int maxHealth = 2 * board->getRound() + 1;
+    int maxHealth;
+    if (board->getRound() > 50) {
+        maxHealth = (board->getRound() - 50) / 2 + 31;
+    } else if (board->getRound() > 15)
+        maxHealth = (board->getRound() - 20) + 31; // (50, 31)
+    else
+        maxHealth = 2 * board->getRound() + 1; // (20, 41)
+
+
 
     int empty;
     if (board->getRound() > 500)
-        empty = board->nextInt(0, 2);
+        empty = board->nextInt(0, 3);
     else if (board->getRound() > 100)
-        empty = board->nextInt(1, 3);
-    else if (board->getRound() > 30)
         empty = board->nextInt(1, 4);
+    else if (board->getRound() > 30)
+        empty = board->nextInt(2, 5);
     else
-        empty = board->nextInt(1, 5);
+        empty = board->nextInt(2, 6);
 
     int curr = 0;
 
 
-    possibleAbsorb = 1;
     if (board->nextDouble(1.0) < possibleReward) {
         place[curr++] = new RewardGrid({0, 0}, healthReward);
     } else if (board->nextDouble(1.0) < possibleRandom) {
