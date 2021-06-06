@@ -36,13 +36,13 @@ QColor HPGrid::getColor() const {
     } else if (health > 70) {
         return {160, 65, 250, 196};
     } else if (health > 40) {
-        return {35, 240, 240, 196};
-    } else if (health > 20) {
         return {255, 128, 128, 196};
-    } else if (health > 10) {
+    } else if (health > 20) {
         return {255, 255, 0, 196};
-    } else {
+    } else if (health > 10) {
         return {120, 145, 200, 196};
+    } else {
+        return {130, 250, 220, 196};
     }
 }
 
