@@ -31,7 +31,13 @@ void HPGrid::update(QGraphicsScene *scene) {
 
 
 QColor HPGrid::getColor() const {
-    if (health > 20) {
+    if (health > 100) {
+        return {250, 110, 45, 196};
+    } else if (health > 70) {
+        return {160, 65, 250, 196}
+    } else if (health > 40) {
+        return {35, 240, 240, 196};
+    } else if (health > 20) {
         return {255, 128, 128, 196};
     } else if (health > 10) {
         return {255, 255, 0, 196};
@@ -41,9 +47,7 @@ QColor HPGrid::getColor() const {
 }
 
 
-
 HPGrid::HPGrid(const Location &point, int health) : AbstractGrid(point), health(health) {
-
 }
 
 bool HPGrid::isAlive() {
@@ -52,10 +56,10 @@ bool HPGrid::isAlive() {
 
 
 PelletResult HPGrid::damageBy(Board *board, int damage, QGraphicsScene *scene, Pellet *pelletSource, Grid *gridSource) {
-    damage = min(this -> health, damage);
-    this -> health -= damage;
+    damage = min(this->health, damage);
+    this->health -= damage;
     board->addScore(damage);
-    this ->update(scene);
+    this->update(scene);
     return PelletResult::REFLECT;
 }
 

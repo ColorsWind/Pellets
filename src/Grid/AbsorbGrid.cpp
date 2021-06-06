@@ -23,5 +23,5 @@ QColor AbsorbGrid::getColor() const {
 }
 
 QString AbsorbGrid::getLabel() const {
-    return "A";
+    return "";
 }
