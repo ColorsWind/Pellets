@@ -15,7 +15,7 @@ include_directories(
 )
 add_executable(${PROJECT_NAME} src/main.cpp include/Coordinate.h src/Backend/Location.cpp src/Backend/Vector.cpp include/Pellet.h src/Board/Board.cpp include/Board.h include/Grid.h
         src/Grid/AbstractGrid.cpp src/Grid/HPGrid.cpp
-        src/Pellet/SolidPellet.cpp src/Grid/AirGrid.cpp src/Grid/GridItem.cpp include/GridItem.h src/Pellet/PelletItem.cpp include/PelletItem.h
+        src/Pellet/SolidPellet.cpp src/Grid/AirGrid.cpp src/Extend/GridItem.cpp include/GridItem.h src/Extend/PelletItem.cpp include/PelletItem.h
         src/Board/GameBoard.cpp
         include/Constants.h
         src/Pellet/AbstractPellet.cpp
@@ -23,11 +23,11 @@ add_executable(${PROJECT_NAME} src/main.cpp include/Coordinate.h src/Backend/Loc
         src/Pellet/RandomPellet.cpp
         src/Grid/AbsorbGrid.cpp
         src/Grid/RewardGrid.cpp
-        src/Grid/RewardGridItem.cpp
+        src/Extend/RewardGridItem.cpp
         src/Backend/Boards.cpp include/Backend.h
         src/Widget/MainWindow.cpp src/Widget/MainWindow.h src/Widget/MainWindow.ui
         src/Widget/GameWindow.cpp src/Widget/GameWindow.h src/Widget/GameWindow.ui
-        src/Widget/GameBoardView.cpp src/Widget/GameBoardView.h
+        src/Extend/GameBoardView.cpp include/GameBoardView.h
         src/Widget/RecordWindow.cpp src/Widget/RecordWindow.h src/Widget/RecordWindow.ui
         src/Widget/GetUserDialog.cpp src/Widget/GetUserDialog.h src/Widget/GetUserDialog.ui
         src/Grid/ExplosiveGrid.cpp src/Grid/RandomGrid.cpp src/Backend/Math.cpp
