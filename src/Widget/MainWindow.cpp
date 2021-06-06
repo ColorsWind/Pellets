@@ -12,18 +12,26 @@ MainWindow::MainWindow(QWidget *parent) :
         QWidget(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     game = new GameWindow(nullptr);
-    connect(ui->button_start, SIGNAL(clicked()), this, SLOT(start()));
+    record = new RecordWindow(nullptr);
+    connect(ui->button_start, SIGNAL(clicked()), this, SLOT(startGame()));
+    connect(ui->button_quit, SIGNAL(clicked()), this, SLOT(exitGame()));
+    connect(ui->button_record, SIGNAL(clicked()), this, SLOT(openRecord()));
 }
 
 MainWindow::~MainWindow() {
     delete ui;
 }
 
-#include <iostream>
-using namespace std;
-void MainWindow::start() {
+void MainWindow::startGame() {
     setVisible(false);
     game->show();
-    cout << "Start" << endl;
+}
+
+void MainWindow::exitGame() {
+    QApplication::exit();
+}
+
+void MainWindow::openRecord() {
+    record->setVisible(true);
 }
 

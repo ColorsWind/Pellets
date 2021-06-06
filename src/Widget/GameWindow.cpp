@@ -7,8 +7,11 @@
 #include "GameWindow.h"
 #include <QTimer>
 #include <QMouseEvent>
+#include <QLineEdit>
+#include <QInputDialog>
 #include "ui_GameWindow.h"
 #include "Constants.h"
+
 
 
 GameWindow::GameWindow(QWidget *parent) :
@@ -43,5 +46,9 @@ void GameWindow::setPellets(int n) {
 void GameWindow::setRound(int n) {
     ui->label_round->setNum(n);
 }
+
+void GameWindow::closeEvent(QCloseEvent *e) {
+}
+
 
 

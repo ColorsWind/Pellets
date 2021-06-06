@@ -7,6 +7,7 @@
 
 #include <QWidget>
 #include "GameWindow.h"
+#include "RecordWindow.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -17,7 +18,9 @@ class MainWindow : public QWidget {
     Q_OBJECT
 
 public slots:
-    void start();
+    void startGame();
+    void exitGame();
+    void openRecord();
 public:
     explicit MainWindow(QWidget *parent = nullptr);
 
@@ -26,6 +29,9 @@ public:
 private:
     Ui::MainWindow *ui;
     GameWindow *game;
+    RecordWindow *record;
+
+
 };
 
 

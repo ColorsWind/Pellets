@@ -14,20 +14,29 @@ namespace Ui { class GameWindow; }
 QT_END_NAMESPACE
 
 class GameWindow : public QWidget {
-    Q_OBJECT
+Q_OBJECT
 
 public slots:
+
     void qDoTick();
+
 public:
     explicit GameWindow(QWidget *parent = nullptr);
+
     ~GameWindow() override;
+
     void setScore(int n);
+
     void setPellets(int n);
+
     void setRound(int n);
+
+    void closeEvent(QCloseEvent *e) override;
+
 private:
     GameBoard gameBoard;
     Ui::GameWindow *ui;
-    QTimer* timer;
+    QTimer *timer;
 };
 
 
