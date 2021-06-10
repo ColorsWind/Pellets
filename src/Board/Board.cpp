@@ -39,8 +39,6 @@ Grid *Board::getOrNull(int x, int y) const noexcept {
 Pellet *Board::shoot() {
     auto pellet = new SolidPellet(launchLocation, targetLocation.add(-launchLocation.toVector()).toVector().normalize(
             Config::relative_velocity));
-//    auto pellet = new ExplosivePellet(launchLocation, targetLocation.add(-launchLocation.toVector()).toVector().normalize(
-//            Config::relative_velocity), 3, 50);
     trackingPellets.push_back(pellet);
     return pellet;
 }

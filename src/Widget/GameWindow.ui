@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>GameWindow</string>
+   <string>弹弹球</string>
   </property>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">

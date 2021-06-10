@@ -33,16 +33,14 @@ void HPGrid::update(QGraphicsScene *scene) {
 QColor HPGrid::getColor() const {
     if (health > 100) {
         return {250, 110, 45, 196};
-    } else if (health > 70) {
+    } else if (health > 50) {
         return {160, 65, 250, 196};
-    } else if (health > 40) {
-        return {255, 128, 128, 196};
     } else if (health > 20) {
-        return {255, 255, 0, 196};
+        return {255, 128, 128, 196};
     } else if (health > 10) {
+        return {255, 255, 0, 196};
+    } else if (health > 0) {
         return {120, 145, 200, 196};
-    } else {
-        return {130, 250, 220, 196};
     }
 }
 
