@@ -122,6 +122,8 @@ public:
 
 
     QString getLabel() const override;
+
+    QColor getColor() const override;
 };
 
 

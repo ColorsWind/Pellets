@@ -14,6 +14,9 @@ PelletResult RandomGrid::damageBy(Board *board, int damage, QGraphicsScene *scen
 }
 
 
+QColor RandomGrid::getColor() const {
+    return {147, 32, 245, 196};
+}
 
 GridItem *RandomGrid::initGridItem() {
     return new GridItem(this, getColor(), "?");

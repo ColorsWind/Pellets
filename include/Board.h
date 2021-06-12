@@ -9,6 +9,7 @@ class Pellet;
 class GameWindow;
 
 #include <vector>
+#include <set>
 #include <random>
 #include <cmath>
 #include "Grid.h"
@@ -24,6 +25,7 @@ protected:
     const int col; // 列
     Grid*** const grids; // 格子
     std::vector<Pellet*> trackingPellets; // 需要追踪的弹珠
+    std::set<Grid*> highlightGrids; // 当前高光状态的 grid
     Location targetLocation; // 上一次鼠标点击的位置
     Location launchLocation; // 弹珠发射的位置
     int round = 0; // 当前回合
@@ -73,7 +75,6 @@ public:
     double nextDouble(double max=1.0);
     int nextInt(int min, int max);
 
-
     const Location &getTargetLocation();
 
     const Location &getLaunchLocation();
@@ -81,6 +82,8 @@ public:
     virtual void addOwnPellets(int n);
 
     virtual void addScore(int n);
+
+    virtual void highlight(Grid* grid);
 
     int getScore() const;
 
@@ -96,6 +99,7 @@ private:
     bool shootMode = false; // 标记是否正在发射弹珠
     GameWindow *gameWindow = nullptr;
     QGraphicsView *graphicsView = nullptr;
+
 public:
     GameBoard(int row, int col);
 

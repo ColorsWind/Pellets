@@ -27,6 +27,8 @@ int randomRound(Board *board, double d);
  */
 inline bool isCollided(int sign, double pelletCentreComponent, double gridCentreComponent);
 
+inline bool isCollided(int signX, int signY, const Location &pelletLocation, const Location &gridLocation);
+
 /**
  * 更新弹珠的状态
  * @param pellet

@@ -49,6 +49,7 @@ PelletResult updatePellet(Board *board, Pellet *pellet, QGraphicsScene *scene, b
     Grid *gridX = board->getOrNull(indexX + signX, indexY); // X 方向可能碰撞的方块
     Grid *gridY = board->getOrNull(indexX, indexY + signY); // Y 方向可能碰撞的方块
     Grid *gridXY = board->getOrNull(indexX + signX, indexX + indexY); // XY 方向可能碰撞的方块
+    Grid *grid00 = board->getOrNull(indexX, indexY);
     bool collideX = gridX && isCollided(signX, pelletCentre.pointX, gridX->getCentre().pointX); // X 方向确实发生了碰撞
     bool collideY = gridY && isCollided(signY, pelletCentre.pointY, gridY->getCentre().pointY); // Y 方向确实发生了碰撞
     PelletResult result = NONE; // 碰撞的结果
@@ -60,15 +61,21 @@ PelletResult updatePellet(Board *board, Pellet *pellet, QGraphicsScene *scene, b
         result = pellet->damageGrid(board, gridY, scene);
         if (result == REFLECT || result == TRANSFORM) pellet->reflectX();
         //gridY->update(scene);
-    } else if (gridXY && collideX && collideY && gridXY->isAlive()) { // XY 方向碰撞
+    } else if (gridXY && gridXY->isAlive() && isCollided(signX, signY, pelletCentre, gridXY->getCentre())) { // XY 方向碰撞
         result = pellet->damageGrid(board, gridXY, scene);
         if (result == REFLECT || result == TRANSFORM) {
             pellet->reflectX();
             pellet->reflectY();
         }
         //gridXY->update(scene);
+    } else if (grid00 && grid00->isAlive()) {
+        result = pellet->damageGrid(board, grid00, scene);
+        if (result == REFLECT || result == TRANSFORM) {
+            pellet->reflectX();
+            pellet->reflectY();
+        }
     }
-    pellet->update(scene);
+    // pellet->update(scene);
     return result;
 }
 
@@ -83,6 +90,14 @@ bool isCollided(int sign, double pelletCentreComponent, double gridCentreCompone
 }
 
 
+
+bool isCollided(int signX, int signY, const Location &pelletLocation, const Location &gridLocation) {
+    Vector delta = Vector(gridLocation, pelletLocation);
+    return signX == signOfComponent(delta.vectorX) && signY == signOfComponent(delta.vectorY) &&
+            (delta.norm() <= sqrt(2) / 2 * Config::grid_size / 2 + Config::pellet_size / 2.0);
+}
+
+
 void nextRound(Board *board, Grid ***grids, Grid **place) {
     double possibleReward;
     if (board->getOwnedPellets() > 50)
@@ -90,7 +105,7 @@ void nextRound(Board *board, Grid ***grids, Grid **place) {
     else if (board->getOwnedPellets() > 32)
         possibleReward = 1.0 - 0.5 * (board->getOwnedPellets() - 32) / 18;
     else
-        possibleReward = 1.0;
+        possibleReward = 0.8;
     int healthReward = 1;
     // board->nextInt(1, board->getRound() / 100 + 1)
 
@@ -99,7 +114,7 @@ void nextRound(Board *board, Grid ***grids, Grid **place) {
         possibleRandom = 0.5;
     else
         possibleRandom = abs(cos(double(board->getRound() % 16) * PI / 17));
-    int healthRandom = board->nextInt(2, board->getRound() / 100 + 5);
+    int healthRandom = board->nextInt(2, board->getRound() / 100 + 3);
 
     double possibleAbsorb;
     if (board->getRound() % 27 == 0) {
@@ -108,7 +123,7 @@ void nextRound(Board *board, Grid ***grids, Grid **place) {
         possibleAbsorb = board->getOwnedPellets() / 1000.0;
     else
         possibleAbsorb = 0;
-    int healthAbsorb = min(board->nextInt(1, board->getRound() / 300 + 1), 3);
+    int healthAbsorb = min(board->nextInt(1, board->getRound() / 300 + 2), 5);
     if (board->getRound() == 9) {
         possibleAbsorb = 1.0;
         healthAbsorb = 1;

@@ -79,11 +79,14 @@ int Board::getScore() const {
     return score;
 }
 
+void Board::highlight(Grid *grid) {
+    highlightGrids.insert(grid);
+}
+
 Board::~Board() {
     for(int y=0;y<Config::board_row;y++) {
         for(int x=0;x<Config::board_col;x++) {
             if (grids[y][x]) {
-                delete grids[y][x];
                 grids[y][x] = nullptr;
             }
         }

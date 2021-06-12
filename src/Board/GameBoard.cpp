@@ -22,6 +22,11 @@ void GameBoard::doTick() {
         if (pelletsToLaunch == 0) // nothing to shoot
             shootMode = false;
     }
+    // highlight
+    for(const auto & grid : highlightGrids) {
+        grid->draw(scene);
+    }
+    highlightGrids.clear();
 
     if (!trackingPellets.empty()) {
         // process all pellets
@@ -61,6 +66,9 @@ void GameBoard::doTick() {
                     }
                     iter++;
                     break;
+//                case REFLECT:
+//                    iter++;
+//                    break;
                 default:
                     // move
                     iter++;

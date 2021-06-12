@@ -8,8 +8,11 @@
 #include <cmath>
 
 void HPGrid::draw(QGraphicsScene *scene) {
-    if (!gridItem)
-        gridItem = initGridItem();
+    if (!isAlive())
+        return;
+    if (gridItem)
+        return;
+    gridItem = initGridItem();
     scene->addItem(gridItem);
 }
 
@@ -42,6 +45,7 @@ QColor HPGrid::getColor() const {
     } else if (health > 0) {
         return {120, 145, 200, 196};
     }
+    return {0, 0, 0, 0};
 }
 
 
@@ -57,7 +61,8 @@ PelletResult HPGrid::damageBy(Board *board, int damage, QGraphicsScene *scene, P
     damage = min(this->health, damage);
     this->health -= damage;
     board->addScore(damage);
-    this->update(scene);
+    this->remove(scene);
+    board->highlight(this);
     return PelletResult::REFLECT;
 }
 
