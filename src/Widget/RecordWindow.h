@@ -16,6 +16,9 @@ struct Record {
     int score;
 };
 
+/**
+ * 游戏记录窗体
+ */
 class RecordWindow : public QWidget {
     Q_OBJECT
 public:

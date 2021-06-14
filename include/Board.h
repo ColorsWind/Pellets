@@ -90,6 +90,9 @@ public:
     virtual ~Board();
 };
 
+/**
+ * 在 Board 的基础上增加与玩家交互相关属性和函数
+ */
 class GameBoard : public Board {
 
 private:

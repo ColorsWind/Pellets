@@ -1,4 +1,4 @@
-//
+﻿//
 // Created by colors_wind on 2021/3/15.
 //
 
@@ -18,6 +18,9 @@ enum PelletResult {
     DISAPPEAR, REFLECT, TRANSFORM, NONE
 };
 
+/**
+ * 弹球的最小化接口，刻画了弹球需要实现的方法。
+ */
 class Pellet {
 public:
     virtual void draw(QGraphicsScene *scene) = 0;
@@ -55,6 +58,9 @@ public:
     virtual ~Pellet() = default;
 };
 
+/**
+ * 弹球的抽象类，包含了弹球常用属性（位置，速度）的定义和相关方法的实现；还实现了 Qt 图形绘制的相关内容。
+ */
 class AbstractPellet : public Pellet {
 protected:
     Location location;
@@ -100,6 +106,9 @@ public:
 
 };
 
+/**
+ * 普通弹球。
+ */
 class SolidPellet : public AbstractPellet {
 private:
     int damage;
@@ -117,6 +126,9 @@ public:
 
 };
 
+/**
+ * 随机弹球。
+ */
 class RandomPellet : public AbstractPellet {
 protected:
     int minDamage;
@@ -137,7 +149,9 @@ public:
 
 };
 
-
+/**
+ * 爆炸弹球。
+ */
 class ExplosivePellet : public AbstractPellet {
 protected:
     double damage;

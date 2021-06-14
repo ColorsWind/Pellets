@@ -1,4 +1,4 @@
-//
+﻿//
 // Created by colors_wind on 2021/3/16.
 //
 
@@ -16,7 +16,9 @@ class Pellet;
 
 enum PelletResult;
 
-
+/**
+ * 方块的最小化接口，刻画了方块需要实现的方法。
+ */
 class Grid {
 public:
     virtual Location getLocation() const = 0;
@@ -45,6 +47,9 @@ public:
     virtual ~Grid() = default;
 };
 
+/**
+ * 方块的抽象类，包含了方块位置属性的定义和相关方法的实现。
+ */
 class AbstractGrid : public Grid {
 protected:
     Location location;
@@ -65,6 +70,9 @@ public:
 
 };
 
+/**
+ * 空气方块的具体实现。
+ */
 class AirGrid : public AbstractGrid {
 public:
     explicit AirGrid(const Location &point);
@@ -83,6 +91,9 @@ public:
 
 };
 
+/**
+ * 在方块的抽象类基础上增加了Qt绘图相关函数，是普通方块的具体实现。
+ */
 class HPGrid : public AbstractGrid {
 protected:
     GridItem* gridItem = nullptr;
@@ -109,7 +120,9 @@ public:
     virtual GridItem* initGridItem();
 };
 
-
+/**
+ * 随机方块的具体实现。
+ */
 class RandomGrid : public HPGrid {
 
 public:
@@ -127,6 +140,9 @@ public:
 };
 
 
+/**
+ * 奖励方块的具体实现。
+ */
 class RewardGrid : public HPGrid {
 
 public:
@@ -144,6 +160,9 @@ public:
 
 };
 
+/**
+ * 吸收方块的具体实现。
+ */
 class AbsorbGrid : public HPGrid {
 public:
     AbsorbGrid(const Location &point, int health);
@@ -156,6 +175,9 @@ public:
     QString getLabel() const override;
 };
 
+/**
+ * 爆炸方块的具体实现。
+ */
 class ExplosiveGrid : public HPGrid {
 
 protected:

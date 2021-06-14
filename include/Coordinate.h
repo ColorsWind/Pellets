@@ -1,4 +1,4 @@
-//
+﻿//
 // Created by colors_wind on 2021/3/15.
 //
 
@@ -8,6 +8,9 @@ class Location;
 class Vector;
 
 const static double EPS = 1E-3;
+/**
+ * 向量：可以代表速度，两个位置之间的有向线段。
+ */
 class Vector {
 public:
     double vectorX, vectorY;
@@ -25,6 +28,9 @@ public:
 
     friend Vector operator*(double k, const Vector &vector);
 };
+/**
+ * 代表弹球、方块所处的位置。
+ */
 class Location {
 public:
     double pointX, pointY;

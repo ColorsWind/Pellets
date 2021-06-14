@@ -7,6 +7,9 @@
 
 namespace Ui { class GetUserDialog; }
 
+/**
+ * 获取玩家昵称的对话框
+ */
 class GetUserDialog : public QDialog {
 Q_OBJECT
 public slots:

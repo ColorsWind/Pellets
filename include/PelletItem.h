@@ -1,4 +1,4 @@
-//
+﻿//
 // Created by colors_wind on 2021/3/17.
 //
 
@@ -11,6 +11,9 @@
 #include <QRectF>
 #include <QPainter>
 
+/**
+ * 负责 弹球 的显示
+ */
 class PelletItem : public QGraphicsItem {
 
 private:

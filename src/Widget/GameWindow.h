@@ -15,6 +15,9 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class GameWindow; }
 QT_END_NAMESPACE
 
+/**
+ * 游戏窗体
+ */
 class GameWindow : public QWidget {
 Q_OBJECT
 

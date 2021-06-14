@@ -1,4 +1,4 @@
-//
+﻿//
 // Created by colors_wind on 2021/3/17.
 //
 
@@ -9,6 +9,9 @@ class Grid;
 #include <QGraphicsItem>
 #include <QPainter>
 
+/**
+ * 负责 普通方块(方形) 的显示
+ */
 class GridItem : public QGraphicsItem {
 protected:
     QColor color;
@@ -30,6 +33,9 @@ public:
 
 };
 
+/**
+ * 负责 奖励方块(圆形) 的显示
+ */
 class RewardGridItem : public GridItem {
 public:
     RewardGridItem(Grid* grid, const QColor &color,

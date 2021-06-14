@@ -16,6 +16,9 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+/**
+ * 主窗体
+ */
 class MainWindow : public QWidget {
     Q_OBJECT
 
