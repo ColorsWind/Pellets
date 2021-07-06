@@ -13,25 +13,9 @@ set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
 include_directories(
         ${PROJECT_SOURCE_DIR}/include/
 )
-add_executable(${PROJECT_NAME} src/main.cpp include/Coordinate.h src/Backend/Location.cpp src/Backend/Vector.cpp include/Pellet.h src/Board/Board.cpp include/Board.h include/Grid.h
-        src/Grid/AbstractGrid.cpp src/Grid/HPGrid.cpp
-        src/Pellet/SolidPellet.cpp src/Grid/AirGrid.cpp src/Extend/GridItem.cpp include/GridItem.h src/Extend/PelletItem.cpp include/PelletItem.h
-        src/Board/GameBoard.cpp
-        include/Constants.h
-        src/Pellet/AbstractPellet.cpp
-        src/Pellet/ExplosivePellet.cpp
-        src/Pellet/RandomPellet.cpp
-        src/Grid/AbsorbGrid.cpp
-        src/Grid/RewardGrid.cpp
-        src/Extend/RewardGridItem.cpp
-        src/Backend/Boards.cpp include/Backend.h
-        src/Widget/MainWindow.cpp src/Widget/MainWindow.h src/Widget/MainWindow.ui
-        src/Widget/GameWindow.cpp src/Widget/GameWindow.h src/Widget/GameWindow.ui
-        src/Extend/GameBoardView.cpp include/GameBoardView.h
-        src/Widget/RecordWindow.cpp src/Widget/RecordWindow.h src/Widget/RecordWindow.ui
-        src/Widget/GetUserDialog.cpp src/Widget/GetUserDialog.h src/Widget/GetUserDialog.ui
-        src/Grid/ExplosiveGrid.cpp src/Grid/RandomGrid.cpp src/Backend/Math.cpp
-        )
+file(GLOB_RECURSE SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR} "src/*.cpp")
+
+add_executable(${PROJECT_NAME} ${SRC_FILES} src/main.cpp)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "
