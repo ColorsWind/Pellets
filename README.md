@@ -39,7 +39,7 @@
 
 大部分头文件在`include`中，唯一的例外是Qt相关的窗体，由于Qt Designer自动生成C++代码，`.ui`、`.h`和`.cpp`文件放在了同一个目录下。所有的具体实现都在`src`文件夹中，其中`main.cpp`定义了程序的入口。
 
-![项目的结构](image\ProjectStructure.png)
+![项目的结构](image/ProjectStructure.png)
 
 项目的结构如图所示，主要实现分为5个模块：
 
@@ -53,11 +53,11 @@
 
 这个项目的设计核心的的逐帧更新，相关的结构如下：
 
-![逐帧更新](image\UpdateByFrame.png)
+![逐帧更新](image/UpdateByFrame.png)
 
 QTimer会周期性地调用`doTick`，而`doTick`方法会对游戏区域内的元素位置进行更新。
 
-![状态机](image\StateMachine.png)
+![状态机](image/StateMachine.png)
 
 每一关，游戏都要经过Wait、In progress、End三个状态，说明如下：
 
@@ -92,6 +92,6 @@ https://github.com/ColorsWind/Pellets/releases/
 
 ## 游戏截图  Screenshot 
 
-![游戏过程中](D:\ClionProjects\Pellets\image\GameWindows.png)
+![游戏过程中](image/GameWindows.png)
 
-![游戏结束](D:\ClionProjects\Pellets\image\GameWindowsEnd.png)
+![游戏结束](image/GameWindowsEnd.png)
