@@ -84,6 +84,10 @@ This project is for learning, please observe GPLv3 and keep the author's signatu
 
 目前仅提供Windows x64版本的二进制文件，其他平台可以自行编译。
 
+https://github.com/ColorsWind/Pellets/releases/
+
+
+
 
 
 ## 游戏截图  Screenshot 
